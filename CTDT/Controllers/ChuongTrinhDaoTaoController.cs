@@ -21,14 +21,61 @@ namespace CTDT.Controllers
 
         // GET: ChuongTrinhDaoTao
         // Lấy danh sách CTĐT từ database, trả về view Index.
-        public async Task<IActionResult> Index()
+        private async Task<List<TbChuongTrinhDaoTao>> TbChuongTrinhDaoTaos()
+        {
+            List<TbChuongTrinhDaoTao> getall = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+            List<DmDonViCapBang> dmDonViCapBangs = await ApiServices_.GetAll<DmDonViCapBang>("/api/dm/DonViCapBang");
+            List<DmHocCheDaoTao> dmHocCheDaoTaos = await ApiServices_.GetAll<DmHocCheDaoTao>("/api/dm/HocCheDaoTao");
+            List<DmLoaiChuongTrinhDaoTao> dmLoaiChuongTrinhDaoTaos = await ApiServices_.GetAll<DmLoaiChuongTrinhDaoTao>("/api/dm/LoaiChuongTrinhDaoTao");
+            List<DmLoaiChuongTrinhLienKetDaoTao> dmLoaiChuongTrinhLienKetDaoTaos = await ApiServices_.GetAll<DmLoaiChuongTrinhLienKetDaoTao>("/api/dm/LoaiChuongTrinhLienKetDaoTao");
+            List<DmNganhDaoTao> dmNganhDaoTaos = await ApiServices_.GetAll<DmNganhDaoTao>("/api/dm/NganhDaoTao");
+            List<DmQuocTich> dmQuocTiches = await ApiServices_.GetAll<DmQuocTich>("/api/dm/QuocTich");
+            List<DmTrangThaiChuongTrinhDaoTao> dmTrangThaiChuongTrinhDaoTaos = await ApiServices_.GetAll<DmTrangThaiChuongTrinhDaoTao>("/api/dm/TrangThaiChuongTrinhDaoTao");
+            List<DmTrinhDoDaoTao> dmTrinhDoDaoTaos = await ApiServices_.GetAll<DmTrinhDoDaoTao>("/api/dm/TrinhDoDaoTao");
+
+            getall.ForEach(item =>
+            {
+                item.IdDonViCapBangNavigation = dmDonViCapBangs.FirstOrDefault(t => t.IdDonViCapBang == item.IdDonViCapBang);
+
+                item.IdHocCheDaoTaoNavigation = dmHocCheDaoTaos.FirstOrDefault(t => t.IdHocCheDaoTao == item.IdHocCheDaoTao);
+
+                item.IdLoaiChuongTrinhDaoTaoNavigation = dmLoaiChuongTrinhDaoTaos.FirstOrDefault(t => t.IdLoaiChuongTrinhDaoTao == item.IdLoaiChuongTrinhDaoTao);
+
+                item.IdLoaiChuongTrinhLienKetDaoTaoNavigation = dmLoaiChuongTrinhLienKetDaoTaos.FirstOrDefault(t => t.IdLoaiChuongTrinhLienKetDaoTao == item.IdLoaiChuongTrinhLienKetDaoTao);
+
+                item.IdNganhDaoTaoNavigation = dmNganhDaoTaos.FirstOrDefault(t => t.IdNganhDaoTao == item.IdNganhDaoTao);
+
+                item.IdQuocGiaCuaTruSoChinhNavigation = dmQuocTiches.FirstOrDefault(t => t.IdQuocTich == item.IdQuocGiaCuaTruSoChinh);
+
+                item.IdTrangThaiCuaChuongTrinhNavigation = dmTrangThaiChuongTrinhDaoTaos.FirstOrDefault(t => t.IdTrangThaiChuongTrinhDaoTao == item.IdTrangThaiCuaChuongTrinh);
+
+                item.IdTrinhDoDaoTaoNavigation = dmTrinhDoDaoTaos.FirstOrDefault(t => t.IdTrinhDoDaoTao == item.IdTrinhDoDaoTao);
+
+            }
+            );
+            return getall;
+        }
+
+        public async Task<IActionResult> Index(string Id, string SapXep)
         {
             try
             {
-                List<TbChuongTrinhDaoTao> getall = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
-                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
-                return View(getall);
 
+                List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await TbChuongTrinhDaoTaos();
+                var danhSach = tbChuongTrinhDaoTaos.Where(item => string.IsNullOrEmpty(Id) || item.IdChuongTrinhDaoTao.ToString() == Id) //  tìm kiếm theo Id CTDT
+                .ToList();
+
+                var sapXepDanhSach = danhSach; // sắp xếp
+                if (SapXep == "SapXep")
+                {
+                    sapXepDanhSach = danhSach.OrderBy(x => x.NgayBanHanhChuanDauRa).ToList();// sắp xếp ngày ban hành chuẩn đầu ra
+                }
+
+                ViewBag.KqTimKiem = danhSach;
+                ViewBag.KqSapXep = sapXepDanhSach;
+
+                return View(sapXepDanhSach);
+                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
                 // Bắt lỗi các trường hợp ngoại lệ
             }
             catch (Exception ex)
@@ -50,7 +97,8 @@ namespace CTDT.Controllers
                 }
 
                 // Tìm các dữ liệu theo Id tương ứng đã truyền vào view Details
-                var tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await TbChuongTrinhDaoTaos();
+
                 var tbChuongTrinhDaoTao = tbChuongTrinhDaoTaos.FirstOrDefault(m => m.IdChuongTrinhDaoTao == id);
                 // Nếu không tìm thấy Id tương ứng, chương trình sẽ báo lỗi NotFound
                 if (tbChuongTrinhDaoTao == null)
@@ -106,6 +154,9 @@ namespace CTDT.Controllers
             try
             {
                 // Nếu trùng IDChuongTrinhDaoTao sẽ báo lỗi
+                check_null(tbChuongTrinhDaoTao);
+                check_int(tbChuongTrinhDaoTao);
+
                 if (await TbChuongTrinhDaoTaoExists(tbChuongTrinhDaoTao.IdChuongTrinhDaoTao)) ModelState.AddModelError("IdChuongTrinhDaoTao", "ID này đã tồn tại!");
                 if (ModelState.IsValid)
                 {
@@ -143,6 +194,7 @@ namespace CTDT.Controllers
                 }
 
                 var tbChuongTrinhDaoTao = await ApiServices_.GetId<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao", id ?? 0);
+
                 if (tbChuongTrinhDaoTao == null)
                 {
                     return NotFound();
@@ -182,6 +234,10 @@ namespace CTDT.Controllers
                 {
                     return NotFound();
                 }
+
+                check_null(tbChuongTrinhDaoTao);
+                check_int(tbChuongTrinhDaoTao);
+
                 if (ModelState.IsValid)
                 {
                     try
@@ -268,6 +324,39 @@ namespace CTDT.Controllers
         {
             var tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
             return tbChuongTrinhDaoTaos.Any(e => e.IdChuongTrinhDaoTao == id);
+        }
+
+        private void check_null(TbChuongTrinhDaoTao tbChuongTrinhDaoTao)
+        {
+            if (tbChuongTrinhDaoTao.MaChuongTrinhDaoTao == null) ModelState.AddModelError("MaChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
+            if (tbChuongTrinhDaoTao.IdNganhDaoTao == null) ModelState.AddModelError("IdNganhDaoTao", "Vui lòng nhập vào ô trống!");
+            if (tbChuongTrinhDaoTao.TenChuongTrinh == null) ModelState.AddModelError("TenChuongTrinh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.TenChuongTrinhBangTiengAnh == null) ModelState.AddModelError("TenChuongTrinhBangTiengAnh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.NamBatDauTuyenSinh == null) ModelState.AddModelError("NamBatDauTuyenSinh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.TenCoSoDaoTaoNuocNgoai == null) ModelState.AddModelError("TenCoSoDaoTaoNuocNgoai", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdLoaiChuongTrinhDaoTao == null) ModelState.AddModelError("IdLoaiChuongTrinhDaoTao", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdLoaiChuongTrinhLienKetDaoTao == null) ModelState.AddModelError("IdLoaiChuongTrinhLienKetDaoTao", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.DiaDiemDaoTao == null) ModelState.AddModelError("DiaDiemDaoTao", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdHocCheDaoTao == null) ModelState.AddModelError("IdHocCheDaoTao", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdQuocGiaCuaTruSoChinh == null) ModelState.AddModelError("IdQuocGiaCuaTruSoChinh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.NgayBanHanhChuanDauRa == null) ModelState.AddModelError("NgayBanHanhChuanDauRa", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdTrinhDoDaoTao == null) ModelState.AddModelError("IdTrinhDoDaoTao", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.ThoiGianDaoTaoChuan == null) ModelState.AddModelError("ThoiGianDaoTaoChuan", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.ChuanDauRa == null) ModelState.AddModelError("ChuanDauRa", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdDonViCapBang == null) ModelState.AddModelError("IdDonViCapBang", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.LoaiChungChiDuocChapThuan == null) ModelState.AddModelError("LoaiChungChiDuocChapThuan", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.DonViThucHienChuongTrinh == null) ModelState.AddModelError("DonViThucHienChuongTrinh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.IdTrangThaiCuaChuongTrinh == null) ModelState.AddModelError("IdTrangThaiCuaChuongTrinh", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.ChuanDauRaVeNgoaiNgu == null) ModelState.AddModelError("ChuanDauRaVeNgoaiNgu", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.ChuanDauRaVeTinHoc == null) ModelState.AddModelError("ChuanDauRaVeTinHoc", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.HocPhiTaiVietNam == null) ModelState.AddModelError("HocPhiTaiVietNam", "Không được bỏ trống!");
+            if (tbChuongTrinhDaoTao.HocPhiTaiNuocNgoai == null) ModelState.AddModelError("HocPhiTaiNuocNgoai", "Không được bỏ trống!");
+        }
+        private void check_int(TbChuongTrinhDaoTao tbChuongTrinhDaoTao)
+        {
+            if (tbChuongTrinhDaoTao.HocPhiTaiVietNam.HasValue && tbChuongTrinhDaoTao.HocPhiTaiVietNam % 1 != 0) ModelState.AddModelError("HocPhiTaiVietNam", "Vui lòng nhập số nguyên vào ô trống!");
+            if (tbChuongTrinhDaoTao.HocPhiTaiNuocNgoai.HasValue && tbChuongTrinhDaoTao.HocPhiTaiNuocNgoai % 1 != 0) ModelState.AddModelError("HocPhiTaiNuocNgoai", "Vui lòng nhập số nguyên vào ô trống!");
+            if (tbChuongTrinhDaoTao.ThoiGianDaoTaoChuan.HasValue && tbChuongTrinhDaoTao.ThoiGianDaoTaoChuan % 1 != 0) ModelState.AddModelError("ThoiGianDaoTaoChuan", "Vui lòng nhập số nguyên vào ô trống!");
         }
     }
 }

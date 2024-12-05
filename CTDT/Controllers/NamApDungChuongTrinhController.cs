@@ -26,7 +26,7 @@ namespace CTDT.Controllers
         {
             try
             {
-                List<TbNamApDungChuongTrinh> getall = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh");
+                List<TbNamApDungChuongTrinh> getall = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh");
                 // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
                 return View(getall);
 
@@ -51,7 +51,7 @@ namespace CTDT.Controllers
                 }
 
                 // Tìm các dữ liệu theo Id tương ứng đã truyền vào view Details
-                var tbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh");
+                var tbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh");
                 var tb = tbNamApDungChuongTrinhs.FirstOrDefault(m => m.IdNamApDungChuongTrinh == id);
                 // Nếu không tìm thấy Id tương ứng, chương trình sẽ báo lỗi NotFound
                 if (tb == null)
@@ -103,7 +103,7 @@ namespace CTDT.Controllers
                 if (await TbNamApDungChuongTrinhExists(tbNamApDungChuongTrinh.IdNamApDungChuongTrinh)) ModelState.AddModelError("IdNamApDungChuongTrinh", "ID này đã tồn tại!");
                 if (ModelState.IsValid)
                 {
-                    await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh", tbNamApDungChuongTrinh);
+                    await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", tbNamApDungChuongTrinh);
                     return RedirectToAction(nameof(Index));
                 }
               ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
@@ -130,7 +130,7 @@ namespace CTDT.Controllers
                     return NotFound();
                 }
 
-                var TbNamApDungChuongTrinh = await ApiServices_.GetId<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh", id ?? 0);
+                var TbNamApDungChuongTrinh = await ApiServices_.GetId<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", id ?? 0);
                 if (TbNamApDungChuongTrinh == null)
                 {
                     return NotFound();
@@ -167,7 +167,7 @@ namespace CTDT.Controllers
                 {
                     try
                     {
-                        await ApiServices_.Update<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh", id, tbNamApDungChuongTrinh);
+                        await ApiServices_.Update<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", id, tbNamApDungChuongTrinh);
                     }
                     catch (DbUpdateConcurrencyException)
                     {
@@ -204,7 +204,7 @@ namespace CTDT.Controllers
                 {
                     return NotFound();
                 }
-                var tbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh");
+                var tbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh");
                 var tbNamApDungChuongTrinh = tbNamApDungChuongTrinhs.FirstOrDefault(m => m.IdNamApDungChuongTrinh == id);
                 if (tbNamApDungChuongTrinh == null)
                 {
@@ -228,7 +228,7 @@ namespace CTDT.Controllers
         {
             try
             {
-                await ApiServices_.Delete<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh", id);
+                await ApiServices_.Delete<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", id);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -240,7 +240,7 @@ namespace CTDT.Controllers
 
         private async Task<bool> TbNamApDungChuongTrinhExists(int id)
         {
-            var TbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NampDungChuongTrinh");
+            var TbNamApDungChuongTrinhs = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh");
             return TbNamApDungChuongTrinhs.Any(e => e.IdNamApDungChuongTrinh == id);
         }
     }

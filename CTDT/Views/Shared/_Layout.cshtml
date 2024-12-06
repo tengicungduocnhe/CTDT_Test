@@ -7,29 +7,121 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CTDT.styles.css" asp-append-version="true" />
+    <style>
+        #sidebar {
+            background-color : lightgray;
+            width: 250px;
+            min-height: 100vh;
+            transition: width 0.3s;
+        }
+
+            #sidebar.collapsed {
+                width: 60px;
+            }
+
+            #sidebar .nav-link {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        .flex-grow-1 {
+            transition: margin-left 0.3s;
+        }
+
+        #sidebar.collapsed + .flex-grow-1 {
+            margin-left: 60px;
+        }
+
+        #sidebar .nav-link {
+            transition: background-color 0.3s, color 0.3s; /* Hiệu ứng mượt */
+        }
+
+        /* Thay đổi màu khi hover */
+        #sidebar .nav-item:hover .nav-link {
+            background-color: #e9ecef; /* Màu nền đậm hơn */
+            color: #212529; /* Màu chữ đậm hơn */
+            font-weight: bold; /* Chữ in đậm */
+        }
+
+        #main-content {
+            transition: margin-left 0.3s;
+        }
+
+        #sidebar {
+            width: 250px;
+            min-height: 100vh;
+            transition: width 0.3s;
+        }
+
+            #sidebar.collapsed {
+                width: 60px;
+            }
+
+                #sidebar.collapsed + #main-content {
+                    margin-left: 60px;
+                }
+
+        .nav-item.active .nav-link {
+            background-color: lightgreen; /* Màu xanh đậm */
+            color: #fff; /* Màu chữ trắng */
+            font-weight: bold; /* Chữ in đậm */
+            border-left: 4px solid #007bff; /* Đường viền bên trái */
+        }
+
+
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CHƯƠNG TRÌNH ĐÀO TẠO</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                       @*  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> *@
-                    </ul>
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="bg-white border-end">
+                <div class="sidebar-header p-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu">
+                        ☰ Menu
+                    </button>
                 </div>
+                <div class="collapse show" id="sidebarMenu">
+                    <ul class="navbar-nav flex-column p-3">
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><b>Home</b></a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "ChuongTrinhDaoTao" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ChuongTrinhDaoTao" asp-action="Index">Chương Trình Đào Tạo</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "GiaHanChuongTrinhDaoTao" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GiaHanChuongTrinhDaoTao" asp-action="Index">Gia Hạn Chương Trình Đào Tạo</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "NamApDungChuongTrinh" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="NamApDungChuongTrinh" asp-action="Index">Năm Áp Dụng Chương Trình</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "NgonNguGiangDay" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="NgonNguGiangDay" asp-action="Index">Ngôn Ngữ Giảng Dạy</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai" asp-action="Index">Quyết Định Cấp Phép Chương Trình Dùng Cho Chương Trình Nước Ngoài</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "ThongTinKiemDinhCuaChuongTrinh" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ThongTinKiemDinhCuaChuongTrinh" asp-action="Index">Thông Tin Kiểm Định Của Chương Trình</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="flex-grow-1 p-3" id="main-content">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
+        </div>
+
     </header>
+
+    
+   
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -45,5 +137,16 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        const sidebarToggle = document.querySelector('[data-bs-toggle="collapse"]');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
+    </script>
+
 </body>
 </html>

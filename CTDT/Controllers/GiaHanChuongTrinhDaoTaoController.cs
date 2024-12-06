@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,22 +13,43 @@ namespace CTDT.Controllers
     public class GiaHanChuongTrinhDaoTaoController : Controller
     {
         private readonly ApiServices ApiServices_;
-        // Lấy từ HemisContext 
+        // Lấy từ dbHemisContext 
         public GiaHanChuongTrinhDaoTaoController(ApiServices services)
         {
             ApiServices_ = services;
         }
 
-        // GET: ChuongTrinhDaoTao
-        // Lấy danh sách CTĐT từ database, trả về view Index.
-        public async Task<IActionResult> Index()
+        private async Task<List<TbGiaHanChuongTrinhDaoTao>> TbGiaHanChuongTrinhDaos()
+        {
+            List<TbGiaHanChuongTrinhDaoTao> tbGiaHanChuongTrinhDaoTaos = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
+            List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                     tbGiaHanChuongTrinhDaoTaos.ForEach(item => {
+                item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+             
+            });
+            return tbGiaHanChuongTrinhDaoTaos;
+        }
+
+        public async Task<IActionResult> Index(string Id, string SapXep)
         {
             try
             {
-                List<TbGiaHanChuongTrinhDaoTao> getall = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
-                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
-                return View(getall);
 
+                List<TbGiaHanChuongTrinhDaoTao> tbGiaHanChuongTrinhDaoTaos = await TbGiaHanChuongTrinhDaos();
+                var danhSach = tbGiaHanChuongTrinhDaoTaos.Where(item => string.IsNullOrEmpty(Id) || item.IdGiaHanChuongTrinhDaoTao.ToString() == Id) //  tìm kiếm theo Id GHCTDT
+                .ToList();
+
+                var sapXepDanhSach = danhSach; // sắp xếp
+                if (SapXep == "SapXep")
+                {
+                    sapXepDanhSach = danhSach.OrderBy(x => x.NgayBanHanhVanBanGiaHan).ToList();// sắp xếp ngày ban hành Vb GIA HẠN
+                }
+
+                ViewBag.KqTimKiem = danhSach;
+                ViewBag.KqSapXep = sapXepDanhSach;
+
+                return View(sapXepDanhSach);
+                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
                 // Bắt lỗi các trường hợp ngoại lệ
             }
             catch (Exception ex)
@@ -51,7 +71,8 @@ namespace CTDT.Controllers
                 }
 
                 // Tìm các dữ liệu theo Id tương ứng đã truyền vào view Details
-                var tbGiaHanChuongTrinhDaoTaos = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
+                List<TbGiaHanChuongTrinhDaoTao> tbGiaHanChuongTrinhDaoTaos = await TbGiaHanChuongTrinhDaos();
+
                 var tb = tbGiaHanChuongTrinhDaoTaos.FirstOrDefault(m => m.IdGiaHanChuongTrinhDaoTao == id);
                 // Nếu không tìm thấy Id tương ứng, chương trình sẽ báo lỗi NotFound
                 if (tb == null)
@@ -59,7 +80,7 @@ namespace CTDT.Controllers
                     return NotFound();
                 }
                 // Nếu đã tìm thấy Id tương ứng, chương trình sẽ dẫn đến view Details
-                // Hiển thị thông thi chi tiết CTĐT thành công
+                // Hiển thị thông thi chi tiết GHCTDT thành công
                 return View(tb);
             }
             catch (Exception ex)
@@ -70,7 +91,7 @@ namespace CTDT.Controllers
         }
 
         // GET: ChuongTrinhDaoTao/Create
-        // Hiển thị view Create để tạo một bản ghi CTĐT mới
+        // Hiển thị view Create để tạo một bản ghi GHCTDT mới
         // Truyền data từ các table khác hiển thị tại view Create (khóa ngoài)
         public async Task<IActionResult> Create()
         {
@@ -90,16 +111,17 @@ namespace CTDT.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        // Thêm một CTĐT mới vào Database nếu IdChuongTrinhDaoTao truyền vào không trùng với Id đã có trong Database
+        // Thêm một GHCTDT mới vào Database nếu IdGiaHanChuongTrinhDaoTao truyền vào không trùng với Id đã có trong Database
         // Trong trường hợp nhập trùng IdChuongTrinhDaoTao sẽ bắt lỗi
-        // Bắt lỗi ngoại lệ sao cho người nhập BẮT BUỘC phải nhập khác IdChuongTrinhDaoTao đã có
+        // Bắt lỗi ngoại lệ sao cho người nhập BẮT BUỘC phải nhập khác IdGiaHanChuongTrinhDaoTao đã có
         [HttpPost]
         [ValidateAntiForgeryToken] // Một phương thức bảo mật thông qua Token được tạo tự động cho các Form khác nhau
         public async Task<IActionResult> Create([Bind("IdGiaHanChuongTrinhDaoTao,IdChuongTrinhDaoTao,SoQuyetDinhGiaHan,NgayBanHanhVanBanGiaHan,GiaHanLanThu")] TbGiaHanChuongTrinhDaoTao tbGiaHanChuongTrinhDaoTao)
         {
             try
             {
-                // Nếu trùng IDChuongTrinhDaoTao sẽ báo lỗi
+                check_null(tbGiaHanChuongTrinhDaoTao);
+                // Nếu trùng IdGiaHanChuongTrinhDaoTao sẽ báo lỗi
                 if (await TbGiaHanChuongTrinhDaoTaoExists(tbGiaHanChuongTrinhDaoTao.IdGiaHanChuongTrinhDaoTao)) ModelState.AddModelError("IdGiaHanChuongTrinhDaoTao", "ID này đã tồn tại!");
                 if (ModelState.IsValid)
                 {
@@ -163,6 +185,7 @@ namespace CTDT.Controllers
                 {
                     return NotFound();
                 }
+                check_null(tbGiaHanChuongTrinhDaoTao);
                 if (ModelState.IsValid)
                 {
                     try
@@ -237,11 +260,21 @@ namespace CTDT.Controllers
             }
 
         }
-
+        // hàm ktra xem có tồn tại khong
         private async Task<bool> TbGiaHanChuongTrinhDaoTaoExists(int id)
         {
             var TbGiaHanChuongTrinhDaoTaos = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
             return TbGiaHanChuongTrinhDaoTaos.Any(e => e.IdGiaHanChuongTrinhDaoTao == id);
+        }
+        ///hàm check null
+        private void check_null(TbGiaHanChuongTrinhDaoTao tbGiaHanChuongTrinhDaoTao)
+        {
+            if (tbGiaHanChuongTrinhDaoTao.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
+            if (tbGiaHanChuongTrinhDaoTao.SoQuyetDinhGiaHan == null) ModelState.AddModelError("SoQuyetDinhGiaHan", "Vui lòng nhập vào ô trống!");
+            if (tbGiaHanChuongTrinhDaoTao.NgayBanHanhVanBanGiaHan == null) ModelState.AddModelError("NgayBanHanhVanBanGiaHan", "Không được bỏ trống!");
+            if (tbGiaHanChuongTrinhDaoTao.GiaHanLanThu == null) ModelState.AddModelError("GiaHanLanThu", "Không được bỏ trống!");
+
+
         }
     }
 }

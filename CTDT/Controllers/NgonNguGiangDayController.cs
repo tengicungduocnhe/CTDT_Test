@@ -39,21 +39,41 @@ namespace C500Hemis.Controllers.CTDT
         {
             if (tbNgonNguGiangDay == null)
             {
-                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinhDaoTao");
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu"), "IdNgonNgu", "NgoaiNgu");
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu"), "IdTrinhDoNgonNguDauVao", "TenKhungNangLucNgoaiNgu");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu"), "", "NgoaiNgu");
+                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu"), "IdKhungNangLucNgoaiNgu", "TenKhungNangLucNgoaiNgu");
             }
             else
             {
-                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinhDaoTao", tbNgonNguGiangDay.IdChuongTrinhDaoTao);
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu"), "IdNgonNgu", "NgoaiNgu", tbNgonNguGiangDay.IdNgonNgu);
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu"), "IdTrinhDoNgonNguDauVao", "TenKhungNangLucNgoaiNgu", tbNgonNguGiangDay.IdTrinhDoNgonNguDauVao);
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh", tbNgonNguGiangDay.IdChuongTrinhDaoTao);
+                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu"), "IdNgoaiNgu", "NgoaiNgu", tbNgonNguGiangDay.IdNgonNgu);
+                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu"), "IdKhungNangLucNgoaiNgu", "TenKhungNangLucNgoaiNgu", tbNgonNguGiangDay.IdTrinhDoNgonNguDauVao);
             }
         }
-        public async Task<IActionResult> Index()
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    List<TbNgonNguGiangDay> tbNgonNguGiangDays = await TbNgonNguGiangDays();
+        //    return View(tbNgonNguGiangDays);
+        //}
+        public async Task<IActionResult> Index(string Id)
         {
-            List<TbNgonNguGiangDay> tbNgonNguGiangDays = await TbNgonNguGiangDays();
-            return View(tbNgonNguGiangDays);
+            try
+            {
+
+                List<TbNgonNguGiangDay> tbNgonNguGiangDays = await TbNgonNguGiangDays();
+                var danhSach = tbNgonNguGiangDays.Where(item => string.IsNullOrEmpty(Id) || item.IdNgonNguGiangDay.ToString() == Id) //  tìm kiếm theo Id GHCTDT
+                .ToList();
+
+                return View(danhSach);
+                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
+                // Bắt lỗi các trường hợp ngoại lệ
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -92,6 +112,7 @@ namespace C500Hemis.Controllers.CTDT
                     return Content(error.ErrorMessage);
                 }
             }
+            check_null(tbNgonNguGiangDay);
             if (ModelState.IsValid)
             {
                 await ApiServices_.Create<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay", tbNgonNguGiangDay);
@@ -129,7 +150,7 @@ namespace C500Hemis.Controllers.CTDT
             {
                 return NotFound();
             }
-
+            check_null(tbNgonNguGiangDay);
             if (ModelState.IsValid)
             {
                 try
@@ -188,6 +209,13 @@ namespace C500Hemis.Controllers.CTDT
                 return false;
             }
             return true;
+        }
+        private void check_null(TbNgonNguGiangDay tbNgonNguGiangDay)
+        {
+            if (tbNgonNguGiangDay.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
+            if (tbNgonNguGiangDay.IdNgonNgu == null) ModelState.AddModelError("IdNgonNgu", "Vui lòng nhập vào ô trống!");
+            if (tbNgonNguGiangDay.IdTrinhDoNgonNguDauVao == null) ModelState.AddModelError("IdTrinhDoNgonNguDauVao", "Không được bỏ trống!");
+
         }
     }
 }

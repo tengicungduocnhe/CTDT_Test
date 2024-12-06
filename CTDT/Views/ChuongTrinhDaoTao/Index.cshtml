@@ -13,80 +13,88 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MaChuongTrinhDaoTao)
+                ID Chương trình đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenChuongTrinh)
+               Mã chương trình đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenChuongTrinhBangTiengAnh)
+                Tên chương trình đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NamBatDauTuyenSinh)
+               Tên chương trình bằng Tiếng Anh
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenCoSoDaoTaoNuocNgoai)
+                Năm bắt đầu tuyển sinh
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiaDiemDaoTao)
+               Tên cơ sở đào tạo nước ngoài
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayBanHanhChuanDauRa)
+                Địa điểm đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ThoiGianDaoTaoChuan)
+                Ngày ban hành chuẩn đầu ra
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChuanDauRa)
+               Thời gian đào tạo chuẩn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LoaiChungChiDuocChapThuan)
+               Chuẩn đầu ra
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DonViThucHienChuongTrinh)
+                Loại chứng chỉ được chấp thuận
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChuanDauRaVeNgoaiNgu)
+                Đơn vị thực hiện chương trình
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChuanDauRaVeTinHoc)
+                Chuẩn đầu ra về ngoại ngữ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HocPhiTaiVietNam)
+                Chuẩn đầu ra về tin học
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HocPhiTaiNuocNgoai)
+                Học phí tại Việt Nam
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdDonViCapBangNavigation)
+                Học phí tại nước ngoài
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdHocCheDaoTaoNavigation)
+                Đơn vị cấp bằng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation)
+                Học chế đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation)
+                Loại chương trình đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdNganhDaoTaoNavigation)
+                Loại chương trình liên kết đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdQuocGiaCuaTruSoChinhNavigation)
+                Ngành đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdTrangThaiCuaChuongTrinhNavigation)
+                Tên nước
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdTrinhDoDaoTaoNavigation)
+               Trạng thái chương trình đào tạo
             </th>
-            <th></th>
+            <th>
+               Trình độ đào tạo
+            </th>
+            <th>
+                Thao tác
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTao)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
             </td>
@@ -133,28 +141,28 @@
                 @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.IdDonViCapBang)
+                @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.DonViCapBang)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
+                @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.HocCheDaoTao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
+                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
+                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.IdNganhDaoTao)
+                @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.NganhDaoTao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
+                @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
+                @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
+                @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdChuongTrinhDaoTao">Edit</a> |

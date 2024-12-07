@@ -28,14 +28,17 @@ namespace C500Hemis.Controllers.CTDT
             List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
             List<DmKetQuaKiemDinh> dmKetQuaKiemDinhs = await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh");
             List<DmToChucKiemDinh> dmToChucKiemDinhs = await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh");
+
             TbThongTinKiemDinhCuaChuongTrinhs.ForEach(item =>
             {
                 item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
                 item.IdKetQuaKiemDinhNavigation = dmKetQuaKiemDinhs.FirstOrDefault(t => t.IdKetQuaKiemDinh == item.IdKetQuaKiemDinh);
                 item.IdToChucKiemDinhNavigation = dmToChucKiemDinhs.FirstOrDefault(t => t.IdToChucKiemDinh == item.IdToChucKiemDinh);
             });
+
             return TbThongTinKiemDinhCuaChuongTrinhs;
         }
+
         //private async Task Selectlist(TbThongTinKiemDinhCuaChuongTrinh? tbThongTinKiemDinhCuaChuongTrinh = null)
         //{
         //    if (tbThongTinKiemDinhCuaChuongTrinh == null)
@@ -61,30 +64,32 @@ namespace C500Hemis.Controllers.CTDT
         {
             try
             {
-
                 List<TbThongTinKiemDinhCuaChuongTrinh> tbThongTinKiemDinhCuaChuongTrinhs = await TbThongTinKiemDinhCuaChuongTrinhs();
-                var danhSach = tbThongTinKiemDinhCuaChuongTrinhs.Where(item => string.IsNullOrEmpty(Id) || item.IdThongTinKiemDinhCuaChuongTrinh.ToString() == Id) //  tìm kiếm theo Id GHCTDT
-                .ToList();
 
-                var sapXepDanhSach = danhSach; // sắp xếp
+                // Kiểm tra null cho điều kiện tìm kiếm
+                var danhSach = tbThongTinKiemDinhCuaChuongTrinhs
+                    .Where(item => string.IsNullOrEmpty(Id) || item.IdThongTinKiemDinhCuaChuongTrinh.ToString() == Id)
+                    .ToList();
+
+                // Sắp xếp danh sách nếu yêu cầu
+                var sapXepDanhSach = danhSach;
                 if (SapXep == "SapXep")
                 {
-                    sapXepDanhSach = danhSach.OrderBy(x => x.NgayCapChungNhanKiemDinh).ToList();// sắp xếp ngày CẤP CHỨNG NHẬN KIỂM ĐỊNHS
+                    sapXepDanhSach = danhSach.OrderBy(x => x.NgayCapChungNhanKiemDinh).ToList();
                 }
 
                 ViewBag.KqTimKiem = danhSach;
                 ViewBag.KqSapXep = sapXepDanhSach;
 
                 return View(sapXepDanhSach);
-                // Lấy data từ các table khác có liên quan (khóa ngoài) để hiển thị trên Index
-                // Bắt lỗi các trường hợp ngoại lệ
             }
             catch (Exception ex)
             {
+                // Bắt lỗi ngoại lệ
                 return BadRequest();
             }
-
         }
+
         // GET: ThongTinKiemDinhCuaChuongTrinh/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -103,12 +108,12 @@ namespace C500Hemis.Controllers.CTDT
             return View(tbThongTinKiemDinhCuaChuongTrinh);
         }
 
-        // GET: ThongTinKiemDinhCuaChuongTrinh/Create
+      //  GET: ThongTinKiemDinhCuaChuongTrinh/Create
         public async Task<IActionResult> Create()
         {
             try
             {
-                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh" );
                 ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
                 ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
                 return View();
@@ -119,34 +124,36 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
-        // POST: ThongTinKiemDinhCuaChuongTrinh/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdThongTinKiemDinhCuaChuongTrinh,IdChuongTrinhDaoTao,IdToChucKiemDinh,IdKetQuaKiemDinh,SoQuyetDinh,NgayCapChungNhanKiemDinh,ThoiHanKiemDinh")] TbThongTinKiemDinhCuaChuongTrinh tbThongTinKiemDinhCuaChuongTrinh)
         {
-            foreach (var state in ModelState)
+            try
             {
-                foreach (var error in state.Value.Errors)
+                check_null(tbThongTinKiemDinhCuaChuongTrinh);
+                // Nếu trùng IdGiaHanChuongTrinhDaoTao sẽ báo lỗi
+                if (await TbThongTinKiemDinhCuaChuongTrinhExists(tbThongTinKiemDinhCuaChuongTrinh.IdThongTinKiemDinhCuaChuongTrinh)) ModelState.AddModelError("IdThongTinKiemDinhCuaChuongTrinh", "ID này đã tồn tại!");
+                if (ModelState.IsValid)
                 {
-                    return Content(error.ErrorMessage);
+                    await ApiServices_.Create<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh", tbThongTinKiemDinhCuaChuongTrinh);
+                    return RedirectToAction(nameof(Index));
                 }
-            }
-            check_null(tbThongTinKiemDinhCuaChuongTrinh);
 
-            if (ModelState.IsValid)
-            {
-                await ApiServices_.Create<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh", tbThongTinKiemDinhCuaChuongTrinh);
-                return RedirectToAction(nameof(Index));
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
+                ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
+                return View(tbThongTinKiemDinhCuaChuongTrinh);
             }
-            ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
-            ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
-            ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
-            return View(tbThongTinKiemDinhCuaChuongTrinh);
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
-        // GET: ThongTinKiemDinhCuaChuongTrinh/Edit/5
+        
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -166,6 +173,8 @@ namespace C500Hemis.Controllers.CTDT
             ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
             ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
             ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
+
+            //   await LoadDropdownData();
             return View(tbThongTinKiemDinhCuaChuongTrinh);
         }
 
@@ -205,6 +214,8 @@ namespace C500Hemis.Controllers.CTDT
             ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
             ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
             ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
+
+            //await LoadDropdownData();
             return View(tbThongTinKiemDinhCuaChuongTrinh);
         }
 
@@ -247,12 +258,11 @@ namespace C500Hemis.Controllers.CTDT
 
         private void check_null(TbThongTinKiemDinhCuaChuongTrinh tbThongTinKiemDinhCuaChuongTrinh)
         {
-            if (tbThongTinKiemDinhCuaChuongTrinh.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
+           if (tbThongTinKiemDinhCuaChuongTrinh.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.IdToChucKiemDinh == null) ModelState.AddModelError("IdToChucKiemDinh", "Vui lòng nhập vào ô trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.IdKetQuaKiemDinh == null) ModelState.AddModelError("IdKetQuaKiemDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.SoQuyetDinh == null) ModelState.AddModelError("SoQuyetDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.NgayCapChungNhanKiemDinh == null) ModelState.AddModelError("NgayCapChungNhanKiemDinh", "Không được bỏ trống!");
-
             if (tbThongTinKiemDinhCuaChuongTrinh.ThoiHanKiemDinh == null) ModelState.AddModelError("ThoiHanKiemDinh", "Không được bỏ trống!");
         }
     }

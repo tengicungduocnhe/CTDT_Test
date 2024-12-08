@@ -1,175 +1,281 @@
-﻿@model IEnumerable<CTDT.Models.TbChuongTrinhDaoTao>
-
+@model IEnumerable<CTDT.Models.TbChuongTrinhDaoTao>
 @{
     ViewData["Title"] = "Index";
+    int dem = 0;
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                ID Chương trình đào tạo
-            </th>
-            <th>
-               Mã chương trình đào tạo
-            </th>
-            <th>
-                Tên chương trình đào tạo
-            </th>
-            <th>
-               Tên chương trình bằng Tiếng Anh
-            </th>
-            <th>
-                Năm bắt đầu tuyển sinh
-            </th>
-            <th>
-               Tên cơ sở đào tạo nước ngoài
-            </th>
-            <th>
-                Địa điểm đào tạo
-            </th>
-            <th>
-                Ngày ban hành chuẩn đầu ra
-            </th>
-            <th>
-               Thời gian đào tạo chuẩn
-            </th>
-            <th>
-               Chuẩn đầu ra
-            </th>
-            <th>
-                Loại chứng chỉ được chấp thuận
-            </th>
-            <th>
-                Đơn vị thực hiện chương trình
-            </th>
-            <th>
-                Chuẩn đầu ra về ngoại ngữ
-            </th>
-            <th>
-                Chuẩn đầu ra về tin học
-            </th>
-            <th>
-                Học phí tại Việt Nam
-            </th>
-            <th>
-                Học phí tại nước ngoài
-            </th>
-            <th>
-                Đơn vị cấp bằng
-            </th>
-            <th>
-                Học chế đào tạo
-            </th>
-            <th>
-                Loại chương trình đào tạo
-            </th>
-            <th>
-                Loại chương trình liên kết đào tạo
-            </th>
-            <th>
-                Ngành đào tạo
-            </th>
-            <th>
-                Tên nước
-            </th>
-            <th>
-               Trạng thái chương trình đào tạo
-            </th>
-            <th>
-               Trình độ đào tạo
-            </th>
-            <th>
-                Thao tác
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTao)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenChuongTrinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenChuongTrinhBangTiengAnh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamBatDauTuyenSinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenCoSoDaoTaoNuocNgoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaDiemDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayBanHanhChuanDauRa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThoiGianDaoTaoChuan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChuanDauRa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoaiChungChiDuocChapThuan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DonViThucHienChuongTrinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChuanDauRaVeNgoaiNgu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChuanDauRaVeTinHoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HocPhiTaiVietNam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.DonViCapBang)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.HocCheDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.NganhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdChuongTrinhDaoTao">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdChuongTrinhDaoTao">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdChuongTrinhDaoTao">Delete</a>
-            </td>
-        </tr>
+@section Heads{
+    <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.1.7/r-3.0.3/datatables.min.css" rel="stylesheet">
+    @* <link href="~/lib/datatable/datatables.min.css" rel="stylesheet"> *@
 }
-    </tbody>
-</table>
+
+            
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>DataTable</h3>
+                <p class="text-subtitle text-muted">A sortable, searchable, paginated table without dependencies thanks to simple-datatables.</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chương trình đào tạo</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    Simple Datatable
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped nowrap" id="views">
+                    <thead>
+                        <tr>
+                            <th class="_nonorder"></th>
+                            <th>STT</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MaChuongTrinhDaoTao)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TenChuongTrinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TenChuongTrinhBangTiengAnh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NamBatDauTuyenSinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TenCoSoDaoTaoNuocNgoai)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DiaDiemDaoTao)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NgayBanHanhChuanDauRa)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ThoiGianDaoTaoChuan)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ChuanDauRa)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LoaiChungChiDuocChapThuan)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DonViThucHienChuongTrinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ChuanDauRaVeNgoaiNgu)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ChuanDauRaVeTinHoc)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.HocPhiTaiVietNam)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.HocPhiTaiNuocNgoai)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdDonViCapBangNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdHocCheDaoTaoNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdNganhDaoTaoNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdQuocGiaCuaTruSoChinhNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdTrangThaiCuaChuongTrinhNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdTrinhDoDaoTaoNavigation)
+                            </th>
+                            <th class="_nonorder">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td></td>
+                            <td>@(++dem)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenChuongTrinh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenChuongTrinhBangTiengAnh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NamBatDauTuyenSinh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenCoSoDaoTaoNuocNgoai)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiaDiemDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NgayBanHanhChuanDauRa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ThoiGianDaoTaoChuan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ChuanDauRa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoaiChungChiDuocChapThuan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DonViThucHienChuongTrinh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ChuanDauRaVeNgoaiNgu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ChuanDauRaVeTinHoc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HocPhiTaiVietNam)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.IdDonViCapBang)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.IdNganhDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
+                                <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="~/lib/datatable/datatables.min.js"></script>
+    <script src="https://kit.fontawesome.com/5c202d0407.js" crossorigin="anonymous"></script>
+    <script>
+        //Datatable trong datatable.net. Tìm hiểu thêm thông tin: https://datatables.net/manual/
+        var table = new DataTable("#views", {
+            columnDefs: [
+                {
+                    className: 'dtr-control',
+                    targets: 0
+                },
+                {
+                    orderable: false,
+                    targets: '._nonorder'
+                },
+                {
+                    responsivePriority: 0,
+                    targets: -1
+                }
+            ],
+            order: [1, 'asc'],
+            responsive: {
+                details: {
+                    display: DataTable.Responsive.display.modal({
+                        header: function (row) {
+                            var data = row.data();
+                            return 'Thông tin của ' + data[2];
+                        }
+                    }),
+                    renderer: function (api, rowIdx, columns) {
+                        var data = $.map(columns, function (col, i) {
+                            return col.hidden
+                                ? `<tr><td class="p-3">${col.title}</td><td class="p-3">${col.data}</td></tr>`
+                                : '';
+                        }).join('');
+                        return data ? $('<table/>').append(data) : false;
+                    }
+                }
+            },
+            language: {
+                //Điều chỉnh phần hiển thị label của thanh tìm kiếm - Xem thêm thông tin: https://datatables.net/reference/option/language.search
+                search: "Tìm kiếm",
+                //Điều chỉnh phần hiển thị thông tin của table - Xem thêm thông tin: https://datatables.net/reference/option/language.info
+                info: "Tổng cộng _TOTAL_ bản ghi",
+                zeroRecords: "Không tìm thấy bản ghi nào"
+
+            },
+            createdRow: (row, data, index) => {
+            },
+            layout: {//Layout: https://datatables.net/examples/layout/index.html
+                topStart: {
+                    buttons: [//extension buttons: https://datatables.net/extensions/buttons/config
+                        {
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Thêm mới',
+                            action: function (e, dt, node, config) {//Hành động của button
+                                window.location.href = '@Url.Action("Create")';
+                            }
+                        },
+                        {
+                            extend: "excel",
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Xuất excel',
+                            exportOptions: {
+                                columns: function(idx, data, node) {
+                                    if (node.classList.contains("_nonorder")) return false;
+                                    return true;
+                                },
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+    </script>
+}

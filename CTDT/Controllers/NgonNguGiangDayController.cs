@@ -9,10 +9,12 @@ using CTDT.Models;
 using CTDT.API;
 //using C500Hemis.Models.DM;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace C500Hemis.Controllers.CTDT
 {
+    [Authorize]
     public class NgonNguGiangDayController : Controller
     {
         private readonly ApiServices ApiServices_;

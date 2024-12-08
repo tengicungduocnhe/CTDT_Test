@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CTDT.Models;
 using CTDT.API;
+using Microsoft.AspNetCore.Authorization;
 //using CTDT.Models.DM;
 namespace CTDT.Controllers
 {
+    [Authorize]
     public class GiaHanChuongTrinhDaoTaoController : Controller
     {
         private readonly ApiServices ApiServices_;

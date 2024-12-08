@@ -1,53 +1,90 @@
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-//builder.Services.AddControllersWithViews();
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (!app.Environment.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//}
-//app.UseStaticFiles();
-
-//app.UseRouting();
-
-//app.UseAuthorization();
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-//app.Run();
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<C500Hemis.Models.HemisContext>(options =>
-//    options.UseSqlServer("Server=tcp:c500.database.windows.net,1433;Database=dbHemisC500;User Id=c500;Password=@Abc1234"));
-builder.Services.AddDbContext<CTDT.Models.DbHemisC500Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("C500")));
+// 1. Cấu hình DbContext cho SQL Server
+builder.Services.AddDbContext<CTDT.Models.DbHemisC500Context>();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// 2. Cấu hình Localization để hỗ trợ tiếng Việt
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { new CultureInfo("vi-VN") };
+    options.DefaultRequestCulture = new RequestCulture("vi-VN");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
+// 3. Thêm dịch vụ Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Thời gian tồn tại của session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// 4. Thêm dịch vụ Xác thực Cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Đường dẫn tới trang đăng nhập
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn tới trang khi truy cập bị từ chối
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Thời gian sống của cookie
+        options.SlidingExpiration = true; // Cập nhật thời gian sống của cookie khi có hoạt động
+    });
+
+// 5. Thêm dịch vụ Phân quyền
+builder.Services.AddAuthorization();
+
+// 6. Thêm các dịch vụ vào container với chính sách phân quyền mặc định
+builder.Services.AddControllersWithViews(options =>
+{
+    // Tạo chính sách yêu cầu người dùng đã xác thực
+    var policy = new AuthorizationPolicyBuilder()
+                     .RequireAuthenticatedUser()
+                     .Build();
+    // Áp dụng chính sách này cho tất cả các Controller và Action
+    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((a, b) => $"{a} không hợp lệ cho {b}");
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<CTDT.API.ApiServices>();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 7. Cấu hình Pipeline HTTP
+
+// a. Xử lý lỗi cho môi trường Production
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // Bạn có thể thêm các middleware khác như HSTS ở đây
 }
+
+// b. Sử dụng các tệp tĩnh (Static Files)
 app.UseStaticFiles();
 
+// c. Kích hoạt Localization
+app.UseRequestLocalization();
+
+// d. Sử dụng Session trước khi Routing
+app.UseSession();
+
+// e. Routing
 app.UseRouting();
 
+// f. Thêm Middleware Xác thực và Phân quyền vào Pipeline
+app.UseAuthentication();
 app.UseAuthorization();
 
+// g. Thiết lập Route Mặc định
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

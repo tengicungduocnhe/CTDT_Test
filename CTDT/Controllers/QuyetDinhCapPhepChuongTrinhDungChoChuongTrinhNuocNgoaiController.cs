@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CTDT.Models;
 using CTDT.API;
+using Microsoft.AspNetCore.Authorization;
 //using CTDT.Models.DM;
 namespace CTDT.Controllers
 {
+    [Authorize]
     public class QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoaiController : Controller
     {
         private readonly ApiServices ApiServices_;

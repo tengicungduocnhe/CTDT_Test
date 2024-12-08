@@ -479,6 +479,8 @@ public partial class DbHemisC500Context : DbContext
 
     public virtual DbSet<TbTrinhDoTiengDanToc> TbTrinhDoTiengDanTocs { get; set; }
 
+    public virtual DbSet<TbUser> TbUsers { get; set; }
+
     public virtual DbSet<TbVanBanTuChu> TbVanBanTuChus { get; set; }
 
     public virtual DbSet<VBaiBaoKhdaCongBo> VBaiBaoKhdaCongBos { get; set; }
@@ -625,17 +627,15 @@ public partial class DbHemisC500Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=14.0.22.12;Database=dbHemisC500;User ID=c500;Password=@Abc1234;Encrypt=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=14.0.22.12;Database=dbHemisC500;User Id=sa;Password=@Abc123456;Encrypt=false;Integrated Security=False;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("db_owner");
-
         modelBuilder.Entity<DmBacLuong>(entity =>
         {
             entity.HasKey(e => e.IdBacLuong);
 
-            entity.ToTable("dmBacLuong", "dbo");
+            entity.ToTable("dmBacLuong");
 
             entity.Property(e => e.IdBacLuong).ValueGeneratedNever();
             entity.Property(e => e.BacLuong).HasMaxLength(200);
@@ -2080,7 +2080,7 @@ public partial class DbHemisC500Context : DbContext
         {
             entity.HasKey(e => e.IdNganhGiangDay);
 
-            entity.ToTable("NganhDungTenGiangDay", "dbo");
+            entity.ToTable("NganhDungTenGiangDay");
 
             entity.Property(e => e.IdNganhGiangDay).ValueGeneratedNever();
         });
@@ -3528,7 +3528,7 @@ public partial class DbHemisC500Context : DbContext
         {
             entity.HasKey(e => e.IdNguoi);
 
-            entity.ToTable("tbNguoi", "dbo");
+            entity.ToTable("tbNguoi");
 
             entity.Property(e => e.IdNguoi).ValueGeneratedNever();
             entity.Property(e => e.Ho).HasMaxLength(50);
@@ -4371,6 +4371,13 @@ public partial class DbHemisC500Context : DbContext
                 .HasConstraintName("FK_tbTrinhDoTiengDanToc_dmTiengDanToc");
         });
 
+        modelBuilder.Entity<TbUser>(entity =>
+        {
+            entity.HasKey(e => e.IdNguoi);
+
+            entity.ToTable("TbUser", "PQuyen");
+        });
+
         modelBuilder.Entity<TbVanBanTuChu>(entity =>
         {
             entity.HasKey(e => e.IdVanBanTuChu);
@@ -5043,7 +5050,7 @@ public partial class DbHemisC500Context : DbContext
         {
             entity
                 .HasNoKey()
-                .ToView("vNguoi", "dbo");
+                .ToView("vNguoi");
 
             entity.Property(e => e.ChucDanhKhoaHoc).HasMaxLength(200);
             entity.Property(e => e.DanToc).HasMaxLength(50);

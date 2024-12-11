@@ -10,7 +10,7 @@ public partial class TbThongTinKiemDinhCuaChuongTrinh
     [Display(Name = "ID")]
     public int IdThongTinKiemDinhCuaChuongTrinh { get; set; }
 
-    [Display(Name = "CHƯƠNG TRÌNH ĐÀO TẠO")]
+ //   [Display(Name = "CHƯƠNG TRÌNH ĐÀO TẠO")]
     public int IdChuongTrinhDaoTao { get; set; }
 
     [Display(Name = "TỔ CHỨC TÌM KIẾM")]
@@ -33,7 +33,7 @@ public partial class TbThongTinKiemDinhCuaChuongTrinh
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateOnly? ThoiHanKiemDinh { get; set; }
 
-    public virtual TbChuongTrinhDaoTao? IdChuongTrinhDaoTaoNavigation { get; set; } ;
+    public virtual TbChuongTrinhDaoTao? IdChuongTrinhDaoTaoNavigation { get; set; }
 
     public virtual DmKetQuaKiemDinh? IdKetQuaKiemDinhNavigation { get; set; }
 

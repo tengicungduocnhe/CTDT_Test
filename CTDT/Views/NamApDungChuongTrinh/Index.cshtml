@@ -1,13 +1,16 @@
-@model IEnumerable<CTDT.Models.TbNamApDungChuongTrinh>
+﻿@model IEnumerable<CTDT.Models.TbNamApDungChuongTrinh>
 
 @{
     ViewData["Title"] = "Index";
 }
+@Layout{
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+}
 
-<h1>Index</h1>
+<h1>Mục Lục</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm Mới</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +52,21 @@
                 @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdNamApDungChuongTrinh">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdNamApDungChuongTrinh">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdNamApDungChuongTrinh">Delete</a>
+                <td>
+                    <button class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href = '@Url.Action("Edit", new { id = item.IdNamApDungChuongTrinh })'">
+                        <i class="fa-sharp fa-solid fa-user-pen"></i> Sửa
+                    </button>
+                    <button class="btn btn-outline-info btn-sm"
+                            onclick="window.location.href = '@Url.Action("Details", new { id = item.IdNamApDungChuongTrinh })'">
+                        <i class="fa-sharp fa-solid fa-circle-info"></i> Chi Tiết
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm"
+                            onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdNamApDungChuongTrinh })'">
+                        <i class="fa-sharp fa-solid fa-trash"></i> Xóa
+                    </button>
+                </td>
+
             </td>
         </tr>
 }

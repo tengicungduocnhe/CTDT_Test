@@ -1,13 +1,12 @@
-@model CTDT.Models.TbThongTinKiemDinhCuaChuongTrinh
+﻿@model CTDT.Models.TbThongTinKiemDinhCuaChuongTrinh
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Chi Tiết</h1>
 
 <div>
-    <h4>TbThongTinKiemDinhCuaChuongTrinh</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -49,6 +48,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdThongTinKiemDinhCuaChuongTrinh">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.IdThongTinKiemDinhCuaChuongTrinh">Sửa</a> |
+    <a asp-action="Index">Quay Lại Danh Sách</a>
 </div>

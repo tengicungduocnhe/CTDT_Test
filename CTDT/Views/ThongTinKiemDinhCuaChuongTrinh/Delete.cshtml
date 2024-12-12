@@ -4,53 +4,148 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Xóa</h1>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-dy+Dvhgi7KkKbP4qxFqDncdchCRO1GfBPOIQFxDb/WIOVQ5SWEphI8MNsxF9auhgGChlpS+nfsP24i7IbxNwOQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<h3>Bạn có chắc chắn muốn xóa không?</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoQuyetDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoQuyetDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayCapChungNhanKiemDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayCapChungNhanKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThoiHanKiemDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThoiHanKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            ID Chương trình đào tạo
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-        </dd>
-        <dt class = "col-sm-2">
-          ID Kết quả kiểm định
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            ID Tổ chức kiểm định
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdThongTinKiemDinhCuaChuongTrinh" />
-        <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a asp-action="Index">Quay Lại Danh Sách</a>
-    </form>
+<style>
+    body {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        padding-top: 70px;
+        color: #333;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+    .delete-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        width: auto;
+        max-width: 100%;
+        margin: auto;
+        overflow-x: auto;
+    }
+
+    h1 {
+        font-size: 45px;
+        font-family: "Audiowide", sans-serif;
+        text-shadow: 3px 3px 3px #ababab;
+        text-align: center;
+        margin-bottom: 20px;
+        color: red;
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: white;
+    }
+
+    thead th {
+        background-color: #f2f2f2;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .btn-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        margin: 0 10px;
+    }
+
+    .alert-warning {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        padding: 10px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    dt {
+        font-weight: bold;
+    }
+
+    dd {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="delete-container">
+    <h1>Xóa</h1>
+    <h3>Bạn có chắc chắn muốn xóa không?</h3>
+    <div>
+        <hr />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.SoQuyetDinh)</th>
+                    <th>@Html.DisplayNameFor(model => model.NgayCapChungNhanKiemDinh)</th>
+                    <th>@Html.DisplayNameFor(model => model.ThoiHanKiemDinh)</th>
+                    <th>ID Chương trình đào tạo</th>
+                    <th>ID Kết quả kiểm định</th>
+                    <th>ID Tổ chức kiểm định</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(model => model.SoQuyetDinh)</td>
+                    <td>@Html.DisplayFor(model => model.NgayCapChungNhanKiemDinh)</td>
+                    <td>@Html.DisplayFor(model => model.ThoiHanKiemDinh)</td>
+                    <td>@Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)</td>
+                    <td>@Html.DisplayFor(model => model.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)</td>
+                    <td>@Html.DisplayFor(model => model.IdToChucKiemDinhNavigation.IdToChucKiemDinh)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-container">
+            <form asp-action="Delete" method="post" style="display: inline;">
+                <input type="hidden" asp-for="IdThongTinKiemDinhCuaChuongTrinh" />
+                <input type="submit" value="Xóa" class="btn btn-danger" />
+            </form>
+            <a asp-action="Index" class="btn btn-secondary">Quay Lại Danh Sách</a>
+        </div>
+    </div>
+    <div class="alert-warning">
+        <strong>Cảnh báo!</strong> Nếu bạn xóa, bạn không thể khôi phục lại được dữ liệu này.
+    </div>
 </div>

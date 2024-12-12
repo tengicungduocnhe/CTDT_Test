@@ -4,50 +4,114 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Chi Tiết</h1>
+<style>
+    body {
+        position: relative;
+        background-image: url('https://lh6.googleusercontent.com/wkeQrgK5pTamYY8M618pFEEAcuQJjfbpmIE-Mhp46LBwqYjNOqClsFFWYY-FxA46hjHkmzNIK7v8Dnhw0KSiTUcwoOKKDywa1eqwFX...a4ACL');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        padding-top: 70px;
+        color: #333;
+        height: 100vh;
+        overflow: hidden;
+    }
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoQuyetDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoQuyetDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayCapChungNhanKiemDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayCapChungNhanKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThoiHanKiemDinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThoiHanKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-           ID Chương trình đào tạo
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-        </dd>
-        <dt class = "col-sm-2">
-            ID Kết quả kiểm định
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
-        </dd>
-        <dt class = "col-sm-2">
-            ID Tổ chức kiểm định
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdThongTinKiemDinhCuaChuongTrinh">Sửa</a> |
-    <a asp-action="Index">Quay Lại Danh Sách</a>
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        z-index: -1;
+    }
+
+    .table-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .table-custom {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .table-custom th {
+        background-color: lightslategray;
+        color: white;
+    }
+
+    .table-custom tr:hover td {
+        background-color: #e9ecef;
+    }
+
+    h1 {
+        font-size: 45px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        margin: 0 10px;
+    }
+</style>
+
+<div class="table-container">
+    <h1 class="font-effect-shadow-multiple">CHI TIẾT</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-custom table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td class="fw-bold">Số Quyết Định</td>
+                        <td>@Html.DisplayFor(model => model.SoQuyetDinh)</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Ngày Cấp Chứng Nhận Kiểm Định</td>
+                        <td>@Html.DisplayFor(model => model.NgayCapChungNhanKiemDinh)</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Thời Hạn Kiểm Định</td>
+                        <td>@Html.DisplayFor(model => model.ThoiHanKiemDinh)</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">ID Chương trình đào tạo</td>
+                        <td>@Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">ID Kết quả kiểm định</td>
+                        <td>@Html.DisplayFor(model => model.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">ID Tổ chức kiểm định</td>
+                        <td>@Html.DisplayFor(model => model.IdToChucKiemDinhNavigation.IdToChucKiemDinh)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="btn-container">
+        <a asp-action="Edit" asp-route-id="@Model?.IdThongTinKiemDinhCuaChuongTrinh" class="btn btn-primary">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
 </div>

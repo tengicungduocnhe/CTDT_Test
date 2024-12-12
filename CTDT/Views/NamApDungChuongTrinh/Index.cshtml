@@ -3,12 +3,11 @@
 @{
     ViewData["Title"] = "Index";
 }
-@Layout{
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-}
 
-<h1>Mục Lục</h1>
 
+<h1 style="text-align:center">NĂM ÁP DỤNG CHƯƠNG TRÌNH </h1>
 <p>
     <a asp-action="Create">Thêm Mới</a>
 </p>
@@ -16,19 +15,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SoTinChiToiThieuDeTotNghiep)
+                Số tín chỉ tối thiểu để tốt nghiệp
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TongHocPhiToanKhoa)
+                Tổng học phí toàn khóa
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NamApDung)
+                Năm áp dụng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChiTieuTuyenSinhHangNam)
+                Chỉ tiêu tuyển sinh hàng năm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                ID Chương trình đào tạo
             </th>
             <th></th>
         </tr>

@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "Index";
 }
-@Layout{
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-}
 
-<h1>Mục Lục</h1>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+<h1 style="text-align:center">CHƯƠNG TRÌNH NƯỚC NGOÀI</h1>
+
 
 <p>
     <a asp-action="Create">Thêm Mới</a>
@@ -16,19 +17,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SoQuyetDinh)
+                Số quyết định
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayBanHanhQuyetDinh)
+                Ngày ban hành quyết định
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                ID Chương trình đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdHinhThucDaoTaoNavigation)
+                ID Hình thức đào tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdLoaiQuyetDinhNavigation)
+                ID Loại quyết định
             </th>
             <th></th>
         </tr>

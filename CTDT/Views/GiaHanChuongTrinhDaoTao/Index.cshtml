@@ -4,11 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-@Layout{
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-}
 
-<h1>Mục Lục</h1>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<h1 style="text-align:center">GIA HẠN CHƯƠNG TRÌNH ĐÀO TẠO</h1>
 
 <p>
     <a asp-action="Create">Thêm Mới</a>
@@ -17,36 +16,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SoQuyetDinhGiaHan)
+                Số quyết định gia hạn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayBanHanhVanBanGiaHan)
+                Ngày ban hành văn bản gia hạn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GiaHanLanThu)
+                Gia hạn lần thứ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                ID Chương trình đào tạo
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoQuyetDinhGiaHan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayBanHanhVanBanGiaHan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaHanLanThu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoQuyetDinhGiaHan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayBanHanhVanBanGiaHan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GiaHanLanThu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
+                </td>
+                <td>
                 <td>
                     <button class="btn btn-outline-primary btn-sm"
                             onclick="window.location.href = '@Url.Action("Edit", new { id = item.IdGiaHanChuongTrinhDaoTao })'">
@@ -62,8 +62,8 @@
                     </button>
                 </td>
 
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

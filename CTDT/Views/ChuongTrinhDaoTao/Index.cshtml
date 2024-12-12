@@ -5,8 +5,7 @@
 }
 
 @section Heads{
-    <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.1.7/r-3.0.3/datatables.min.css" rel="stylesheet">
-    @* <link href="~/lib/datatable/datatables.min.css" rel="stylesheet"> *@
+    <link href="~/lib/datatable/datatables.css" rel="stylesheet">
 }
 
             
@@ -38,7 +37,6 @@
                 <table class="table table-striped nowrap" id="views">
                     <thead>
                         <tr>
-                            <th class="_nonorder"></th>
                             <th>STT</th>
                             <th>
                                 @Html.DisplayNameFor(model => model.MaChuongTrinhDaoTao)
@@ -109,13 +107,15 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.IdTrinhDoDaoTaoNavigation)
                             </th>
-                            <th class="_nonorder">Action</th>
+                            <th class="_nonorder" style=" position: relative;"> 
+                                Action
+                                <span style="visibility: hidden;">dwadwadawdwa</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach (var item in Model) {
                         <tr>
-                            <td></td>
                             <td>@(++dem)</td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
@@ -204,44 +204,25 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="~/lib/datatable/datatables.min.js"></script>
+    <script src="~/lib/datatable/datatables.js"></script>
     <script src="https://kit.fontawesome.com/5c202d0407.js" crossorigin="anonymous"></script>
     <script>
         //Datatable trong datatable.net. Tìm hiểu thêm thông tin: https://datatables.net/manual/
         var table = new DataTable("#views", {
             columnDefs: [
                 {
-                    className: 'dtr-control',
-                    targets: 0
-                },
-                {
                     orderable: false,
                     targets: '._nonorder'
-                },
-                {
-                    responsivePriority: 0,
-                    targets: -1
                 }
             ],
-            order: [1, 'asc'],
-            responsive: {
-                details: {
-                    display: DataTable.Responsive.display.modal({
-                        header: function (row) {
-                            var data = row.data();
-                            return 'Thông tin của ' + data[2];
-                        }
-                    }),
-                    renderer: function (api, rowIdx, columns) {
-                        var data = $.map(columns, function (col, i) {
-                            return col.hidden
-                                ? `<tr><td class="p-3">${col.title}</td><td class="p-3">${col.data}</td></tr>`
-                                : '';
-                        }).join('');
-                        return data ? $('<table/>').append(data) : false;
-                    }
-                }
+            order: [0, 'asc'],
+            fixedColumns: {
+                end: 1
             },
+            paging: false,
+            scrollCollapse: true,
+            scrollX: true,
+            scrollY: 400,
             language: {
                 //Điều chỉnh phần hiển thị label của thanh tìm kiếm - Xem thêm thông tin: https://datatables.net/reference/option/language.search
                 search: "Tìm kiếm",

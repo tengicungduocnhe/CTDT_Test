@@ -117,9 +117,9 @@ namespace CTDT.Controllers
 
                 ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
 
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
+                ViewData["IdHinhThucDaoTao"] = new SelectList(await ApiServices_.GetAll<DmHinhThucDaoTao>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
                 //CHÚ Ý CÁI NÀY
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
+                ViewData["IdLoaiQuyetDinh"] = new SelectList(await ApiServices_.GetAll<DmLoaiQuyetDinh>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
                 return View();
             }
             catch (Exception ex)
@@ -154,9 +154,9 @@ namespace CTDT.Controllers
 
                 ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
 
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
+                ViewData["IdHinhThucDaoTao"] = new SelectList(await ApiServices_.GetAll<DmHinhThucDaoTao>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
                 //CHÚ Ý CÁI NÀY
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
+                ViewData["IdLoaiQuyetDinh"] = new SelectList(await ApiServices_.GetAll<DmLoaiQuyetDinh>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
                 return View(tbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai);
             }
             catch (Exception ex)
@@ -186,9 +186,9 @@ namespace CTDT.Controllers
                 }
                 ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
 
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
+                ViewData["IdHinhThucDaoTao"] = new SelectList(await ApiServices_.GetAll<DmHinhThucDaoTao>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
                 //CHÚ Ý CÁI NÀY
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
+                ViewData["IdLoaiQuyetDinh"] = new SelectList(await ApiServices_.GetAll<DmLoaiQuyetDinh>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
                 return View(tb);
             }
             catch (Exception ex)
@@ -240,9 +240,9 @@ namespace CTDT.Controllers
 
                 ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
 
-                ViewData["IdTrinhDoNgonNguDauVao"] = new SelectList(await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
+                ViewData["IdHinhThucDaoTao"] = new SelectList(await ApiServices_.GetAll<DmHinhThucDaoTao>("/api/dm/HinhThucDaoTao"), "IdHinhThucDaoTao", "HinhThucDaoTao");
                 //CHÚ Ý CÁI NÀY
-                ViewData["IdNgonNgu"] = new SelectList(await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
+                ViewData["IdLoaiQuyetDinh"] = new SelectList(await ApiServices_.GetAll<DmLoaiQuyetDinh>("/api/dm/LoaiQuyetDinh"), "IdLoaiQuyetDinh", "LoaiQuyetDinh");
                 return View(tbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai);
             }
             catch (Exception ex)

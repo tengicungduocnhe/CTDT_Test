@@ -30,8 +30,113 @@
             <div class="card-header">
                 <h5 class="card-title">
                     Simple Datatable
+                    
                 </h5>
             </div>
+            <select id="chartType" class="form-select">
+                <option value="Loại chương trình đào tạo đại học đại trà">Loại chương trình đào tạo đại học đại trà</option>
+                <option value="2">Loại chương trình liên kết đào tạo</option>
+                <option value="3">Học chế đào tạo</option>
+                <option value="4">Quốc gia của trụ sở chính</option>
+                <option value="5">Trình độ đào tạo</option>
+                <option value="6">Cơ sở cấp bằng</option>
+                <option value="7">Trạng thái của chương trình đào tạo</option>
+                <option value="Thời gian đào tạo (giờ)">Thời gian đào tạo</option>
+                <option value="9">Chuẩn đầu ra ngoại ngữ</option>
+                <option value="10">Chuẩn đầu ra về tin học</option>
+                <option value="Học phí tại Việt Nam (VND)">Học phí tại Việt Nam</option>
+                <option value="Học phí tại nước ngoài ($)">Học phí tại nước ngoài</option>
+            </select>
+
+
+            <!-- Nút để hiển thị biểu đồ -->
+            <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
+
+            <!-- Khu vực để vẽ biểu đồ -->
+            <canvas id="chartContainer" width="400" height="200"></canvas>
+
+            <!-- Thêm thư viện Chart.js từ CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Khai báo biến toàn cục để lưu trữ biểu đồ
+                let myChart;
+
+                // Lắng nghe sự kiện click trên nút "Hiển thị biểu đồ"
+                document.getElementById('showChart').addEventListener('click', () => {
+                    const type = document.getElementById('chartType').value;
+                    
+                    fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Network response was not ok: ${response.statusText}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received data:', data);
+
+                            let labels = [];
+                            let values = [];
+
+                            if (data && data.length > 0) {
+                                labels = data.map(d => d.tenChuongTrinh /* || 'Không có tên' */);
+                                values = data.map(d => d.value /* || 0 */);
+                             }
+
+                            const ctx = document.getElementById('chartContainer').getContext('2d');
+
+                            if (myChart) {
+                                myChart.destroy();
+                            }
+
+                            // Mảng màu sắc cho các cột
+                            const colors = [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                            ];
+                            
+                            // Xử lý dữ liệu cho biểu đồ
+                            const datasets = [{
+                                
+                                label: type,
+                                data: values,
+                                backgroundColor: colors[0],
+                                borderColor: colors[0].replace('0.2', '1'),
+                                borderWidth: 1
+                            }];
+                            
+                            myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: datasets
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching chart data:', error);
+                        });
+                });
+
+            </script>
+            
+            @* import excel *@
+            <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" />
+                <hr />
+                <button type="submit">Import Excel</button>
+            </form>
+
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover" id="views">
                     <thead>
@@ -198,6 +303,7 @@
 
     </section>
 </div>
+
 
 
 @section Scripts {

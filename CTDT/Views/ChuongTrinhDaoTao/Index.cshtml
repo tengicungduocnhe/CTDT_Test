@@ -8,7 +8,6 @@
     <link href="~/lib/datatable/datatables.css" rel="stylesheet">
 }
 
-            
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -34,7 +33,7 @@
                 </h5>
             </div>
             <div class="card-body">
-                <table class="table table-striped nowrap" id="views">
+                <table class="table table-striped nowrap table-hover" id="views">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -219,10 +218,8 @@
             fixedColumns: {
                 end: 1
             },
-            paging: false,
-            scrollCollapse: true,
             scrollX: true,
-            scrollY: 400,
+            pageLength: 10,
             language: {
                 //Điều chỉnh phần hiển thị label của thanh tìm kiếm - Xem thêm thông tin: https://datatables.net/reference/option/language.search
                 search: "Tìm kiếm",

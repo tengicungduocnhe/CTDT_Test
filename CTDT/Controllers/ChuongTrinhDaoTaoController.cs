@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CTDT.Models;
@@ -361,5 +357,48 @@ namespace CTDT.Controllers
             if (tbChuongTrinhDaoTao.HocPhiTaiNuocNgoai.HasValue && tbChuongTrinhDaoTao.HocPhiTaiNuocNgoai % 1 != 0) ModelState.AddModelError("HocPhiTaiNuocNgoai", "Vui lòng nhập số nguyên vào ô trống!");
             if (tbChuongTrinhDaoTao.ThoiGianDaoTaoChuan.HasValue && tbChuongTrinhDaoTao.ThoiGianDaoTaoChuan % 1 != 0) ModelState.AddModelError("ThoiGianDaoTaoChuan", "Vui lòng nhập số nguyên vào ô trống!");
         }
+
+        [HttpGet]
+       
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                // Kiểm tra tham số 'type' có hợp lệ hay không
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Thời gian đào tạo (giờ)" || type == "Học phí tại Việt Nam (VND)" || type == "Học phí tại nước ngoài ($)") )
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ cơ sở dữ liệu
+                var data = ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                var data1 = ApiServices_.GetAll<DmChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                // Lấy dữ liệu theo loại điểm đã chọn
+                var dataList = await data;
+                var dataList1 = await data1;
+
+                var resultFiltered = dataList.Select(s => new
+                {
+                    s.TenChuongTrinh,
+                    Value = type == "Thời gian đào tạo (giờ)" ? (s.ThoiGianDaoTaoChuan ?? 0) :
+                            type == "Học phí tại Việt Nam (VND)" ? (s.HocPhiTaiVietNam ?? 0) :
+                            
+                            type == "Học phí tại nước ngoài ($)" ? (s.HocPhiTaiNuocNgoai ?? 0) : 0
+                }).ToList();
+
+
+                return Json(resultFiltered);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
+        
+
     }
 }
+
+

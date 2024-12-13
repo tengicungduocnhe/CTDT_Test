@@ -5,6 +5,45 @@
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+<style>
+    .btn-icon {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+    }
+
+        .btn-icon i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .btn-icon span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            font-size: 12px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .btn-icon:hover i {
+            opacity: 0; /* Ẩn biểu tượng khi hover */
+        }
+
+        .btn-icon:hover span {
+            opacity: 1; /* Hiện chữ khi hover */
+            transform: translate(-50%, -50%) scale(1.2); /* Phóng to chữ khi hover */
+        }
+</style>
+
 <h1 style="text-align:center">THÔNG TIN KIỂM ĐỊNH CỦA CHƯƠNG TRÌNH</h1>
 
 <p>
@@ -13,66 +52,55 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Số quết định
-            </th>
-            <th>
-                Ngày cấp chứng nhận kiểm định
-            </th>
-            <th>
-                Thời hạn kiểm định
-            </th>
-            <th>
-                ID Chương trình đào tạo
-            </th>
-            <th>
-                ID Kết quả kiểm định
-            </th>
-            <th>
-                ID Tổ chức kiểm định
-            </th>
+            <th>Số quyết định</th>
+            <th>Ngày cấp chứng nhận kiểm định</th>
+            <th>Thời hạn kiểm định</th>
+            <th>ID Chương trình đào tạo</th>
+            <th>ID Kết quả kiểm định</th>
+            <th>ID Tổ chức kiểm định</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoQuyetDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayCapChungNhanKiemDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThoiHanKiemDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
-                    <button class="btn btn-outline-primary btn-sm"
+                    @Html.DisplayFor(modelItem => item.SoQuyetDinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayCapChungNhanKiemDinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThoiHanKiemDinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary btn-sm btn-icon"
                             onclick="window.location.href = '@Url.Action("Edit", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-user-pen"></i> Sửa
+                        <i class="fa-sharp fa-solid fa-user-pen"></i>
+                        <span>Sửa</span>
                     </button>
-                    <button class="btn btn-outline-info btn-sm"
+                    <button class="btn btn-outline-info btn-sm btn-icon"
                             onclick="window.location.href = '@Url.Action("Details", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-circle-info"></i> Chi Tiết
+                        <i class="fa-sharp fa-solid fa-circle-info"></i>
+                        <span>Chi tiết</span>
                     </button>
-                    <button class="btn btn-outline-danger btn-sm"
+                    <button class="btn btn-outline-danger btn-sm btn-icon"
                             onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-trash"></i> Xóa
+                        <i class="fa-sharp fa-solid fa-trash"></i>
+                        <span>Xóa</span>
                     </button>
                 </td>
-
-            </td>
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>

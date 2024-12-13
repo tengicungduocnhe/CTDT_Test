@@ -4,10 +4,27 @@
     int dem = 0;
 }
 
-@section Heads{
+@section Heads {
     <link href="~/lib/datatable/datatables.css" rel="stylesheet">
 }
+<style>
+    .d-flex {
+        display: flex;
+        align-items: center; /* Canh giữa theo chiều dọc */
+        gap: 10px; /* Khoảng cách giữa các phần tử */
+    }
 
+    <<<<<<< HEAD
+    .form-select {
+        width: auto; /* Đặt độ rộng tự động cho `select` */
+    }
+
+    button#showChart {
+        white-space: nowrap; /* Đảm bảo nút không xuống dòng */
+    }
+</style>
+@* =======
+    >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -30,106 +47,9 @@
             <div class="card-header">
                 <h5 class="card-title">
                     Simple Datatable
-                    
+
                 </h5>
             </div>
-            <select id="chartType" class="form-select">
-                <option value="Loại chương trình đào tạo đại học đại trà">Loại chương trình đào tạo đại học đại trà</option>
-                <option value="2">Loại chương trình liên kết đào tạo</option>
-                <option value="3">Học chế đào tạo</option>
-                <option value="4">Quốc gia của trụ sở chính</option>
-                <option value="5">Trình độ đào tạo</option>
-                <option value="6">Cơ sở cấp bằng</option>
-                <option value="7">Trạng thái của chương trình đào tạo</option>
-                <option value="Thời gian đào tạo (giờ)">Thời gian đào tạo</option>
-                <option value="9">Chuẩn đầu ra ngoại ngữ</option>
-                <option value="10">Chuẩn đầu ra về tin học</option>
-                <option value="Học phí tại Việt Nam (VND)">Học phí tại Việt Nam</option>
-                <option value="Học phí tại nước ngoài ($)">Học phí tại nước ngoài</option>
-            </select>
-
-
-            <!-- Nút để hiển thị biểu đồ -->
-            <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
-
-            <!-- Khu vực để vẽ biểu đồ -->
-            <canvas id="chartContainer" width="400" height="200"></canvas>
-
-            <!-- Thêm thư viện Chart.js từ CDN -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                // Khai báo biến toàn cục để lưu trữ biểu đồ
-                let myChart;
-
-                // Lắng nghe sự kiện click trên nút "Hiển thị biểu đồ"
-                document.getElementById('showChart').addEventListener('click', () => {
-                    const type = document.getElementById('chartType').value;
-                    
-                    fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Network response was not ok: ${response.statusText}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Received data:', data);
-
-                            let labels = [];
-                            let values = [];
-
-                            if (data && data.length > 0) {
-                                labels = data.map(d => d.tenChuongTrinh /* || 'Không có tên' */);
-                                values = data.map(d => d.value /* || 0 */);
-                             }
-
-                            const ctx = document.getElementById('chartContainer').getContext('2d');
-
-                            if (myChart) {
-                                myChart.destroy();
-                            }
-
-                            // Mảng màu sắc cho các cột
-                            const colors = [
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                            ];
-                            
-                            // Xử lý dữ liệu cho biểu đồ
-                            const datasets = [{
-                                
-                                label: type,
-                                data: values,
-                                backgroundColor: colors[0],
-                                borderColor: colors[0].replace('0.2', '1'),
-                                borderWidth: 1
-                            }];
-                            
-                            myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: datasets
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error fetching chart data:', error);
-                        });
-                });
-
-            </script>
-            
             @* import excel *@
             <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" />
@@ -211,91 +131,92 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.IdTrinhDoDaoTaoNavigation)
                             </th>
-                            <th class="_nonorder" style=" position: relative;"> 
+                            <th class="_nonorder" style=" position: relative;">
                                 Action
                                 <span style="visibility: hidden;">dwadwadawdwa</span>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var item in Model) {
-                        <tr>
-                            <td>@(++dem)</td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenChuongTrinh)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenChuongTrinhBangTiengAnh)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NamBatDauTuyenSinh)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenCoSoDaoTaoNuocNgoai)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DiaDiemDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NgayBanHanhChuanDauRa)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ThoiGianDaoTaoChuan)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ChuanDauRa)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LoaiChungChiDuocChapThuan)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DonViThucHienChuongTrinh)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ChuanDauRaVeNgoaiNgu)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ChuanDauRaVeTinHoc)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HocPhiTaiVietNam)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.IdDonViCapBang)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.IdNganhDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
-                            </td>
-                            <td>
-                                <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(++dem)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaChuongTrinhDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenChuongTrinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenChuongTrinhBangTiengAnh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NamBatDauTuyenSinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenCoSoDaoTaoNuocNgoai)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiaDiemDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NgayBanHanhChuanDauRa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ThoiGianDaoTaoChuan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChuanDauRa)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LoaiChungChiDuocChapThuan)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DonViThucHienChuongTrinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChuanDauRaVeNgoaiNgu)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChuanDauRaVeTinHoc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HocPhiTaiVietNam)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.IdDonViCapBang)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.IdNganhDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -303,8 +224,106 @@
 
     </section>
 </div>
+<div class="d-flex align-items-center gap-2" style="margin-bottom: 15px;">
+    <select id="chartType" class="form-select">
+
+        <option value="Địa điểm đào tạo" data-chart="pie">Địa điểm đào tạo</option>
+        <option value="Chuẩn đầu ra" data-chart="pie">Chuẩn đầu ra</option>
+        <option value="Loại chứng chỉ được chấp thuận" data-chart="pie">Loại chứng chỉ được chấp thuận</option>
+        <option value="Đơn vị thực hiện chương trình" data-chart="pie">Đơn vị thực hiện chương trình</option>
+        <option value="Thời gian đào tạo (giờ)" data-chart="bar">Thời gian đào tạo</option>
+        <option value="Chuẩn đầu ra ngoại ngữ" data-chart="pie">Chuẩn đầu ra ngoại ngữ</option>
+        <option value="Chuẩn đầu ra về tin học" data-chart="pie">Chuẩn đầu ra về tin học</option>
+        <option value="Học phí tại Việt Nam (VND)" data-chart="bar">Học phí tại Việt Nam</option>
+        <option value="Học phí tại nước ngoài ($)" data-chart="line">Học phí tại nước ngoài</option>
+    </select>
+    <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
+</div>
+<div style="margin: 0; padding: 0;" style="width: 300px; height: 300px;">
+    <canvas id="chartContainer"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Khai báo biến toàn cục để lưu trữ biểu đồ
+    let myChart;
+
+    // Lắng nghe sự kiện click trên nút "Hiển thị biểu đồ"
+    document.getElementById('showChart').addEventListener('click', () => {
+        const type = document.getElementById('chartType').value;
+        const selectedOption = document.getElementById('chartType').selectedOptions[0];
+        const chartType = selectedOption.dataset.chart || 'bar'; // Lấy loại biểu đồ từ data-chart hoặc mặc định là 'bar'
+
+        fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received data:', data);
+
+                let labels = [];
+                let values = [];
+
+                if (data && data.length > 0) {
+                    labels = data.map(d => d.tenChuongTrinh);
+                    values = data.map(d => d.value);
+                }
+
+                const ctx = document.getElementById('chartContainer').getContext('2d');
+
+                if (myChart) {
+                    myChart.destroy();
+                }
+
+                // Mảng màu sắc cho các cột
+                const colors = [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ];
+
+                const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
+                const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
+
+                myChart = new Chart(ctx, {
+                    type: chartType, // Sử dụng loại biểu đồ từ `data-chart`
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: type,
+                            data: values,
+                            backgroundColor: chartType === 'pie' || chartType === 'doughnut' ? backgroundColors : colors[0],
+                            borderColor: chartType === 'pie' || chartType === 'doughnut' ? borderColors : colors[0].replace('0.2', '1'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: chartType === 'pie' || chartType === 'doughnut' ? {} : {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching chart data:', error);
+            });
+    });
 
 
+</script>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -351,7 +370,7 @@
                             className: 'btn btn-primary', //Thêm class cho button
                             text: 'Xuất excel',
                             exportOptions: {
-                                columns: function(idx, data, node) {
+                                columns: function (idx, data, node) {
                                     if (node.classList.contains("_nonorder")) return false;
                                     return true;
                                 },

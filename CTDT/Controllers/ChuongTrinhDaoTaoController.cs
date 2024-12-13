@@ -359,36 +359,127 @@ namespace CTDT.Controllers
         }
 
         [HttpGet]
-       
         public async Task<JsonResult> GetChartData(string type)
         {
             try
             {
                 // Kiểm tra tham số 'type' có hợp lệ hay không
                 if (string.IsNullOrEmpty(type) ||
-                    !(type == "Thời gian đào tạo (giờ)" || type == "Học phí tại Việt Nam (VND)" || type == "Học phí tại nước ngoài ($)") )
+                    !(type == "Thời gian đào tạo (giờ)" ||
+                        type == "Học phí tại Việt Nam (VND)" ||
+                        type == "Học phí tại nước ngoài ($)" ||
+                         type == "Địa điểm đào tạo" ||
+                        type == "Chuẩn đầu ra" ||
+                        type == "Loại chứng chỉ được chấp thuận" ||
+                        type == "Đơn vị thực hiện chương trình" ||
+                        type == "Chuẩn đầu ra về tin học" ||
+                        type == "Chuẩn đầu ra ngoại ngữ"))
                 {
                     return Json(new { error = "Invalid type parameter." });
                 }
 
                 // Lấy dữ liệu từ cơ sở dữ liệu
                 var data = ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
-                var data1 = ApiServices_.GetAll<DmChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
-                // Lấy dữ liệu theo loại điểm đã chọn
                 var dataList = await data;
-                var dataList1 = await data1;
 
-                var resultFiltered = dataList.Select(s => new
+                if (type == "Chuẩn đầu ra ngoại ngữ")
                 {
-                    s.TenChuongTrinh,
-                    Value = type == "Thời gian đào tạo (giờ)" ? (s.ThoiGianDaoTaoChuan ?? 0) :
-                            type == "Học phí tại Việt Nam (VND)" ? (s.HocPhiTaiVietNam ?? 0) :
-                            
-                            type == "Học phí tại nước ngoài ($)" ? (s.HocPhiTaiNuocNgoai ?? 0) : 0
-                }).ToList();
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.ChuanDauRaVeNgoaiNgu ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
 
+                    return Json(resultFiltered);
+                }
+                else if (type == "Chuẩn đầu ra về tin học")
+                {
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.ChuanDauRaVeTinHoc ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
 
-                return Json(resultFiltered);
+                    return Json(resultFiltered);
+                }
+                else if (type == "Địa điểm đào tạo")
+                {
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.DiaDiemDaoTao ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Chuẩn đầu ra")
+                {
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.ChuanDauRa ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Loại chứng chỉ được chấp thuận")
+                {
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.LoaiChungChiDuocChapThuan ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Đơn vị thực hiện chương trình")
+                {
+                    // Lọc và nhóm dữ liệu cho chuẩn đầu ra ngoại ngữ
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.DonViThucHienChuongTrinh ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
+
+                    return Json(resultFiltered);
+                }
+
+                else
+                {
+                    // Xử lý cho các loại biểu đồ khác (thời gian đào tạo, học phí)
+                    var resultFiltered = dataList.Select(s => new
+                    {
+                        s.TenChuongTrinh,
+                        Value = type == "Thời gian đào tạo (giờ)" ? (s.ThoiGianDaoTaoChuan ?? 0) :
+                                type == "Học phí tại Việt Nam (VND)" ? (s.HocPhiTaiVietNam ?? 0) :
+                                type == "Học phí tại nước ngoài ($)" ? (s.HocPhiTaiNuocNgoai ?? 0) : 0
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
             }
             catch (Exception ex)
             {
@@ -396,8 +487,19 @@ namespace CTDT.Controllers
             }
         }
 
-        
 
+
+        //[HttpGet]
+        //public IActionResult ImportExcel()
+        //{
+
+        //    return View();
+        //}
+        //[HttpPost]
+        //public IActionResult ImportExcel(ÌormFile file, [FromServices] IHostingEnvironment)
+        //{
+
+        //}
     }
 }
 

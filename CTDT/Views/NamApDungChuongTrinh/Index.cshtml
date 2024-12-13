@@ -43,11 +43,62 @@
             opacity: 1; /* Hiện chữ khi hover */
             transform: translate(-50%, -50%) scale(1.2); /* Phóng to chữ khi hover */
         }
+
+    .btn-add {
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        text-align: center;
+        background-color: #28a745; /* Màu nền */
+        color: white;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .btn-add i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .btn-add span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .btn-add:hover {
+            background-color: #218838; /* Màu nền khi hover */
+        }
+
+            .btn-add:hover i {
+                opacity: 0; /* Ẩn biểu tượng khi hover */
+            }
+
+            .btn-add:hover span {
+                opacity: 1; /* Hiện chữ khi hover */
+                transform: translate(-50%, -50%) scale(1.2); /* Phóng to chữ khi hover */
+            }
 </style>
 
 <h1 style="text-align:center">NĂM ÁP DỤNG CHƯƠNG TRÌNH </h1>
 <p>
-    <a asp-action="Create">Thêm Mới</a>
+    <button class="btn-add" onclick="window.location.href='@Url.Action("Create")'">
+        <i class="fa-solid fa-plus"></i>
+        <span>Thêm Mới</span>
+    </button>
 </p>
 <table class="table">
     <thead>

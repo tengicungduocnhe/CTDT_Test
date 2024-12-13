@@ -43,13 +43,65 @@
             opacity: 1;
             transform: translate(-50%, -50%) scale(1.2);
         }
+
+    .btn-add {
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        text-align: center;
+        background-color: #28a745; /* Green color */
+        color: white;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .btn-add i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .btn-add span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .btn-add:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+            .btn-add:hover i {
+                opacity: 0;
+            }
+
+            .btn-add:hover span {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
 </style>
 
-<h1 style="text-align:center">CHƯƯƠNG TRÌNH NƯỚC NGOÀI</h1>
+<h1 style="text-align:center">CHƯƠNG TRÌNH NƯỚC NGOÀI</h1>
 
 <p>
-    <a asp-action="Create">Thêm Mới</a>
+    <button class="btn-add" onclick="window.location.href='@Url.Action("Create")'">
+        <i class="fa-solid fa-plus"></i>
+        <span>Thêm Mới</span>
+    </button>
 </p>
+
 <table class="table">
     <thead>
         <tr>

@@ -8,8 +8,6 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Form Layout</h3>
-                <p class="text-subtitle text-muted">Multiple form layouts, you can use.</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -37,7 +35,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label asp-for="IdChuongTrinhDaoTao" class="control-label"></label>
-                                            <select asp-for="IdChuongTrinhDaoTao" class ="form-control" asp-items="ViewBag.IdChuongTrinhDaoTao"></select>
+                                            <select asp-for="IdChuongTrinhDaoTao" class="form-control" asp-items="ViewBag.IdChuongTrinhDaoTao"></select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -81,7 +79,9 @@
     </section>
 </div>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="https://cdn.jsdelivr.net/gh/kirito99152/search_select@latest/search_select.js"></script>
     <script>
         let select = new search_select("form");

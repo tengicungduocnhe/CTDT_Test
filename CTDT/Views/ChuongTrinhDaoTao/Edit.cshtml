@@ -1,4 +1,4 @@
-@model CTDT.Models.TbChuongTrinhDaoTao
+﻿@model CTDT.Models.TbChuongTrinhDaoTao
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,8 +12,8 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Form Layout</li>
+                        <li class="breadcrumb-item"><a href="/ChuongTrinhDaoTao/Index">Trang danh sách CTDT</a></li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
                     </ol>
                 </nav>
             </div>
@@ -23,8 +23,8 @@
         <div class="row match-height">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Multiple Column</h4>
+                    <div class="card-header bg-primary bg-gradient text-white text-center">
+                        <h4 class="card-title">Chương trình đào tạo</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -185,9 +185,16 @@
                                             <span asp-validation-for="HocPhiTaiNuocNgoai" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    </div>
+                                   
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a asp-action="Index" class="btn btn-secondary btn-lg mx-2 shadow-sm" data-bs-toggle="tooltip" title="Quay lại trang danh sách">
+                                        <i class="bi bi-arrow-left-circle"></i> Quay lại
+                                    </a>
+                                    <button type="submit" class="btn btn-success btn-lg mx-2 shadow-sm" data-bs-toggle="tooltip" title="Lưu thay đổi">
+                                        <i class="bi bi-save"></i> Lưu
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -205,5 +212,11 @@
         let select = new search_select("form");
         @* select.IsNULL = true; *@
         select.run();
+
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 }

@@ -21,6 +21,7 @@
     button#showChart {
         white-space: nowrap; /* Đảm bảo nút không xuống dòng */
     }
+
 </style>
 @* =======
     >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
@@ -55,7 +56,7 @@
             </form> *@
 
             <div class="card-body">
-                <table class="table table-striped nowrap table-hover" id="views">
+                <table class="table table-striped nowrap table-hover " id="views" style="table-layout: auto; width: 100%;">
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -128,9 +129,9 @@
                             <th>
                                 ID Trình Độ Đào Tạo
                             </th>
-                            <th class="_nonorder" style=" position: relative;">
+                            <th>
                                 Action
-                                <span style="visibility: hidden;">dwadwadawdwa</span>
+                              
                             </th>
                         </tr>
                     </thead>
@@ -185,32 +186,37 @@
                                     @Html.DisplayFor(modelItem => item.HocPhiTaiNuocNgoai)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.IdDonViCapBang)
+                                    @Html.DisplayFor(modelItem => item.IdDonViCapBangNavigation.DonViCapBang)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdHocCheDaoTaoNavigation.HocCheDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.IdNganhDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdNganhDaoTaoNavigation.NganhDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
+                                    @Html.DisplayFor(modelItem => item.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)
                                 </td>
                                 <td>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdChuongTrinhDaoTao})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdChuongTrinhDaoTao})'" data-bs-toggle="tooltip" title="Sửa"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> </button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdChuongTrinhDaoTao})'" data-bs-toggle="tooltip" title="Chi tiết"><i class="fa-sharp fa-solid fa-circle-info"></i> </button>
+                                    <button class="btn btn-outline-danger "
+                                            onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdChuongTrinhDaoTao })'" data-bs-toggle="tooltip" title="Xoá">
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
+                                        <span></span>
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -330,6 +336,14 @@
     <script src="~/js/xlsx.full.min.js"></script>
     <script src="https://kit.fontawesome.com/5c202d0407.js" crossorigin="anonymous"></script>
     <script>
+
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+
         //Datatable trong datatable.net. Tìm hiểu thêm thông tin: https://datatables.net/manual/
         var table = new DataTable("#views", {
             columnDefs: [
@@ -340,7 +354,8 @@
             ],
             order: [0, 'asc'],
             fixedColumns: {
-                end: 1
+                left: 1,   
+                right: 1  
             },
             scrollX: true,
             pageLength: 10,

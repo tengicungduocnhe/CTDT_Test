@@ -4,6 +4,26 @@
     ViewData["Title"] = "Details";
 }
 
+<style>
+    .dl-bordered dt,
+    .dl-bordered dd {
+        border-bottom: 1px solid #dee2e6; /* Viền màu xám nhạt */
+        padding: 8px 12px; /* Khoảng cách giữa nội dung và viền */
+        margin: 0; /* Loại bỏ khoảng cách mặc định */
+    }
+
+    .dl-bordered dt {
+        background-color: #f8f9fa; /* Màu nền nhẹ cho cột tiêu đề */
+
+        font-weight: bold; /* Chữ in đậm */
+    }
+    /* Thêm khoảng cách giữa hai <dl> trong cùng một hàng */
+    .dl-bordered {
+        margin-right: 20px; /* Khoảng cách giữa các <dl> */
+    }
+
+
+</style>
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -12,95 +32,103 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Layout Default</li>
+                        <li class="breadcrumb-item"><a href="/ChuongTrinhDaoTao/Index">Trang danh sách CTDT</a></li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
+
                     </ol>
                 </nav>
             </div>
         </div>
     </div>
+
     <section class="section">
-        <div class="row match-height">
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Chương Trình Đào Tạo</h4>
-                    </div>
-                    <div class="card-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-12">
+                    <div class="card shadow-lg rounded">
+                        <!-- Header -->
+                        <div class="card-header bg-primary bg-gradient text-white text-center">
+                            <h4 class="card-title mb-0">Chương Trình Đào Tạo</h4>
+                        </div>
+                        <!-- Nội dung Card -->
                         <div class="card-body">
-                            <div class="row gap-1">
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.MaChuongTrinhDaoTao)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.MaChuongTrinhDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.TenChuongTrinh)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.TenChuongTrinh)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.TenChuongTrinhBangTiengAnh)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.TenChuongTrinhBangTiengAnh)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.NamBatDauTuyenSinh)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.NamBatDauTuyenSinh)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.TenCoSoDaoTaoNuocNgoai)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.TenCoSoDaoTaoNuocNgoai)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.DiaDiemDaoTao)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.DiaDiemDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.NgayBanHanhChuanDauRa)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.NgayBanHanhChuanDauRa)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ThoiGianDaoTaoChuan)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.ThoiGianDaoTaoChuan)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ChuanDauRa)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.ChuanDauRa)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.LoaiChungChiDuocChapThuan)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.LoaiChungChiDuocChapThuan)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.DonViThucHienChuongTrinh)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.DonViThucHienChuongTrinh)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ChuanDauRaVeNgoaiNgu)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.ChuanDauRaVeNgoaiNgu)
-                                </dd>
+                            <div class="row g-4">
+                                <!-- Phần cột 1 -->
+                                <div class="col-md-6 ">
+                                    <dl class="row dl-bordered">
+                                        <dt class="col-sm-6">Mã chương trình đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.MaChuongTrinhDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Tên chương trình</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenChuongTrinh)</dd>
+
+                                        <dt class="col-sm-6">Tên chương trình bằng tiếng Anh</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenChuongTrinhBangTiengAnh)</dd>
+
+                                        <dt class="col-sm-6">Địa điểm đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.DiaDiemDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Năm bắt đầu tuyển sinh</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.NamBatDauTuyenSinh)</dd>
+
+                                        <dt class="col-sm-6">Tên cơ sở đào tạo nước ngoài</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenCoSoDaoTaoNuocNgoai)</dd>
+
+                                        <dt class="col-sm-6">Chuẩn đầu ra về ngoại ngữ</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRaVeNgoaiNgu)</dd>
+
+                                        <dt class="col-sm-6">Đơn vị cấp bằng</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdDonViCapBangNavigation.DonViCapBang)</dd>
+
+                                        <dt class="col-sm-6">Học chế đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdHocCheDaoTaoNavigation.HocCheDaoTao)</dd>
+
+                                     <dt class="col-sm-6">Trình độ đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Trạng thái chương trình đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)</dd>
+                                    </dl>
+                                </div>
+
+                                <!-- Phần cột 2 -->
+                                <div class="col-md-6">
+                                    <dl class="row dl-bordered">
+                                        <dt class="col-sm-6">Chuẩn đầu ra về tin học</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRaVeTinHoc)</dd>
+
+                                        <dt class="col-sm-6">Ngày ban hành chuẩn đầu ra</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.NgayBanHanhChuanDauRa)</dd>
+
+                                        <dt class="col-sm-6">Thời gian đào tạo chuẩn</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ThoiGianDaoTaoChuan)</dd>
+
+                                        <dt class="col-sm-6">Chuẩn đầu ra</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRa)</dd>
+
+                                        <dt class="col-sm-6">Học phí tại Việt Nam</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.HocPhiTaiVietNam)</dd>
+
+                                        <dt class="col-sm-6">Học phí tại nước ngoài</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.HocPhiTaiNuocNgoai)</dd>
+
+                                           <dt class="col-sm-6">Loại chương trình đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Loại chương trình liên kết đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Ngành đào tạo</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdNganhDaoTaoNavigation.NganhDaoTao)</dd>
+
+                                        <dt class="col-sm-6">Quốc tịch</dt>
+                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)</dd>
+
+                                       
+                                    </dl>
+                                </div>
+                            </div> <!-- Kết thúc row -->
+                       
                                 <div class="col-12 d-flex justify-content-start gap-2">
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay Lại</button>
@@ -108,15 +136,16 @@
                                         Delete
                                     </button>
                                     <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
-                                            role="document">
+                                             role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Xác nhận
+                                                    <h5 class="modal-title" id="exampleModalCenterTitle">
+                                                        Xác nhận
                                                     </h5>
                                                     <button type="button" class="close" data-bs-dismiss="modal"
-                                                        aria-label="Close">
+                                                            aria-label="Close">
                                                         <i data-feather="x"></i>
                                                     </button>
                                                 </div>
@@ -129,7 +158,7 @@
                                                     <form asp-action="Delete">
                                                         <input type="hidden" asp-for="IdChuongTrinhDaoTao" />
                                                         <button type="button" class="btn btn-light-secondary"
-                                                            data-bs-dismiss="modal">
+                                                                data-bs-dismiss="modal">
                                                             <i class="bx bx-x d-block d-sm-none"></i>
                                                             <span class="d-none d-sm-block">Close</span>
                                                         </button>
@@ -140,90 +169,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Simple List Group</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="row">
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ChuanDauRaVeTinHoc)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.ChuanDauRaVeTinHoc)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.HocPhiTaiVietNam)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.HocPhiTaiVietNam)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.HocPhiTaiNuocNgoai)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.HocPhiTaiNuocNgoai)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdDonViCapBangNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdDonViCapBangNavigation.IdDonViCapBang)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdHocCheDaoTaoNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdHocCheDaoTaoNavigation.IdHocCheDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation.IdLoaiChuongTrinhDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation.IdLoaiChuongTrinhLienKetDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdNganhDaoTaoNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdNganhDaoTaoNavigation.IdNganhDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdQuocGiaCuaTruSoChinhNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdQuocGiaCuaTruSoChinhNavigation.IdQuocTich)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdTrangThaiCuaChuongTrinhNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdTrangThaiCuaChuongTrinhNavigation.IdTrangThaiChuongTrinhDaoTao)
-                                </dd>
-                                <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdTrinhDoDaoTaoNavigation)
-                                </dt>
-                                <dd class = "col-sm-6">
-                                    @Html.DisplayFor(model => model.IdTrinhDoDaoTaoNavigation.IdTrinhDoDaoTao)
-                                </dd>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                                </div>
+                                   </div>
+                                   </div>
+                                   </div>
+                                   </div>
+                                 
+                                  </section>
 </div>
+
+
+

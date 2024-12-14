@@ -31,44 +31,44 @@
                         <div class="card-body">
                             <div class="row gap-1">
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.SoQuyetDinh)
+                                 Số Quyết Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.SoQuyetDinh)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.NgayCapChungNhanKiemDinh)
+                                    Ngày Cấp Chứng Nhận Kiểm Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.NgayCapChungNhanKiemDinh)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ThoiHanKiemDinh)
+                                   Thời Hạn Kiểm Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.ThoiHanKiemDinh)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                                    ID Chương Trình Đào Tạo
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdKetQuaKiemDinhNavigation)
+                                    ID Kết Quả Kiểm Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdToChucKiemDinhNavigation)
+                                    ID Tổ Chức Kiểm Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
                                 </dd>
                                 <div class="col-12 d-flex justify-content-start gap-2">
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay lại</button>
                                     <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
                                         Delete
                                     </button>

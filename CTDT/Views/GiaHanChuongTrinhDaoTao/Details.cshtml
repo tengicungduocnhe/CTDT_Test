@@ -31,32 +31,32 @@
                         <div class="card-body">
                             <div class="row gap-1">
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.SoQuyetDinhGiaHan)
+                                    Số Quyết Định
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.SoQuyetDinhGiaHan)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.NgayBanHanhVanBanGiaHan)
+                                    Ngày Ban Hành Văn Bản Gia Hạn
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.NgayBanHanhVanBanGiaHan)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.GiaHanLanThu)
+                                    Gia Hạn Lần Thứ
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.GiaHanLanThu)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                                    Tên Chương Trình Đào Tạo
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.TenChuongTrinh)
                                 </dd>
                                 <div class="col-12 d-flex justify-content-start gap-2">
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay lại</button>
                                     <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
                                         Delete
                                     </button>

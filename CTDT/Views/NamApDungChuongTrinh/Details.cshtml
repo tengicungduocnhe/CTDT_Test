@@ -31,38 +31,38 @@
                         <div class="card-body">
                             <div class="row gap-1">
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.SoTinChiToiThieuDeTotNghiep)
+                                    Số Tín Chỉ Tối Thiểu Để Tốt Nghiệp
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.SoTinChiToiThieuDeTotNghiep)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.TongHocPhiToanKhoa)
+                                   Tổng Học Phí Toàn Khóa
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.TongHocPhiToanKhoa)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.NamApDung)
+                                    Năm Áp Dụng
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.NamApDung)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.ChiTieuTuyenSinhHangNam)
+                                    Chỉ Tiêu Tuyển Sinh Hàng Năm
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.ChiTieuTuyenSinhHangNam)
                                 </dd>
                                 <dt class = "col-sm-5">
-                                    @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                                    ID Chương Trình Đào Tạo
                                 </dt>
                                 <dd class = "col-sm-6">
                                     @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
                                 </dd>
                                 <div class="col-12 d-flex justify-content-start gap-2">
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay lại</button>
                                     <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
                                         Delete
                                     </button>

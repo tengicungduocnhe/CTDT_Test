@@ -22,6 +22,10 @@ namespace CTDT.Controllers
         {
             ApiServices_ = services;
         }
+        public IActionResult chartjs()
+        {
+            return View(); // Nó sẽ trả về view chartjs.cshtml
+        }
 
         // GET: ChuongTrinhDaoTao
         // Lấy danh sách NADCT từ database, trả về view Index.

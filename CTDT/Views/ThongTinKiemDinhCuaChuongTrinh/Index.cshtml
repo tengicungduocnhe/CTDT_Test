@@ -33,8 +33,8 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Chương trình đào tạo</li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
+                        <li class="breadcrumb-item"><a href="/ThongTinKiemDinhCuaChuongTrinh/chartjs">Biểu đồ</a></li>
                     </ol>
                 </nav>
             </div>
@@ -99,13 +99,13 @@
                                     @Html.DisplayFor(modelItem => item.ThoiHanKiemDinh)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.TenChuongTrinh)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
+                                    @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.KetQuaKiemDinh)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
+                                    @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.ToChucKiemDinh)
                                 </td>
                                 <td>
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdThongTinKiemDinhCuaChuongTrinh})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>

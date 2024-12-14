@@ -33,8 +33,8 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Chương trình đào tạo</li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
+                        <li class="breadcrumb-item"><a href="/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai/chartjs">Biểu đồ</a></li>
                     </ol>
                 </nav>
             </div>
@@ -92,13 +92,13 @@
                                     @Html.DisplayFor(modelItem => item.NgayBanHanhQuyetDinh)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.TenChuongTrinh)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdHinhThucDaoTaoNavigation.IdHinhThucDaoTao)
+                                    @Html.DisplayFor(modelItem => item.IdHinhThucDaoTaoNavigation.HinhThucDaoTao)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IdLoaiQuyetDinhNavigation.IdLoaiQuyetDinh)
+                                    @Html.DisplayFor(modelItem => item.IdLoaiQuyetDinhNavigation.LoaiQuyetDinh)
                                 </td>
                                 <td>
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>

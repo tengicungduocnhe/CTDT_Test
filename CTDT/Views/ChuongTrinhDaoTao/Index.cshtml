@@ -24,6 +24,9 @@
 
 </style>
 @* =======
+
+
+E:\BÀI CỦA NHUNG\CTDT\Views\ChuongTrinhDaoTao\chartjs.cshtml
     >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
 <div class="page-heading">
     <div class="page-title">
@@ -33,8 +36,9 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Chương trình đào tạo</li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
+                        <li class="breadcrumb-item"><a href="/ChuongTrinhDaoTao/chartjs">Biểu đồ</a></li>
+
                     </ol>
                 </nav>
             </div>
@@ -227,106 +231,6 @@
 
     </section>
 </div>
-<div class="d-flex align-items-center gap-2" style="margin-bottom: 15px;">
-    <select id="chartType" class="form-select">
-
-        <option value="Địa điểm đào tạo" data-chart="pie">Địa điểm đào tạo</option>
-        <option value="Chuẩn đầu ra" data-chart="pie">Chuẩn đầu ra</option>
-        <option value="Loại chứng chỉ được chấp thuận" data-chart="pie">Loại chứng chỉ được chấp thuận</option>
-        <option value="Đơn vị thực hiện chương trình" data-chart="pie">Đơn vị thực hiện chương trình</option>
-        <option value="Thời gian đào tạo (giờ)" data-chart="bar">Thời gian đào tạo</option>
-        <option value="Chuẩn đầu ra ngoại ngữ" data-chart="pie">Chuẩn đầu ra ngoại ngữ</option>
-        <option value="Chuẩn đầu ra về tin học" data-chart="pie">Chuẩn đầu ra về tin học</option>
-        <option value="Học phí tại Việt Nam (VND)" data-chart="bar">Học phí tại Việt Nam</option>
-        <option value="Học phí tại nước ngoài ($)" data-chart="line">Học phí tại nước ngoài</option>
-    </select>
-    <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
-</div>
-<div style="margin: 0; padding: 0;" style="width: 300px; height: 300px;">
-    <canvas id="chartContainer"></canvas>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Khai báo biến toàn cục để lưu trữ biểu đồ
-    let myChart;
-
-    // Lắng nghe sự kiện click trên nút "Hiển thị biểu đồ"
-    document.getElementById('showChart').addEventListener('click', () => {
-        const type = document.getElementById('chartType').value;
-        const selectedOption = document.getElementById('chartType').selectedOptions[0];
-        const chartType = selectedOption.dataset.chart || 'bar'; // Lấy loại biểu đồ từ data-chart hoặc mặc định là 'bar'
-
-        fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Received data:', data);
-
-                let labels = [];
-                let values = [];
-
-                if (data && data.length > 0) {
-                    labels = data.map(d => d.tenChuongTrinh);
-                    values = data.map(d => d.value);
-                }
-
-                const ctx = document.getElementById('chartContainer').getContext('2d');
-
-                if (myChart) {
-                    myChart.destroy();
-                }
-
-                // Mảng màu sắc cho các cột
-                const colors = [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                ];
-
-                const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
-                const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
-
-                myChart = new Chart(ctx, {
-                    type: chartType, // Sử dụng loại biểu đồ từ `data-chart`
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: type,
-                            data: values,
-                            backgroundColor: chartType === 'pie' || chartType === 'doughnut' ? backgroundColors : colors[0],
-                            borderColor: chartType === 'pie' || chartType === 'doughnut' ? borderColors : colors[0].replace('0.2', '1'),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: chartType === 'pie' || chartType === 'doughnut' ? {} : {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top'
-                            }
-                        }
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching chart data:', error);
-            });
-    });
-
-
-</script>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>

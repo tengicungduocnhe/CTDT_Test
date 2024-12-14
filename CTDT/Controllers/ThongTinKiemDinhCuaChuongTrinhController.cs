@@ -24,6 +24,11 @@ namespace C500Hemis.Controllers.CTDT
             ApiServices_ = services;
         }
 
+        public IActionResult chartjs()
+        {
+            return View(); // Nó sẽ trả về view chartjs.cshtml
+        }
+
         private async Task<List<TbThongTinKiemDinhCuaChuongTrinh>> TbThongTinKiemDinhCuaChuongTrinhs()
         {
             List<TbThongTinKiemDinhCuaChuongTrinh> TbThongTinKiemDinhCuaChuongTrinhs = await ApiServices_.GetAll<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh");

@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Chartjs";
+}
+
+<body>
+    <h1 style="text-align:center"> CHƯƠNG TRÌNH ĐÀO TẠO</h1>
+    <pre></pre>
+
+    <div class="d-flex align-items-center gap-2" style="margin-bottom: 15px;">
+        <select id="chartType" class="form-select">
+            <option value="Địa điểm đào tạo" data-chart="pie">Địa điểm đào tạo</option>
+            <option value="Chuẩn đầu ra" data-chart="pie">Chuẩn đầu ra</option>
+            <option value="Loại chứng chỉ được chấp thuận" data-chart="pie">Loại chứng chỉ được chấp thuận</option>
+            <option value="Đơn vị thực hiện chương trình" data-chart="pie">Đơn vị thực hiện chương trình</option>
+            <option value="Thời gian đào tạo (giờ)" data-chart="bar">Thời gian đào tạo</option>
+            <option value="Chuẩn đầu ra ngoại ngữ" data-chart="pie">Chuẩn đầu ra ngoại ngữ</option>
+            <option value="Chuẩn đầu ra về tin học" data-chart="pie">Chuẩn đầu ra về tin học</option>
+            <option value="Học phí tại Việt Nam (VND)" data-chart="bar">Học phí tại Việt Nam</option>
+            <option value="Học phí tại nước ngoài ($)" data-chart="line">Học phí tại nước ngoài</option>
+        </select>
+        <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
+    </div>
+
+    <!-- Biểu đồ Canvas -->
+    <div class="chart-container" style="width: 80%; height: 70vh; margin: 0 auto;">
+        <canvas id="chartContainer"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let myChart;
+
+        document.getElementById('showChart').addEventListener('click', () => {
+            const type = document.getElementById('chartType').value;
+            const selectedOption = document.getElementById('chartType').selectedOptions[0];
+            const chartType = selectedOption.dataset.chart || 'bar';
+
+            fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let labels = [];
+                    let values = [];
+
+                    if (data && data.length > 0) {
+                        labels = data.map(d => d.tenChuongTrinh);
+                        values = data.map(d => d.value);
+                    }
+
+                    const ctx = document.getElementById('chartContainer').getContext('2d');
+
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    const colors = [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                    ];
+
+                    const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
+                    const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
+
+                    myChart = new Chart(ctx, {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: type,
+                                data: values,
+                                backgroundColor: chartType === 'pie' || chartType === 'doughnut' ? backgroundColors : colors[0],
+                                borderColor: chartType === 'pie' || chartType === 'doughnut' ? borderColors : colors[0].replace('0.2', '1'),
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: chartType === 'pie' || chartType === 'doughnut' ? {} : {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching chart data:', error);
+                });
+        });
+    </script>
+</body>

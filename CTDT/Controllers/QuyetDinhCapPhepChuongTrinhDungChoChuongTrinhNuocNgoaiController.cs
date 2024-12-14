@@ -22,6 +22,10 @@ namespace CTDT.Controllers
         {
             ApiServices_ = services;
         }
+        public IActionResult chartjs()
+        {
+            return View(); // Nó sẽ trả về view chartjs.cshtml
+        }
         private async Task<List<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>> TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais()
         {
             List<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai> getall = await ApiServices_.GetAll<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>("/api/ctdt/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai");

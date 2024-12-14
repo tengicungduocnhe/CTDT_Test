@@ -267,6 +267,23 @@ namespace C500Hemis.Controllers.CTDT
             if (tbThongTinKiemDinhCuaChuongTrinh.NgayCapChungNhanKiemDinh == null) ModelState.AddModelError("NgayCapChungNhanKiemDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.ThoiHanKiemDinh == null) ModelState.AddModelError("ThoiHanKiemDinh", "Không được bỏ trống!");
         }
+        
+        [HttpPost]
+        public IActionResult Receive_Excel(string jsonExcel) {
+            try {
+                List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
+                dataList.ForEach(s => {
+                    TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
+                    // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
+                    // new_.MaChuongTrinhDaoTao = s[1];
+                    // new_.IdNganhDaoTao = s[1];
+                });
+                string message = "Thành công";
+                return Accepted(Json(new {msg = message}));
+            } catch (Exception ex) {
+                return BadRequest(Json(new { msg = ex.Message,}));
+            }
+        }
     }
 }
 

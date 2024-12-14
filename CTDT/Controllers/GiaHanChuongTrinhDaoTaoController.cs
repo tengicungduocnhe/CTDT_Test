@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CTDT.Models;
 using CTDT.API;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 //using CTDT.Models.DM;
 namespace CTDT.Controllers
 {
@@ -277,6 +278,22 @@ namespace CTDT.Controllers
             if (tbGiaHanChuongTrinhDaoTao.GiaHanLanThu == null) ModelState.AddModelError("GiaHanLanThu", "Không được bỏ trống!");
 
 
+        }
+        [HttpPost]
+        public IActionResult Receive_Excel(string jsonExcel) {
+            try {
+                List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
+                dataList.ForEach(s => {
+                    TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
+                    // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
+                    // new_.MaChuongTrinhDaoTao = s[1];
+                    // new_.IdNganhDaoTao = s[1];
+                });
+                string message = "Thành công";
+                return Accepted(Json(new {msg = message}));
+            } catch (Exception ex) {
+                return BadRequest(Json(new { msg = ex.Message,}));
+            }
         }
     }
 }

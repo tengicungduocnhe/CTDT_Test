@@ -1,160 +1,322 @@
-﻿@model IEnumerable<CTDT.Models.TbThongTinKiemDinhCuaChuongTrinh>
+@model IEnumerable<CTDT.Models.TbThongTinKiemDinhCuaChuongTrinh>
 
 @{
     ViewData["Title"] = "Index";
+    int dem = 0;
 }
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+@section Heads {
+    <link href="~/lib/datatable/datatables.css" rel="stylesheet">
+}
 <style>
-    .btn-icon {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        text-align: center;
+    .d-flex {
+        display: flex;
+        align-items: center; /* Canh giữa theo chiều dọc */
+        gap: 10px; /* Khoảng cách giữa các phần tử */
     }
 
-        .btn-icon i {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .btn-icon span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
-            font-size: 12px;
-            font-weight: bold;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        .btn-icon:hover i {
-            opacity: 0; /* Ẩn biểu tượng khi hover */
-        }
-
-        .btn-icon:hover span {
-            opacity: 1; /* Hiện chữ khi hover */
-            transform: translate(-50%, -50%) scale(1.2); /* Phóng to chữ khi hover */
-        }
-
-    .btn-add {
-        display: inline-block;
-        position: relative;
-        overflow: hidden;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        text-align: center;
-        background-color: #28a745; /* Màu nền */
-        color: white;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.3s ease-in-out;
+    .form-select {
+        width: auto; /* Đặt độ rộng tự động cho `select` */
     }
 
-        .btn-add i {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .btn-add span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
-            font-size: 14px;
-            font-weight: bold;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        .btn-add:hover {
-            background-color: #218838; /* Màu nền khi hover */
-        }
-
-            .btn-add:hover i {
-                opacity: 0; /* Ẩn biểu tượng khi hover */
-            }
-
-            .btn-add:hover span {
-                opacity: 1; /* Hiện chữ khi hover */
-                transform: translate(-50%, -50%) scale(1.2); /* Phóng to chữ khi hover */
-            }
+    button#showChart {
+        white-space: nowrap; /* Đảm bảo nút không xuống dòng */
+    }
 </style>
+@* =======
+    >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>DataTable</h3>
+                <p class="text-subtitle text-muted">A sortable, searchable, paginated table without dependencies thanks to simple-datatables.</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chương trình đào tạo</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    Simple Datatable
 
-<h1 style="text-align:center">THÔNG TIN KIỂM ĐỊNH CỦA CHƯƠNG TRÌNH</h1>
+                </h5>
+            </div>
+            @* import excel *@
+            @* <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data" style="visibility: hidden;" id="ImportExcel">
+                <input type="file" name="file" id="file"/>
+                <hr />
+                <button type="submit">Import Excel</button>
+            </form> *@
 
-<p>
-    <!-- Replacing the <a> tag with a button that behaves like the "Add New" button from the previous code -->
-    <button class="btn-add" onclick="window.location.href='@Url.Action("Create")'">
-        <i class="fa-solid fa-plus"></i>
-        <span>Thêm Mới</span>
-    </button>
-</p>
+            <div class="card-body">
+                <table class="table table-striped nowrap table-hover" id="views">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SoQuyetDinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NgayCapChungNhanKiemDinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ThoiHanKiemDinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdKetQuaKiemDinhNavigation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdToChucKiemDinhNavigation)
+                            </th>
+                            <th class="_nonorder" style=" position: relative;">
+                                Action
+                                <span style="visibility: hidden;">dwadwadawdwa</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(++dem)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SoQuyetDinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NgayCapChungNhanKiemDinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ThoiHanKiemDinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdThongTinKiemDinhCuaChuongTrinh})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdThongTinKiemDinhCuaChuongTrinh})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Số quyết định</th>
-            <th>Ngày cấp chứng nhận kiểm định</th>
-            <th>Thời hạn kiểm định</th>
-            <th>ID Chương trình đào tạo</th>
-            <th>ID Kết quả kiểm định</th>
-            <th>ID Tổ chức kiểm định</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SoQuyetDinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NgayCapChungNhanKiemDinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ThoiHanKiemDinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdKetQuaKiemDinhNavigation.IdKetQuaKiemDinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdToChucKiemDinhNavigation.IdToChucKiemDinh)
-                </td>
-                <td>
-                    <button class="btn btn-outline-primary btn-sm btn-icon"
-                            onclick="window.location.href = '@Url.Action("Edit", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-user-pen"></i>
-                        <span>Sửa</span>
-                    </button>
-                    <button class="btn btn-outline-info btn-sm btn-icon"
-                            onclick="window.location.href = '@Url.Action("Details", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-circle-info"></i>
-                        <span>Chi tiết</span>
-                    </button>
-                    <button class="btn btn-outline-danger btn-sm btn-icon"
-                            onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdThongTinKiemDinhCuaChuongTrinh })'">
-                        <i class="fa-sharp fa-solid fa-trash"></i>
-                        <span>Xóa</span>
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    </section>
+</div>
+<div class="d-flex align-items-center gap-2" style="margin-bottom: 15px;">
+    <select id="chartType" class="form-select">
+
+        <option value="Địa điểm đào tạo" data-chart="pie">Địa điểm đào tạo</option>
+        <option value="Chuẩn đầu ra" data-chart="pie">Chuẩn đầu ra</option>
+        <option value="Loại chứng chỉ được chấp thuận" data-chart="pie">Loại chứng chỉ được chấp thuận</option>
+        <option value="Đơn vị thực hiện chương trình" data-chart="pie">Đơn vị thực hiện chương trình</option>
+        <option value="Thời gian đào tạo (giờ)" data-chart="bar">Thời gian đào tạo</option>
+        <option value="Chuẩn đầu ra ngoại ngữ" data-chart="pie">Chuẩn đầu ra ngoại ngữ</option>
+        <option value="Chuẩn đầu ra về tin học" data-chart="pie">Chuẩn đầu ra về tin học</option>
+        <option value="Học phí tại Việt Nam (VND)" data-chart="bar">Học phí tại Việt Nam</option>
+        <option value="Học phí tại nước ngoài ($)" data-chart="line">Học phí tại nước ngoài</option>
+    </select>
+    <button id="showChart" class="btn btn-primary">Hiển thị biểu đồ</button>
+</div>
+<div style="margin: 0; padding: 0;" style="width: 300px; height: 300px;">
+    <canvas id="chartContainer"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Khai báo biến toàn cục để lưu trữ biểu đồ
+    let myChart;
+
+    // Lắng nghe sự kiện click trên nút "Hiển thị biểu đồ"
+    document.getElementById('showChart').addEventListener('click', () => {
+        const type = document.getElementById('chartType').value;
+        const selectedOption = document.getElementById('chartType').selectedOptions[0];
+        const chartType = selectedOption.dataset.chart || 'bar'; // Lấy loại biểu đồ từ data-chart hoặc mặc định là 'bar'
+
+        fetch(`/ChuongTrinhDaoTao/GetChartData?type=${type}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received data:', data);
+
+                let labels = [];
+                let values = [];
+
+                if (data && data.length > 0) {
+                    labels = data.map(d => d.tenChuongTrinh);
+                    values = data.map(d => d.value);
+                }
+
+                const ctx = document.getElementById('chartContainer').getContext('2d');
+
+                if (myChart) {
+                    myChart.destroy();
+                }
+
+                // Mảng màu sắc cho các cột
+                const colors = [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ];
+
+                const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
+                const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
+
+                myChart = new Chart(ctx, {
+                    type: chartType, // Sử dụng loại biểu đồ từ `data-chart`
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: type,
+                            data: values,
+                            backgroundColor: chartType === 'pie' || chartType === 'doughnut' ? backgroundColors : colors[0],
+                            borderColor: chartType === 'pie' || chartType === 'doughnut' ? borderColors : colors[0].replace('0.2', '1'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: chartType === 'pie' || chartType === 'doughnut' ? {} : {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching chart data:', error);
+            });
+    });
+
+
+</script>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="~/lib/datatable/datatables.js"></script>
+    <script src="~/js/import_excel.js"></script>
+    <script src="~/js/xlsx.full.min.js"></script>
+    <script src="https://kit.fontawesome.com/5c202d0407.js" crossorigin="anonymous"></script>
+    <script>
+        //Datatable trong datatable.net. Tìm hiểu thêm thông tin: https://datatables.net/manual/
+        var table = new DataTable("#views", {
+            columnDefs: [
+                {
+                    orderable: false,
+                    targets: '._nonorder'
+                }
+            ],
+            order: [0, 'asc'],
+            fixedColumns: {
+                end: 1
+            },
+            scrollX: true,
+            pageLength: 10,
+            language: {
+                //Điều chỉnh phần hiển thị label của thanh tìm kiếm - Xem thêm thông tin: https://datatables.net/reference/option/language.search
+                search: "Tìm kiếm",
+                //Điều chỉnh phần hiển thị thông tin của table - Xem thêm thông tin: https://datatables.net/reference/option/language.info
+                info: "Tổng cộng _TOTAL_ bản ghi",
+                zeroRecords: "Không tìm thấy bản ghi nào"
+
+            },
+            createdRow: (row, data, index) => {
+            },
+            layout: {//Layout: https://datatables.net/examples/layout/index.html
+                topStart: {
+                    buttons: [//extension buttons: https://datatables.net/extensions/buttons/config
+                        {
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Thêm mới',
+                            action: function (e, dt, node, config) {//Hành động của button
+                                window.location.href = '@Url.Action("Create")';
+                            }
+                        },
+                        {
+                            extend: "excel",
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Xuất excel',
+                            exportOptions: {
+                                columns: function (idx, data, node) {
+                                    if (node.classList.contains("_nonorder")) return false;
+                                    return true;
+                                },
+                            }
+                        },
+                        {
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Import Excel',
+                            action: function (e, dt, node, config) {//Hành động của button
+                                import_excel((json) => {
+                                    let data = JSON.parse(json);
+                                    let list;
+                                    for (const [key, value] of Object.entries(data)) {
+                                        list = value;
+                                    }
+                                    let _ExcelNoSheet = [];
+                                    for (let i = 0; i < list.length; ++i) {
+                                        let arr = [];
+                                        for (const [key, value] of Object.entries(list[i])) {
+                                            arr.push(value.toString());
+                                        }
+                                        _ExcelNoSheet.push(arr);
+                                    }
+                                    let _json = JSON.stringify(_ExcelNoSheet, null, 4);
+                                    console.log(_json);
+                                    var fd = new FormData();
+                                    fd.append("jsonExcel", _json);
+                                    $.ajax({
+                                        method: "POST",
+                                        url: "/GiaHanChuongTrinhDaoTao/Receive_Excel",
+                                        data: fd,
+                                        processData: false,
+                                        contentType: false,
+                                        complete: (xhr, status) => {
+                                            if (status == "success") {
+                                                console.log(xhr.responseJSON.value['msg']);
+                                            } else alert(xhr.responseJSON.value['msg']);
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+    </script>
+}
+

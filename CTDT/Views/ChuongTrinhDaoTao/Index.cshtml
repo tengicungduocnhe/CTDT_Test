@@ -14,7 +14,6 @@
         gap: 10px; /* Khoảng cách giữa các phần tử */
     }
 
-    <<<<<<< HEAD
     .form-select {
         width: auto; /* Đặt độ rộng tự động cho `select` */
     }
@@ -51,11 +50,11 @@
                 </h5>
             </div>
             @* import excel *@
-            <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" />
+            @* <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data" style="visibility: hidden;" id="ImportExcel">
+                <input type="file" name="file" id="file"/>
                 <hr />
                 <button type="submit">Import Excel</button>
-            </form>
+            </form> *@
 
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover" id="views">
@@ -329,6 +328,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="~/lib/datatable/datatables.js"></script>
+    <script src="~/js/import_excel.js"></script>
+    <script src="~/js/xlsx.full.min.js"></script>
     <script src="https://kit.fontawesome.com/5c202d0407.js" crossorigin="anonymous"></script>
     <script>
         //Datatable trong datatable.net. Tìm hiểu thêm thông tin: https://datatables.net/manual/
@@ -374,6 +375,43 @@
                                     if (node.classList.contains("_nonorder")) return false;
                                     return true;
                                 },
+                            }
+                        },
+                        {
+                            className: 'btn btn-primary', //Thêm class cho button
+                            text: 'Import Excel',
+                            action: function (e, dt, node, config) {//Hành động của button
+                                import_excel((json) => {
+                                    let data = JSON.parse(json);
+                                    let list;
+                                    for (const [key, value] of Object.entries(data)) {
+                                        list = value;
+                                    }
+                                    let _ExcelNoSheet = [];
+                                    for (let i = 0; i < list.length; ++i) {
+                                        let arr = [];
+                                        for (const [key, value] of Object.entries(list[i])) {
+                                            arr.push(value.toString());
+                                        }
+                                        _ExcelNoSheet.push(arr);
+                                    }
+                                    let _json = JSON.stringify(_ExcelNoSheet, null, 4);
+                                    console.log(_json);
+                                    var fd = new FormData();
+                                    fd.append("jsonExcel", _json);
+                                    $.ajax({
+                                        method: "POST",
+                                        url: "/ChuongTrinhDaoTao/Receive_Excel",
+                                        data: fd,
+                                        processData: false,
+                                        contentType: false,
+                                        complete: (xhr, status) => {
+                                            if (status == "success") {
+                                                console.log(xhr.responseJSON.value['msg']);
+                                            } else alert(xhr.responseJSON.value['msg']);
+                                        }
+                                    });
+                                });
                             }
                         }
                     ]

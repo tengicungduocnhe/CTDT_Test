@@ -11,8 +11,8 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/Home/Index">Home </a></li>
-                        <li class="breadcrumb-item"><a href="/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai/Index">Index </a></li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai/Index">Index</a></li>
                     </ol>
                 </nav>
             </div>
@@ -22,7 +22,7 @@
         <div class="row match-height">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header  bg-primary text-white text-center ">
+                    <div class="card-header bg-primary text-white text-center">
                         <h4 class="card-title">Chương Trình Nước Ngoài</h4>
                     </div>
                     <div class="card-content">
@@ -34,12 +34,13 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label asp-for="IdChuongTrinhDaoTao" class="control-label"></label>
-                                            <select asp-for="IdChuongTrinhDaoTao" class ="form-control" asp-items="ViewBag.IdChuongTrinhDaoTao"></select>
+                                            <select asp-for="IdChuongTrinhDaoTao" class="form-control" asp-items="ViewBag.IdChuongTrinhDaoTao"></select>
                                         </div>
+                                    </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label asp-for="IdLoaiQuyetDinh" class="control-label"></label>
-                                            <select asp-for="IdLoaiQuyetDinh" class ="form-control" asp-items="ViewBag.IdLoaiQuyetDinh"></select>
+                                            <select asp-for="IdLoaiQuyetDinh" class="form-control" asp-items="ViewBag.IdLoaiQuyetDinh"></select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -52,21 +53,23 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label asp-for="NgayBanHanhQuyetDinh" class="control-label"></label>
-                                            <input asp-for="NgayBanHanhQuyetDinh" class="form-control" />
+                                            <input asp-for="NgayBanHanhQuyetDinh" class="form-control" type="date" />
                                             <span asp-validation-for="NgayBanHanhQuyetDinh" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label asp-for="IdHinhThucDaoTao" class="control-label"></label>
-                                            <select asp-for="IdHinhThucDaoTao" class ="form-control" asp-items="ViewBag.IdHinhThucDaoTao"></select>
+                                            <select asp-for="IdHinhThucDaoTao" class="form-control" asp-items="ViewBag.IdHinhThucDaoTao"></select>
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
-                                            <a asp-action="Index" class="btn btn-secondary btn-lg mx-2 shadow-sm" data-bs-toggle="tooltip" title="Quay lại trang danh sách">
-                                                <i class="bi bi-arrow-left-circle"></i> Quay lại
-                                            </a>
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Xác nhận</button>
+                                        <a asp-action="Index" class="btn btn-secondary btn-lg mx-2 shadow-sm" data-bs-toggle="tooltip" title="Quay lại trang danh sách">
+                                            <i class="bi bi-arrow-left-circle"></i> Quay lại
+                                        </a>
+                                        <button type="submit" class="btn btn-primary me-1 mb-1" data-bs-toggle="tooltip" title="Xác nhận thông tin">
+                                            <i class="bi bi-check-circle"></i> Xác nhận
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -78,11 +81,18 @@
     </section>
 </div>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="https://cdn.jsdelivr.net/gh/kirito99152/search_select@latest/search_select.js"></script>
     <script>
         let select = new search_select("form");
         select.IsNULL = true;
         select.run();
+
+        // Tooltip initialization
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(tooltip => {
+            new bootstrap.Tooltip(tooltip);
+        });
     </script>
 }

@@ -7,15 +7,15 @@ namespace CTDT.Models;
 public partial class TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai
 
 {
-    [Display(Name = "Id Quyết Định Cấp Phép Chương Trình Dùng Cho Chương Trình Nước Ngoài")]
+    [Display(Name = "ID Quyết Định Cấp Phép Chương Trình Dùng Cho Chương Trình Nước Ngoài")]
     public int IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai { get; set; }
 
 
-    [Display(Name = "ID Chương Trình Đào Tạo")]
+    [Display(Name = "Chương Trình Đào Tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }
 
 
-    [Display(Name = "ID loại Quyết Định")]
+    [Display(Name = "Loại Quyết Định")]
     public int? IdLoaiQuyetDinh { get; set; }
 
     [Display(Name = "Số Quyết Định")]
@@ -27,7 +27,7 @@ public partial class TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateOnly? NgayBanHanhQuyetDinh { get; set; }
 
-    [Display(Name = "ID Hình thức đào tạo")]
+    [Display(Name = "Hình thức đào tạo")]
     public int? IdHinhThucDaoTao { get; set; }
 
     [Display(Name = "ID Chương Trình Đào Tạo")]

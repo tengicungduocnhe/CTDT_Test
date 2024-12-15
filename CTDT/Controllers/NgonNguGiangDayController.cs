@@ -254,18 +254,15 @@ namespace C500Hemis.Controllers.CTDT
                     return Json(new { error = "Invalid type parameter." });
                 }
 
-                // Lấy dữ liệu từ API
-                var ngonNguGiangDayList = await ApiServices_.GetAll<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay");
-                var chuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
-                var dmNgoaiNgus = await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu");
-                var dmKhungNangLucNgoaiNgus = await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu");
+                var data = ApiServices_.GetAll<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay");
+                var dataList = await data;
+                List<TbChuongTrinhDaoTao> chuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<TbNgonNguGiangDay> ngonNguGiangDayList = await ApiServices_.GetAll<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay");
 
                 // Gán navigation property
                 ngonNguGiangDayList.ForEach(item =>
                 {
                     item.IdChuongTrinhDaoTaoNavigation = chuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
-                    item.IdNgonNguNavigation = dmNgoaiNgus.FirstOrDefault(t => t.IdNgoaiNgu == item.IdNgonNgu);
-                    item.IdTrinhDoNgonNguDauVaoNavigation = dmKhungNangLucNgoaiNgus.FirstOrDefault(t => t.IdKhungNangLucNgoaiNgu == item.IdTrinhDoNgonNguDauVao);
                 });
 
                 if (type == "Ngôn ngữ")
@@ -273,7 +270,7 @@ namespace C500Hemis.Controllers.CTDT
                     var resultFiltered = ngonNguGiangDayList.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdNgonNguNavigation?.NgoaiNgu ?? "Không xác định"
+                        Value = s.IdNgonNgu ?? 0
                     }).ToList();
 
                     return Json(resultFiltered);
@@ -283,11 +280,12 @@ namespace C500Hemis.Controllers.CTDT
                     var resultFiltered = ngonNguGiangDayList.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdTrinhDoNgonNguDauVao
+                        Value = s.IdChuongTrinhDaoTao ?? 0
                     }).ToList();
 
                     return Json(resultFiltered);
                 }
+                
 
                 return Json(new { error = "Type not handled." });
             }
@@ -296,6 +294,7 @@ namespace C500Hemis.Controllers.CTDT
                 return Json(new { error = ex.Message });
             }
         }
+
 
     }
 }

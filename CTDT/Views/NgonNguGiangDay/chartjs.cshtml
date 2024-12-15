@@ -43,19 +43,18 @@
             const chartType = selectedOption.dataset.chart || 'bar';
 
             fetch(`/NgonNguGiangDay/GetChartData?type=${type}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
+                    console.log('Data received:', data); // Kiểm tra dữ liệu trả về
+
                     let labels = [];
                     let values = [];
 
                     if (data && data.length > 0) {
                         labels = data.map(d => d.tenChuongTrinh);
                         values = data.map(d => d.value);
+                    } else {
+                        console.error('No data found or data is empty.');
                     }
 
                     const ctx = document.getElementById('chartContainer').getContext('2d');
@@ -64,17 +63,6 @@
                         myChart.destroy();
                     }
 
-                    const colors = [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                    ];
-
-                    const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
-                    const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
-
                     myChart = new Chart(ctx, {
                         type: chartType,
                         data: {
@@ -82,22 +70,16 @@
                             datasets: [{
                                 label: type,
                                 data: values,
-                                backgroundColor: chartType === 'pie' || chartType === 'doughnut' ? backgroundColors : colors[0],
-                                borderColor: chartType === 'pie' || chartType === 'doughnut' ? borderColors : colors[0].replace('0.2', '1'),
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 1
                             }]
                         },
                         options: {
                             responsive: true,
-                            scales: chartType === 'pie' || chartType === 'doughnut' ? {} : {
+                            scales: {
                                 y: {
                                     beginAtZero: true
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'top'
                                 }
                             }
                         }
@@ -106,6 +88,8 @@
                 .catch(error => {
                     console.error('Error fetching chart data:', error);
                 });
+
+
         });
     </script>
 </body>

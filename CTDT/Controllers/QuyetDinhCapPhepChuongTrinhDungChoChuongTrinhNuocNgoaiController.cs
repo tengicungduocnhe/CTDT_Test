@@ -380,22 +380,22 @@ namespace CTDT.Controllers
 
                     return Json(resultFiltered);
                 }
-                else if (type == "Kết Quả Kiểm Định")
+                else if (type == "Hình thức đào tạo")
                 {
                     var resultFiltered = TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdHinhThucDaoTaoNavigation?.HinhThucDaoTao ?? "Không xác định"
+                        Value = s.IdHinhThucDaoTao?? 0
                     }).ToList();
 
                     return Json(resultFiltered);
                 }
-                else if (type == "Tổ Chức Kiểm Định")
+                else if (type == "Loại quyết định")
                 {
                     var resultFiltered = TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdLoaiQuyetDinhNavigation?.LoaiQuyetDinh ?? "Không xác định"
+                        Value = s.IdLoaiQuyetDinh??0 
                     }).ToList();
 
                     return Json(resultFiltered);

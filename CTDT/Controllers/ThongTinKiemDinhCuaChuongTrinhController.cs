@@ -341,7 +341,7 @@ namespace C500Hemis.Controllers.CTDT
                     var resultFiltered = TbThongTinKiemDinhCuaChuongTrinhs.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdKetQuaKiemDinhNavigation?.KetQuaKiemDinh ?? "Không xác định"
+                        Value = s.IdKetQuaKiemDinh ?? 0
                     }).ToList();
 
                     return Json(resultFiltered);
@@ -351,7 +351,7 @@ namespace C500Hemis.Controllers.CTDT
                     var resultFiltered = TbThongTinKiemDinhCuaChuongTrinhs.Select(s => new
                     {
                         TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
-                        Value = s.IdToChucKiemDinhNavigation?.ToChucKiemDinh ?? "Không xác định"
+                        Value = s.IdToChucKiemDinh ?? 0
                     }).ToList();
 
                     return Json(resultFiltered);

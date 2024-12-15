@@ -317,10 +317,12 @@ namespace CTDT.Controllers
 
 
         }
-        
+
         [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
+        public IActionResult Receive_Excel(string jsonExcel)
+        {
+            try
+            {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
                 dataList.ForEach(s => {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
@@ -329,9 +331,81 @@ namespace CTDT.Controllers
                     // new_.IdNganhDaoTao = s[1];
                 });
                 string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
+                return Accepted(Json(new { msg = message }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Json(new { msg = ex.Message, }));
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                // Kiểm tra tham số 'type' có hợp lệ hay không
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Số quyết định" ||
+                    type == "Hình thức đào tạo" ||
+                    type == "Loại quyết định"))
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ API
+                var data = ApiServices_.GetAll<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>("/api/ctdt/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai");
+                var dataList = await data;
+
+                List<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai> TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais = await ApiServices_.GetAll<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>("/api/ctdt/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai");
+                List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<DmHinhThucDaoTao> dmHinhThucDaoTaos = await ApiServices_.GetAll<DmHinhThucDaoTao>("/api/dm/HinhThucDaoTao");
+                List<DmLoaiQuyetDinh> dmLoaiQuyetDinhs = await ApiServices_.GetAll<DmLoaiQuyetDinh>("/api/dm/LoaiQuyetDinh");
+
+                // Gán navigation properties
+                TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.ForEach(item =>
+                {
+                    item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+                    item.IdHinhThucDaoTaoNavigation = dmHinhThucDaoTaos.FirstOrDefault(t => t.IdHinhThucDaoTao == item.IdHinhThucDaoTao);
+                    item.IdLoaiQuyetDinhNavigation = dmLoaiQuyetDinhs.FirstOrDefault(t => t.IdLoaiQuyetDinh == item.IdLoaiQuyetDinh);
+                });
+
+                // Kiểm tra loại biểu đồ
+                if (type == "Số quyết định")
+                {
+                    var resultFiltered = TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.SoQuyetDinh ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Kết Quả Kiểm Định")
+                {
+                    var resultFiltered = TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdHinhThucDaoTaoNavigation?.HinhThucDaoTao ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Tổ Chức Kiểm Định")
+                {
+                    var resultFiltered = TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdLoaiQuyetDinhNavigation?.LoaiQuyetDinh ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+
+                return Json(new { error = "Type not handled." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
             }
         }
     }

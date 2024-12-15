@@ -115,12 +115,12 @@ namespace C500Hemis.Controllers.CTDT
             return View(tbThongTinKiemDinhCuaChuongTrinh);
         }
 
-      //  GET: ThongTinKiemDinhCuaChuongTrinh/Create
+        //  GET: ThongTinKiemDinhCuaChuongTrinh/Create
         public async Task<IActionResult> Create()
         {
             try
             {
-                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh" );
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
                 ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
                 ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
                 return View();
@@ -131,7 +131,7 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
-        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -159,7 +159,7 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
-        
+
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -265,32 +265,110 @@ namespace C500Hemis.Controllers.CTDT
 
         private void check_null(TbThongTinKiemDinhCuaChuongTrinh tbThongTinKiemDinhCuaChuongTrinh)
         {
-           if (tbThongTinKiemDinhCuaChuongTrinh.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
+            if (tbThongTinKiemDinhCuaChuongTrinh.IdChuongTrinhDaoTao == null) ModelState.AddModelError("IdChuongTrinhDaoTao", "Vui lòng nhập vào ô trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.IdToChucKiemDinh == null) ModelState.AddModelError("IdToChucKiemDinh", "Vui lòng nhập vào ô trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.IdKetQuaKiemDinh == null) ModelState.AddModelError("IdKetQuaKiemDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.SoQuyetDinh == null) ModelState.AddModelError("SoQuyetDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.NgayCapChungNhanKiemDinh == null) ModelState.AddModelError("NgayCapChungNhanKiemDinh", "Không được bỏ trống!");
             if (tbThongTinKiemDinhCuaChuongTrinh.ThoiHanKiemDinh == null) ModelState.AddModelError("ThoiHanKiemDinh", "Không được bỏ trống!");
         }
-        
+
         [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
+        public IActionResult Receive_Excel(string jsonExcel)
+        {
+            try
+            {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
-                dataList.ForEach(s => {
+                dataList.ForEach(s =>
+                {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
                     // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
                     // new_.MaChuongTrinhDaoTao = s[1];
                     // new_.IdNganhDaoTao = s[1];
                 });
                 string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
+                return Accepted(Json(new { msg = message }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Json(new { msg = ex.Message, }));
             }
         }
+        [HttpGet]
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                // Kiểm tra tham số 'type' có hợp lệ hay không
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Số quyết định" ||
+                    type == "Tổ Chức Kiểm Định" ||
+                    type == "Kết Quả Kiểm Định"))
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ API
+                var data = ApiServices_.GetAll<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh");
+                var dataList = await data;
+
+                List<TbThongTinKiemDinhCuaChuongTrinh> TbThongTinKiemDinhCuaChuongTrinhs = await ApiServices_.GetAll<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh");
+                List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<DmKetQuaKiemDinh> dmKetQuaKiemDinhs = await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh");
+                List<DmToChucKiemDinh> dmToChucKiemDinhs = await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh");
+
+                // Gán navigation properties
+                TbThongTinKiemDinhCuaChuongTrinhs.ForEach(item =>
+                {
+                    item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+                    item.IdKetQuaKiemDinhNavigation = dmKetQuaKiemDinhs.FirstOrDefault(t => t.IdKetQuaKiemDinh == item.IdKetQuaKiemDinh);
+                    item.IdToChucKiemDinhNavigation = dmToChucKiemDinhs.FirstOrDefault(t => t.IdToChucKiemDinh == item.IdToChucKiemDinh);
+                });
+
+                // Kiểm tra loại biểu đồ
+                if (type == "Số quyết định")
+                {
+                    var resultFiltered = TbThongTinKiemDinhCuaChuongTrinhs.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.SoQuyetDinh ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Kết Quả Kiểm Định")
+                {
+                    var resultFiltered = TbThongTinKiemDinhCuaChuongTrinhs.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdKetQuaKiemDinhNavigation?.KetQuaKiemDinh ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Tổ Chức Kiểm Định")
+                {
+                    var resultFiltered = TbThongTinKiemDinhCuaChuongTrinhs.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdToChucKiemDinhNavigation?.ToChucKiemDinh ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+
+                return Json(new { error = "Type not handled." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
     }
+
 }
+
 
 #region CMT
 
@@ -597,4 +675,4 @@ namespace C500Hemis.Controllers.CTDT
 //        }
 //    }
 //}
-#endregion 
+#endregion

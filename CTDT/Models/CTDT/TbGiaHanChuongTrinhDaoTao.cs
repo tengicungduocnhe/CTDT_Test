@@ -11,7 +11,7 @@ public partial class TbGiaHanChuongTrinhDaoTao
     public int IdGiaHanChuongTrinhDaoTao { get; set; }
     [DisplayName(displayName: " Tên Chương Trình Đào Tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }
-
+    public string? TenChuongTrinh { get; set; }
 
     [DisplayName(displayName: "Số Quyết Định Gia Hạn")]
     [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
@@ -28,4 +28,5 @@ public partial class TbGiaHanChuongTrinhDaoTao
     public int? GiaHanLanThu { get; set; }
     [DisplayName(displayName: "ID Chương Trình Đào Tạo")]
     public virtual TbChuongTrinhDaoTao? IdChuongTrinhDaoTaoNavigation { get; set; }
+
 }

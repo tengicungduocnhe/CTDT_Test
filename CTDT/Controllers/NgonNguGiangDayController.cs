@@ -223,8 +223,10 @@ namespace C500Hemis.Controllers.CTDT
 
         }
         [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
+        public IActionResult Receive_Excel(string jsonExcel)
+        {
+            try
+            {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
                 dataList.ForEach(s => {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
@@ -233,10 +235,68 @@ namespace C500Hemis.Controllers.CTDT
                     // new_.IdNganhDaoTao = s[1];
                 });
                 string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
+                return Accepted(Json(new { msg = message }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Json(new { msg = ex.Message, }));
             }
         }
+        [HttpGet]
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                // Kiểm tra tham số 'type' có hợp lệ hay không
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Ngôn ngữ" || type == "Trình độ ngôn ngữ đầu vào (bậc)"))
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ API
+                var ngonNguGiangDayList = await ApiServices_.GetAll<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay");
+                var chuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                var dmNgoaiNgus = await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu");
+                var dmKhungNangLucNgoaiNgus = await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu");
+
+                // Gán navigation property
+                ngonNguGiangDayList.ForEach(item =>
+                {
+                    item.IdChuongTrinhDaoTaoNavigation = chuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+                    item.IdNgonNguNavigation = dmNgoaiNgus.FirstOrDefault(t => t.IdNgoaiNgu == item.IdNgonNgu);
+                    item.IdTrinhDoNgonNguDauVaoNavigation = dmKhungNangLucNgoaiNgus.FirstOrDefault(t => t.IdKhungNangLucNgoaiNgu == item.IdTrinhDoNgonNguDauVao);
+                });
+
+                if (type == "Ngôn ngữ")
+                {
+                    var resultFiltered = ngonNguGiangDayList.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdNgonNguNavigation?.NgoaiNgu ?? "Không xác định"
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Trình độ ngôn ngữ đầu vào (bậc)")
+                {
+                    var resultFiltered = ngonNguGiangDayList.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.IdTrinhDoNgonNguDauVao
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+
+                return Json(new { error = "Type not handled." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
     }
 }
+

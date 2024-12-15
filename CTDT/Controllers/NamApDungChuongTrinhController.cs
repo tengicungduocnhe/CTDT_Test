@@ -105,7 +105,7 @@ namespace CTDT.Controllers
         {
             try
             {
-              ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
                 return View();
             }
             catch (Exception ex)
@@ -136,7 +136,7 @@ namespace CTDT.Controllers
                     await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", tbNamApDungChuongTrinh);
                     return RedirectToAction(nameof(Index));
                 }
-              ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
 
                 return View(tbNamApDungChuongTrinh);
             }
@@ -165,7 +165,7 @@ namespace CTDT.Controllers
                 {
                     return NotFound();
                 }
-              ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
                 return View(TbNamApDungChuongTrinh);
             }
             catch (Exception ex)
@@ -213,7 +213,7 @@ namespace CTDT.Controllers
                     }
                     return RedirectToAction(nameof(Index));
                 }
-              ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
+                ViewData["IdChuongTrinhDaoTao"] = new SelectList(await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao"), "IdChuongTrinhDaoTao", "TenChuongTrinh");
                 return View(tbNamApDungChuongTrinh);
             }
             catch (Exception ex)
@@ -284,8 +284,10 @@ namespace CTDT.Controllers
 
         }
         [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
+        public IActionResult Receive_Excel(string jsonExcel)
+        {
+            try
+            {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
                 dataList.ForEach(s => {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
@@ -294,10 +296,56 @@ namespace CTDT.Controllers
                     // new_.IdNganhDaoTao = s[1];
                 });
                 string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
+                return Accepted(Json(new { msg = message }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Json(new { msg = ex.Message, }));
             }
         }
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Số tín chỉ tối thiểu để tốt nghiệp" ||
+                    type == "Chỉ tiêu tuyển sinh hằng năm" ||
+                    type == "Tổng học phí toàn khoá"))
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ API
+                var data = ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/GiaHanChuongTrinhDaoTao");
+                var dataList = await data;
+                List<TbChuongTrinhDaoTao> chuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<TbNamApDungChuongTrinh> namApDungList = await ApiServices_.GetAll<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh");
+
+                // Gán navigation property
+                namApDungList.ForEach(item =>
+                {
+                    item.IdChuongTrinhDaoTaoNavigation = chuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+                });
+                var resultFiltered = namApDungList.Select(s => new
+                {
+                    TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",  // Trả về "Không có tên chương trình" nếu null
+
+                    Value = type == "Số tín chỉ tối thiểu để tốt nghiệp" ? (s.SoTinChiToiThieuDeTotNghiep ?? 0) :
+                            type == "Chỉ tiêu tuyển sinh hằng năm" ? (s.ChiTieuTuyenSinhHangNam ?? 0) :
+                            type == "Tổng học phí toàn khoá" ? (s.TongHocPhiToanKhoa ?? 0) : 0
+                }).ToList();
+
+                return Json(resultFiltered);
+            }
+
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
     }
+
 }
+
+

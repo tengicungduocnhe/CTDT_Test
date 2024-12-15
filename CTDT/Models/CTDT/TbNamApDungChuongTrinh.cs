@@ -10,6 +10,7 @@ public partial class TbNamApDungChuongTrinh
 
     [Display(Name = "Chương trình đào tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }
+    public string? TenChuongTrinh { get; set; }
 
     [Display(Name = "Số tín chỉ tối thiểu để tốt nghiệp")]
     [RegularExpression(@"^[0-9]*$", ErrorMessage = " Chỉ được chứa ký tự số.")]

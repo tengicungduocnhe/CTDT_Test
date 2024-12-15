@@ -31,9 +31,9 @@ namespace CTDT.Controllers
         {
             List<TbGiaHanChuongTrinhDaoTao> tbGiaHanChuongTrinhDaoTaos = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
             List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
-                     tbGiaHanChuongTrinhDaoTaos.ForEach(item => {
+            tbGiaHanChuongTrinhDaoTaos.ForEach(item => {
                 item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
-             
+
             });
             return tbGiaHanChuongTrinhDaoTaos;
         }
@@ -285,8 +285,10 @@ namespace CTDT.Controllers
 
         }
         [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
+        public IActionResult Receive_Excel(string jsonExcel)
+        {
+            try
+            {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
                 dataList.ForEach(s => {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
@@ -295,10 +297,69 @@ namespace CTDT.Controllers
                     // new_.IdNganhDaoTao = s[1];
                 });
                 string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
+                return Accepted(Json(new { msg = message }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Json(new { msg = ex.Message, }));
             }
         }
+        [HttpGet]
+        public async Task<JsonResult> GetChartData(string type)
+        {
+            try
+            {
+                // Kiểm tra tham số 'type' có hợp lệ hay không
+                if (string.IsNullOrEmpty(type) ||
+                    !(type == "Số quyết định gia hạn" ||
+                        type == "Gia hạn lần thứ"))
+                {
+                    return Json(new { error = "Invalid type parameter." });
+                }
+
+                // Lấy dữ liệu từ API
+                var data = ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
+                var dataList = await data;
+                List<TbChuongTrinhDaoTao> chuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
+                List<TbGiaHanChuongTrinhDaoTao> giaHanList = await ApiServices_.GetAll<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao");
+
+                // Gán navigation property
+                giaHanList.ForEach(item =>
+                {
+                    item.IdChuongTrinhDaoTaoNavigation = chuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
+                });
+                // Kiểm tra loại biểu đồ là "Số quyết định gia hạn"
+                if (type == "Số quyết định gia hạn")
+                {
+                    var resultFiltered = dataList
+                        .GroupBy(s => s.SoQuyetDinhGiaHan ?? "Không xác định")
+                        .Select(g => new
+                        {
+                            TenChuongTrinh = g.Key,
+                            Value = g.Count()
+                        })
+                        .ToList();
+
+                    return Json(resultFiltered);
+                }
+                else if (type == "Gia hạn lần thứ")
+                {
+                    var resultFiltered = giaHanList.Select(s => new
+                    {
+                        TenChuongTrinh = s.IdChuongTrinhDaoTaoNavigation?.TenChuongTrinh ?? "Không xác định",
+                        Value = s.GiaHanLanThu ?? 0
+                    }).ToList();
+
+                    return Json(resultFiltered);
+                }
+
+                return Json(new { error = "Type not handled." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
     }
 }

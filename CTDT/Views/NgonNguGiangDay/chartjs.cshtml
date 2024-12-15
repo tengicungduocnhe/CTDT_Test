@@ -1,15 +1,95 @@
 ﻿@{
     ViewData["Title"] = "Chartjs";
 }
+<style>
+    .d-flex {
+        display: flex;
+        align-items: center; /* Canh giữa theo chiều dọc */
+        gap: 10px; /* Khoảng cách giữa các phần tử */
+    }
 
+    .form-select {
+        width: auto; /* Đặt độ rộng tự động cho `select` */
+    }
+
+    button#showChart {
+        white-space: nowrap; /* Đảm bảo nút không xuống dòng */
+    }
+</style>
 <body>
-    <h1 style="text-align:center">NGÔN NGỮ GIẢNG DẠY</h1>
+    <h1 style="text-align:center"> NGÔN NGỮ GIẢNG DẠY</h1>
     <pre></pre>
 
-    <!-- copy vào đây
-                <div class="chart-container" style="width: 80%; height: 70vh; margin: 0 auto;">
-          <canvas id="chartContainer"></canvas>
-            </div>
-            nhớ để cái class như này đỡ mất công chỉh nhé
-    -->
+    <div class="d-flex align-items-center gap-2" style="margin-bottom: 15px;">
+        <select id="chartType" class="form-select">
+            <option value="Ngôn ngữ" data-chart="bar">Ngôn ngữ</option>
+            <option value="Trình độ ngôn ngữ đầu vào (bậc)" data-chart="bar">Trình độ ngôn ngữ đầu vào</option>
+        </select>
+        <button id="showChart" class="btn btn-primary">Hiển thị </button>
+    </div>
+
+    <!-- Biểu đồ Canvas -->
+    <div class="chart-container" style="width: 80%; height: 70vh; margin: 0 auto;">
+        <canvas id="chartContainer"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let myChart;
+
+        document.getElementById('showChart').addEventListener('click', () => {
+            const type = document.getElementById('chartType').value;
+            const selectedOption = document.getElementById('chartType').selectedOptions[0];
+            const chartType = selectedOption.dataset.chart || 'bar';
+
+            fetch(`/NgonNguGiangDay/GetChartData?type=${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data received:', data); // Kiểm tra dữ liệu trả về
+
+                    let labels = [];
+                    let values = [];
+
+                    if (data && data.length > 0) {
+                        labels = data.map(d => d.tenChuongTrinh);
+                        values = data.map(d => d.value);
+                    } else {
+                        console.error('No data found or data is empty.');
+                    }
+
+                    const ctx = document.getElementById('chartContainer').getContext('2d');
+
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    myChart = new Chart(ctx, {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: type,
+                                data: values,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching chart data:', error);
+                });
+
+
+        });
+    </script>
 </body>

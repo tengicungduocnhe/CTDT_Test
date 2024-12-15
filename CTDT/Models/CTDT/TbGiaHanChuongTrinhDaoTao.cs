@@ -7,7 +7,7 @@ namespace CTDT.Models;
 
 public partial class TbGiaHanChuongTrinhDaoTao
 {
-    [DisplayName(displayName: "Id Chương Trình Đào Tạo")]
+    [DisplayName(displayName: "ID Chương Trình Đào Tạo")]
     public int IdGiaHanChuongTrinhDaoTao { get; set; }
     [DisplayName(displayName: " Tên Chương Trình Đào Tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }

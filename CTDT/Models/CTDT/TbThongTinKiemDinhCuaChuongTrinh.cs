@@ -13,22 +13,22 @@ public partial class TbThongTinKiemDinhCuaChuongTrinh
  //   [Display(Name = "CHƯƠNG TRÌNH ĐÀO TẠO")]
     public int IdChuongTrinhDaoTao { get; set; }
 
-    [Display(Name = "TỔ CHỨC TÌM KIẾM")]
+    [Display(Name = "Tổ chức kiểm định")]
     public int? IdToChucKiemDinh { get; set; }
 
-    [Display(Name = "KẾT QUẢ KIỂM ĐỊNH")]
+    [Display(Name = "Kết quả kiểm định")]
     public int? IdKetQuaKiemDinh { get; set; }
 
-    [Display(Name = "SỐ QUYẾT ĐỊNH")]
+    [Display(Name = "Số quết định")]
     [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "chỉ được chứa ký tự chữ và số.")]
     public string? SoQuyetDinh { get; set; }
 
-    [Display(Name = "NGÀY CẤP CHỨNG NHẬN")]
+    [Display(Name = "Ngày cấp chứng nhận")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateOnly? NgayCapChungNhanKiemDinh { get; set; }
 
-    [Display(Name = "THỜI HẠN")]
+    [Display(Name = "Thời hạn")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateOnly? ThoiHanKiemDinh { get; set; }

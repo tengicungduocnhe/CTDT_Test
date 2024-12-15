@@ -8,6 +8,7 @@ public partial class TbNamApDungChuongTrinh
 {
     public int IdNamApDungChuongTrinh { get; set; }
 
+    [Display(Name = "Chương trình đào tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }
     public string? TenChuongTrinh { get; set; }
 
@@ -27,6 +28,7 @@ public partial class TbNamApDungChuongTrinh
     [Display(Name = "Chỉ tiêu tuyển sinh hằng năm")]
     [RegularExpression(@"^[0-9]*$", ErrorMessage = " Chỉ được chứa ký tự số.")]
     public int? ChiTieuTuyenSinhHangNam { get; set; }
+
 
     public virtual TbChuongTrinhDaoTao? IdChuongTrinhDaoTaoNavigation { get; set; }
 }

@@ -11,11 +11,11 @@ public partial class TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai
     public int IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai { get; set; }
 
 
-    [Display(Name = "Id chương trình đào tạo")]
+    [Display(Name = "ID chương trình đào tạo")]
     public int? IdChuongTrinhDaoTao { get; set; }
 
 
-    [Display(Name = "Id loại quyết định")]
+    [Display(Name = "ID loại quyết định")]
     public int? IdLoaiQuyetDinh { get; set; }
 
     [Display(Name = "số quyết định")]
@@ -27,7 +27,7 @@ public partial class TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateOnly? NgayBanHanhQuyetDinh { get; set; }
 
-    [Display(Name = "id hình thức đào tạo")]
+    [Display(Name = "ID Hình thức đào tạo")]
     public int? IdHinhThucDaoTao { get; set; }
 
     public virtual TbChuongTrinhDaoTao? IdChuongTrinhDaoTaoNavigation { get; set; }

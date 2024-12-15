@@ -6,6 +6,7 @@ namespace CTDT.Models;
 
 public partial class TbNamApDungChuongTrinh
 {
+    [Display(Name = "ID Năm Áp Dụng Chương Trình")]
     public int IdNamApDungChuongTrinh { get; set; }
 
     [Display(Name = "Chương trình đào tạo")]

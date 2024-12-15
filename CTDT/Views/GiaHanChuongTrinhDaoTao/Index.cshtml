@@ -96,8 +96,11 @@
                                     @Html.DisplayFor(modelItem => item.GiaHanLanThu)
                                 </td>
                                 <td>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdGiaHanChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdGiaHanChuongTrinhDaoTao})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdGiaHanChuongTrinhDaoTao})'" data-bs-toggle="tooltip" title="Sửa"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> </button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdGiaHanChuongTrinhDaoTao})'" data-bs-toggle="tooltip" title="Chi tiết"><i class="fa-sharp fa-solid fa-circle-info"></i> </button>
+                                    <button class="btn btn-outline-danger "
+                                            onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdGiaHanChuongTrinhDaoTao })'" data-bs-toggle="tooltip" title="Xoá">
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
                                 </td>
                             </tr>
                         }

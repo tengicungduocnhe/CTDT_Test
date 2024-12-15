@@ -7,10 +7,10 @@ namespace CTDT.Models;
 public partial class TbThongTinKiemDinhCuaChuongTrinh
 {
     [RegularExpression(@"^\d+$", ErrorMessage = "ID phải là số nguyên dương")]
-    [Display(Name = "ID")]
+    [Display(Name = "ID Thông Tin Kiểm Định Của Chương Trình")]
     public int IdThongTinKiemDinhCuaChuongTrinh { get; set; }
 
- //   [Display(Name = "CHƯƠNG TRÌNH ĐÀO TẠO")]
+  [Display(Name = "Chương Trình Đào Tạo")]
     public int IdChuongTrinhDaoTao { get; set; }
 
     [Display(Name = "Tổ Chức Kiểm Định")]

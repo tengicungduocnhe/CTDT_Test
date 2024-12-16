@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
+ExcelPackage.LicenseContext = LicenseContext.Commercial; // Hoặc LicenseContext.NonCommercial
 
 // 1. Cấu hình DbContext cho SQL Server
 builder.Services.AddDbContext<CTDT.Models.DbHemisC500Context>();

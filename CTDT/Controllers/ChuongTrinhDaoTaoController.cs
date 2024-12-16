@@ -17,10 +17,17 @@ namespace CTDT.Controllers
         
         private readonly ApiServices ApiServices_;
         // Lấy từ HemisContext 
+      
+
         public ChuongTrinhDaoTaoController(ApiServices services)
         {
             ApiServices_ = services;
         }
+        //public ChuongTrinhDaoTaoController()
+        //{
+        //    // Thiết lập LicenseContext cho EPPlus
+        //    ExcelPackage.LicenseContext = LicenseContext.Commercial; // Hoặc LicenseContext.NonCommercial nếu bạn dùng bản miễn phí
+        //}
         public IActionResult chartjs()
         {
             return View(); // Nó sẽ trả về view chartjs.cshtml

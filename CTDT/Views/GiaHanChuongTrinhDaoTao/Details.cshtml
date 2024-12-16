@@ -50,6 +50,9 @@
                             <div class="col-12 d-flex justify-content-start gap-2">
                                 <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdGiaHanChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
                                 <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay lại</button>
+                                <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
+                                    Xoá
+                                </button>
                                 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog"
                                      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
@@ -66,7 +69,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <form asp-action="Delete">
-                                                    <input type="hidden" asp-for="IdChuongTrinhDaoTao" />
+                                                    <input type="hidden" asp-for="IdGiaHanChuongTrinhDaoTao" />
                                                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                                         <i class="bx bx-x d-block d-sm-none"></i>
                                                         <span class="d-none d-sm-block">Close</span>

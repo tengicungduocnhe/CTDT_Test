@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Details";
 }
+@* <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
+</head> *@
 <style>
     .dl-bordered dt,
     .dl-bordered dd {
@@ -41,98 +44,120 @@
     </div>
 
     <section class="section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 col-md-12">
-                    <div class="card shadow-lg rounded">
-                        <!-- Header -->
-                        <div class="card-header bg-primary bg-gradient text-white text-center">
-                            <h4 class="card-title mb-0">Chương Trình Đào Tạo</h4>
-                        </div>
-                        <!-- Nội dung Card -->
+        <div class="row match-height justify-content-center">
+            <div class="col-lg-8 col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4 class="card-title">Gia Hạn Chương Trình Đào Tạo</h4>
+                    </div>
+                    <div class="card-content">
                         <div class="card-body">
-                            <div class="row g-4">
-                                <!-- Phần cột 1 -->
-                                <div class="col-md-6 ">
-                                    <dl class="row dl-bordered">
-                                        <dt class="col-sm-6">Mã chương trình đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.MaChuongTrinhDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Tên chương trình</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenChuongTrinh)</dd>
-
-                                        <dt class="col-sm-6">Tên chương trình bằng tiếng Anh</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenChuongTrinhBangTiengAnh)</dd>
-
-                                        <dt class="col-sm-6">Địa điểm đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.DiaDiemDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Năm bắt đầu tuyển sinh</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.NamBatDauTuyenSinh)</dd>
-
-                                        <dt class="col-sm-6">Tên cơ sở đào tạo nước ngoài</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.TenCoSoDaoTaoNuocNgoai)</dd>
-
-                                        <dt class="col-sm-6">Chuẩn đầu ra về ngoại ngữ</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRaVeNgoaiNgu)</dd>
-
-                                        <dt class="col-sm-6">Đơn vị cấp bằng</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdDonViCapBangNavigation.DonViCapBang)</dd>
-
-                                        <dt class="col-sm-6">Học chế đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdHocCheDaoTaoNavigation.HocCheDaoTao)</dd>
-
-                                     <dt class="col-sm-6">Trình độ đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Trạng thái chương trình đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)</dd>
-                                    </dl>
-                                </div>
-
-                                <!-- Phần cột 2 -->
+                            <div class="row">
                                 <div class="col-md-6">
-                                    <dl class="row dl-bordered">
-                                        <dt class="col-sm-6">Chuẩn đầu ra về tin học</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRaVeTinHoc)</dd>
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="col-sm-5">Mã chương trình đào tạo</th>
+                                                <td class="col-sm-7">@Html.DisplayFor(model => model.MaChuongTrinhDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tên chương trình</th>
+                                                <td>@Html.DisplayFor(model => model.TenChuongTrinh)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tên chương trình bằng tiếng Anh</th>
+                                                <td>@Html.DisplayFor(model => model.TenChuongTrinhBangTiengAnh)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Địa điểm đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.DiaDiemDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Năm bắt đầu tuyển sinh</th>
+                                                <td>@Html.DisplayFor(model => model.NamBatDauTuyenSinh)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tên cơ sở đào tạo nước ngoài</th>
+                                                <td>@Html.DisplayFor(model => model.TenCoSoDaoTaoNuocNgoai)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Chuẩn đầu ra về ngoại ngữ</th>
+                                                <td>@Html.DisplayFor(model => model.ChuanDauRaVeNgoaiNgu)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Đơn vị cấp bằng</th>
+                                                <td>@Html.DisplayFor(model => model.IdDonViCapBangNavigation.DonViCapBang)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Học chế đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdHocCheDaoTaoNavigation.HocCheDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Trình độ đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdTrinhDoDaoTaoNavigation.TrinhDoDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Trạng thái chương trình đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdTrangThaiCuaChuongTrinhNavigation.TrangThaiChuongTrinhDaoTao)</td>
+                                            </tr>
+                                        </tbody>
+                                        </table>
 
-                                        <dt class="col-sm-6">Ngày ban hành chuẩn đầu ra</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.NgayBanHanhChuanDauRa)</dd>
-
-                                        <dt class="col-sm-6">Thời gian đào tạo chuẩn</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ThoiGianDaoTaoChuan)</dd>
-
-                                        <dt class="col-sm-6">Chuẩn đầu ra</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.ChuanDauRa)</dd>
-
-                                        <dt class="col-sm-6">Học phí tại Việt Nam</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.HocPhiTaiVietNam)</dd>
-
-                                        <dt class="col-sm-6">Học phí tại nước ngoài</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.HocPhiTaiNuocNgoai)</dd>
-
-                                           <dt class="col-sm-6">Loại chương trình đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Loại chương trình liên kết đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Ngành đào tạo</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdNganhDaoTaoNavigation.NganhDaoTao)</dd>
-
-                                        <dt class="col-sm-6">Quốc tịch</dt>
-                                        <dd class="col-sm-6">@Html.DisplayFor(model => model.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)</dd>
-
-                                       
-                                    </dl>
                                 </div>
-                            </div> <!-- Kết thúc row -->
-                       
+                                <div class="col-md-6">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th>Chuẩn đầu ra về tin học</th>
+                                                <td>@Html.DisplayFor(model => model.ChuanDauRaVeTinHoc)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ngày ban hành chuẩn đầu ra</th>
+                                                <td>@Html.DisplayFor(model => model.NgayBanHanhChuanDauRa)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Thời gian đào tạo chuẩn</th>
+                                                <td>@Html.DisplayFor(model => model.ThoiGianDaoTaoChuan)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Chuẩn đầu ra</th>
+                                                <td>@Html.DisplayFor(model => model.ChuanDauRa)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Học phí tại Việt Nam</th>
+                                                <td>@Html.DisplayFor(model => model.HocPhiTaiVietNam)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Học phí tại nước ngoài</th>
+                                                <td>@Html.DisplayFor(model => model.HocPhiTaiNuocNgoai)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loại chương trình đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdLoaiChuongTrinhDaoTaoNavigation.LoaiChuongTrinhDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Loại chương trình liên kết đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdLoaiChuongTrinhLienKetDaoTaoNavigation.LoaiChuongTrinhLienKetDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ngành đào tạo</th>
+                                                <td>@Html.DisplayFor(model => model.IdNganhDaoTaoNavigation.NganhDaoTao)</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Quốc tịch</th>
+                                                <td>@Html.DisplayFor(model => model.IdQuocGiaCuaTruSoChinhNavigation.TenNuoc)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                           
                                 <div class="col-12 d-flex justify-content-start gap-2">
                                     <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = Model.IdChuongTrinhDaoTao})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'"><i class="fa-sharp fa-solid fa-circle-info"></i> Quay Lại</button>
+                                <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'">Quay Lại</button>
                                     <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
-                                        Delete
+                                    <i class="fa-sharp fa-solid fa-trash"></i> Xoá
                                     </button>
                                     <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog"
                                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -167,14 +192,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                </div>
-                                   </div>
-                                   </div>
-                                   </div>
-                                   </div>
+                         </div>
+                     </div>
+                    </div>
+                </div>
+             </div>
+        </div>
                                  
-                                  </section>
+    </section>
 </div>
 
 

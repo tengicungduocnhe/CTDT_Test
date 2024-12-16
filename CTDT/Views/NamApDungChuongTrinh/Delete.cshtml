@@ -1,51 +1,138 @@
-@model CTDT.Models.TbNamApDungChuongTrinh
+﻿@model CTDT.Models.TbNamApDungChuongTrinh
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<style>
+    body {
+        position: relative;
+        background-image: url('https://lh6.googleusercontent.com/wkeQrgK5pTamYY8M618pFEEAcuQJjfbpmIE-Mhp46LBwqYjNOqClsFFWYY-FxA46hjHkmzNIK7v8Dnhw0KSiTUcwoOKKDywa1eqwFX...a4ACL');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        padding-top: 70px;
+        color: #333;
+        height: 100vh;
+        overflow: hidden;
+    }
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>TbNamApDungChuongTrinh</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoTinChiToiThieuDeTotNghiep)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoTinChiToiThieuDeTotNghiep)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TongHocPhiToanKhoa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TongHocPhiToanKhoa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NamApDung)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NamApDung)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChiTieuTuyenSinhHangNam)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChiTieuTuyenSinhHangNam)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdNamApDungChuongTrinh" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+    .delete-container {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+        margin: auto;
+        text-align: center;
+        width: auto;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    h1 {
+        font-size: 48px;
+        font-weight: bold;
+        color: #d9534f;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: white;
+    }
+
+    thead th {
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .btn-container {
+        margin-top: 30px;
+    }
+
+    .btn {
+        margin: 0 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .alert-warning {
+        background-color: #fcebea;
+        color: #d9534f;
+        border: 1px solid #f5c6cb;
+        margin-top: 20px;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="delete-container">
+    <h1>Xóa</h1>
+    <h3>Bạn có chắc chắn muốn xóa không?</h3>
+    <div>
+        <hr />
+        <table class="table table-striped">
+            <thead style="background-color:#dddddd">
+                <tr>
+                    <th>Số tín chỉ tối thiểu để tốt nghiệp</th>
+                    <th>Tổng học phí toàn khóa</th>
+                    <th>Năm áp dụng</th>
+                    <th>Chỉ tiêu tuyển sinh hàng năm</th>
+                    <th>ID Chương trình đào tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color:white">
+                    <td>@Html.DisplayFor(model => model.SoTinChiToiThieuDeTotNghiep)</td>
+                    <td>@Html.DisplayFor(model => model.TongHocPhiToanKhoa)</td>
+                    <td>@Html.DisplayFor(model => model.NamApDung)</td>
+                    <td>@Html.DisplayFor(model => model.ChiTieuTuyenSinhHangNam)</td>
+                    <td>@Html.DisplayFor(model => model.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="btn-container">
+            <form asp-action="Delete" method="post" style="display: inline;">
+                <input type="hidden" asp-for="IdNamApDungChuongTrinh" />
+                <input type="submit" value="Xóa" class="btn btn-danger" />
+            </form>
+            <a asp-action="Index" class="btn btn-secondary">Quay Lại </a>
+        </div>
+        <div class="alert alert-warning">
+            <strong>Cảnh báo!</strong> Nếu bạn xóa, bạn không thể khôi phục lại được dữ liệu này.
+        </div>
+    </div>
 </div>

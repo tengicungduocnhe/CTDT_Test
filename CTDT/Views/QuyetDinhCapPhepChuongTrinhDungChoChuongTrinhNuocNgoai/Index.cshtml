@@ -43,8 +43,8 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">
-                    Chương Trình Nước Ngoài
+                <h5 class="card-title" style="text-align:center">
+                    Quyết Định Cấp Phép Chương Trình Dùng Cho Chương Trình Nước Ngoài
 
                 </h5>
             </div>
@@ -101,8 +101,11 @@
                                     @Html.DisplayFor(modelItem => item.IdLoaiQuyetDinhNavigation.LoaiQuyetDinh)
                                 </td>
                                 <td>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai})'"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> Sửa</button>
-                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai})'"><i class="fa-sharp fa-solid fa-circle-info"></i> Chi tiết</button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Edit", new {id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai})'" data-bs-toggle="tooltip" title="Sửa"><i class="fa-sharp-duotone fa-solid fa-user-pen"></i> </button>
+                                    <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Details", new {id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai})'" data-bs-toggle="tooltip" title="Chi tiết"><i class="fa-sharp fa-solid fa-circle-info"></i> </button>
+                                    <button class="btn btn-outline-danger "
+                                            onclick="window.location.href = '@Url.Action("Delete", new { id = item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai })'" data-bs-toggle="tooltip" title="Xoá">
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
                                 </td>
                             </tr>
                         }
@@ -212,60 +215,3 @@
     </script>
 }
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SoQuyetDinh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayBanHanhQuyetDinh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdChuongTrinhDaoTaoNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdHinhThucDaoTaoNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdLoaiQuyetDinhNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoQuyetDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayBanHanhQuyetDinh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdChuongTrinhDaoTaoNavigation.IdChuongTrinhDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdHinhThucDaoTaoNavigation.IdHinhThucDaoTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdLoaiQuyetDinhNavigation.IdLoaiQuyetDinh)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

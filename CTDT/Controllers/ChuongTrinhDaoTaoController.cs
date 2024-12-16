@@ -6,6 +6,7 @@ using CTDT.API;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Reflection;
+using OfficeOpenXml;
 //using CTDT.Models.DM;
 
 namespace CTDT.Controllers
@@ -13,6 +14,7 @@ namespace CTDT.Controllers
     [Authorize]
     public class ChuongTrinhDaoTaoController : Controller
     {
+        
         private readonly ApiServices ApiServices_;
         // Lấy từ HemisContext 
         public ChuongTrinhDaoTaoController(ApiServices services)
@@ -494,33 +496,87 @@ namespace CTDT.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Receive_Excel(string jsonExcel) {
-            try {
-                List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
-                dataList.ForEach(s => {
-                    TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
-                    // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
-                    // new_.MaChuongTrinhDaoTao = s[1];
-                    // new_.IdNganhDaoTao = s[1];
-                });
-                string message = "Thành công";
-                return Accepted(Json(new {msg = message}));
-            } catch (Exception ex) {
-                return BadRequest(Json(new { msg = ex.Message,}));
-            }
-        }
-        //[HttpGet]
-        //public IActionResult ImportExcel()
-        //{
-
-        //    return View();
-        //}
         //[HttpPost]
-        //public IActionResult ImportExcel(ÌormFile file, [FromServices] IHostingEnvironment)
-        //{
-
+        //public IActionResult Receive_Excel(string jsonExcel) {
+        //    try {
+        //        List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
+        //        dataList.ForEach(s => {
+        //            TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
+        //            // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
+        //            // new_.MaChuongTrinhDaoTao = s[1];
+        //            // new_.IdNganhDaoTao = s[1];
+        //        });
+        //        string message = "Thành công";
+        //        return Accepted(Json(new {msg = message}));
+        //    } catch (Exception ex) {
+        //        return BadRequest(Json(new { msg = ex.Message,}));
+        //    }
         //}
+
+        [HttpPost]
+        public async Task<IActionResult> ImportExcel(IFormFile fileUpload)
+        {
+            if (fileUpload != null && fileUpload.Length > 0)
+            {
+                try
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        await fileUpload.CopyToAsync(stream);
+                        using (var package = new ExcelPackage(stream))
+                        {
+                            var worksheet = package.Workbook.Worksheets[0];
+                            var rowCount = worksheet.Dimension.Rows;
+
+                            var danhSachChuongTrinh = new List<TbChuongTrinhDaoTao>();
+
+                            for (int row = 2; row <= rowCount; row++) // Bỏ qua dòng header
+                            {
+                                var chuongTrinh = new TbChuongTrinhDaoTao
+                                {
+                                    MaChuongTrinhDaoTao = worksheet.Cells[row, 1].Text,
+                                    TenChuongTrinh = worksheet.Cells[row, 2].Text,
+                                    TenChuongTrinhBangTiengAnh = worksheet.Cells[row, 3].Text,
+                                    NamBatDauTuyenSinh = DateOnly.TryParse(worksheet.Cells[row, 4].Text, out var nam) ? (DateOnly?)nam : null,
+                                    TenCoSoDaoTaoNuocNgoai = worksheet.Cells[row, 5].Text,
+                                    DiaDiemDaoTao = worksheet.Cells[row, 6].Text,
+                                    NgayBanHanhChuanDauRa = DateOnly.TryParse(worksheet.Cells[row, 7].Text, out var ngay) ? (DateOnly?)ngay : null,
+                                    ThoiGianDaoTaoChuan = int.TryParse(worksheet.Cells[row, 8].Text, out var thoiGian) ? (int?)thoiGian : null,
+
+                                    ChuanDauRa = worksheet.Cells[row, 9].Text,
+                                    LoaiChungChiDuocChapThuan = worksheet.Cells[row, 10].Text,
+                                    DonViThucHienChuongTrinh = worksheet.Cells[row, 11].Text,
+                                    ChuanDauRaVeNgoaiNgu = worksheet.Cells[row, 12].Text,
+                                    ChuanDauRaVeTinHoc = worksheet.Cells[row, 13].Text,
+                                    HocPhiTaiVietNam = int.TryParse(worksheet.Cells[row, 14].Text, out var hocPhiVN) ? (int?)hocPhiVN : null,
+                                    HocPhiTaiNuocNgoai = int.TryParse(worksheet.Cells[row, 15].Text, out var hocPhiNN) ? (int?)hocPhiNN : null
+                                };
+
+                                danhSachChuongTrinh.Add(chuongTrinh);
+                            }
+
+                            // Gọi API để lưu danh sách vào database
+                            await ApiServices_.Create<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao", danhSachChuongTrinh);
+                        }
+                    }
+
+                    TempData["Success"] = "Import dữ liệu thành công!";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Có lỗi xảy ra: {ex.Message}";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            TempData["Error"] = "Vui lòng chọn file để import.";
+            return RedirectToAction("Index");
+        }
+
+
+
+
     }
 }
 

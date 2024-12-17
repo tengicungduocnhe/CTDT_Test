@@ -10,6 +10,10 @@ using CTDT.API;
 //using C500Hemis.Models.DM;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using ExcelDataReader;
+using Microsoft.DotNet.Scaffolding.Shared;
+using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace C500Hemis.Controllers.CTDT
@@ -18,10 +22,11 @@ namespace C500Hemis.Controllers.CTDT
     public class NgonNguGiangDayController : Controller
     {
         private readonly ApiServices ApiServices_;
-
-        public NgonNguGiangDayController(ApiServices services)
+        private readonly DbHemisC500Context _dbcontext;
+        public NgonNguGiangDayController(ApiServices services, DbHemisC500Context dbcontext)
         {
             ApiServices_ = services;
+            _dbcontext = dbcontext;
         }
         public IActionResult chartjs()
         {
@@ -33,7 +38,8 @@ namespace C500Hemis.Controllers.CTDT
             List<TbChuongTrinhDaoTao> tbChuongTrinhDaoTaos = await ApiServices_.GetAll<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao");
             List<DmNgoaiNgu> dmNgoaiNgus = await ApiServices_.GetAll<DmNgoaiNgu>("/api/dm/NgoaiNgu");
             List<DmKhungNangLucNgoaiNgu> dmKhungNangLucNgoaiNgus = await ApiServices_.GetAll<DmKhungNangLucNgoaiNgu>("/api/dm/KhungNangLucNgoaiNgu");
-            TbNgonNguGiangDays.ForEach(item => {
+            TbNgonNguGiangDays.ForEach(item =>
+            {
                 item.IdChuongTrinhDaoTaoNavigation = tbChuongTrinhDaoTaos.FirstOrDefault(t => t.IdChuongTrinhDaoTao == item.IdChuongTrinhDaoTao);
                 item.IdNgonNguNavigation = dmNgoaiNgus.FirstOrDefault(t => t.IdNgoaiNgu == item.IdNgonNgu);
                 item.IdTrinhDoNgonNguDauVaoNavigation = dmKhungNangLucNgoaiNgus.FirstOrDefault(t => t.IdKhungNangLucNgoaiNgu == item.IdTrinhDoNgonNguDauVao);
@@ -228,7 +234,8 @@ namespace C500Hemis.Controllers.CTDT
             try
             {
                 List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
-                dataList.ForEach(s => {
+                dataList.ForEach(s =>
+                {
                     TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
                     // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
                     // new_.MaChuongTrinhDaoTao = s[1];
@@ -285,7 +292,7 @@ namespace C500Hemis.Controllers.CTDT
 
                     return Json(resultFiltered);
                 }
-                
+
 
                 return Json(new { error = "Type not handled." });
             }
@@ -295,7 +302,84 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
+        public IActionResult UploadExcel()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadExcel(IFormFile file)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            if (file != null && file.Length > 0)
+            {
+                // Đảm bảo thư mục Uploads tồn tại
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Tạo đường dẫn file và đảm bảo tên file hợp lệ
+                var filePath = Path.Combine(uploadsFolder, Path.GetFileName(file.FileName));
+
+                // Lưu file vào thư mục Uploads
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Đọc file Excel sau khi đã lưu
+                try
+                {
+                    using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            bool isHeaderSkipped = false;
+                            while (reader.Read())
+                            {
+                                // Bỏ qua header
+                                if (!isHeaderSkipped)
+                                {
+                                    isHeaderSkipped = true;
+                                    continue;
+                                }
+
+                                // Đọc từng dòng dữ liệu
+                                TbNgonNguGiangDay tb = new TbNgonNguGiangDay
+                                {
+                                    IdNgonNguGiangDay = reader.GetValue(1) != null ? Convert.ToInt32(reader.GetValue(1).ToString()) : 0,
+                                    IdChuongTrinhDaoTao = reader.GetValue(2) != null ? Convert.ToInt32(reader.GetValue(2).ToString()) : 0,
+                                    IdNgonNgu = reader.GetValue(3) != null ? Convert.ToInt32(reader.GetValue(3).ToString()) : 0,
+                                    IdTrinhDoNgonNguDauVao = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0
+                                };
+
+
+                                _dbcontext.TbNgonNguGiangDays.Add(tb);
+                                await ApiServices_.Create<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay", tb);
+
+                            }
+                            await _dbcontext.SaveChangesAsync();
+
+                        }
+                    }
+                    ViewBag.Message = "File đã được import thành công!";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = $"Lỗi khi đọc file: {ex.Message}";
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Vui lòng chọn file để upload.";
+            }
+
+            return View();
+        }
 
     }
 }
+
 

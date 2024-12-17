@@ -47,12 +47,22 @@
 
                 </h5>
             </div>
-            @* import excel *@
-            @* <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data" style="visibility: hidden;" id="ImportExcel">
-                <input type="file" name="file" id="file"/>
-                <hr />
-                <button type="submit">Import Excel</button>
-            </form> *@
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+
+            <form asp-action="UploadExcel" asp-controller="NgonNguGiangDay" method="post" enctype="multipart/form-data">
+                <div class="d-flex mb-3">
+                    <input type="file" name="fileUpload" class="form-control" accept=".xlsx, .xls" required>
+                    <button type="submit" class="btn btn-success">Import Excel</button>
+                </div>
+            </form>
+
 
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover" id="views">

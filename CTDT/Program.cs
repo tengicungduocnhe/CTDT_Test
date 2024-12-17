@@ -56,6 +56,8 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<CTDT.API.ApiServices>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
 
 // 7. Cấu hình Pipeline HTTP

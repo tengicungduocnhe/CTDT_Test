@@ -45,14 +45,20 @@
 
         h1 {
             font-size: 45px; /* Đặt kích thước font lớn cho h1 */
+            color: red;
         }
+        
 
     </style>
 
 </head>
 <body>
     <div class="container p-5 my-5 border bg-white shadow-sm">
-        <h1 class="a">DELETE</h1>
+        <h5 class="card-title" style="text-align:center">
+            CHƯƠNG TRÌNH ĐÀO TẠO
+
+        </h5>
+        <h1 class="a" style="text-align:center">Xóa</h1>
         <hr />
         <div style=" white-space: nowrap; border: 1px solid #ddd;">
             <table class="table table-striped" style="width: max-content; min-width: 100%;">
@@ -98,7 +104,7 @@
             </tbody>
         </table>
         <hr />
-        <h4 class="fw-bold">Bạn có chắc chắn muốn xóa không?</h4>
+        <h4 class="fw-bold" style="text-align:center">Bạn có chắc chắn muốn xóa không?</h4>
 
         <form asp-action="Delete" asp-controller="ChuongTrinhDaoTao">
             <input type="hidden" asp-for="IdChuongTrinhDaoTao" />
@@ -106,7 +112,7 @@
                 <input type="submit" value="Xoá" class="btn btn-danger" />
                 <a asp-action="Index" asp-controller="ChuongTrinhDaoTao" class="btn btn-secondary">Quay lại</a>
             </div>
-            <div class="alert alert-warning">
+            <div class="alert alert-warning" style="text-align:center">
                 <strong>Cảnh báo!</strong> Nếu bạn xoá, bạn không thể khôi phục lại được dữ liệu này.
             </div>
         </form>

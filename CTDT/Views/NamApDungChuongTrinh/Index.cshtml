@@ -172,46 +172,53 @@
                                 },
                             }
                         },
-                        {
-                            className: 'btn btn-primary', //Thêm class cho button
-                            text: 'Import Excel',
-                            action: function (e, dt, node, config) {//Hành động của button
-                                import_excel((json) => {
-                                    let data = JSON.parse(json);
-                                    let list;
-                                    for (const [key, value] of Object.entries(data)) {
-                                        list = value;
-                                    }
-                                    let _ExcelNoSheet = [];
-                                    for (let i = 0; i < list.length; ++i) {
-                                        let arr = [];
-                                        for (const [key, value] of Object.entries(list[i])) {
-                                            arr.push(value.toString());
-                                        }
-                                        _ExcelNoSheet.push(arr);
-                                    }
-                                    let _json = JSON.stringify(_ExcelNoSheet, null, 4);
-                                    console.log(_json);
-                                    var fd = new FormData();
-                                    fd.append("jsonExcel", _json);
-                                    $.ajax({
-                                        method: "POST",
-                                        url: "/NamApDungChuongTrinh/Receive_Excel",
-                                        data: fd,
-                                        processData: false,
-                                        contentType: false,
-                                        complete: (xhr, status) => {
-                                            if (status == "success") {
-                                                console.log(xhr.responseJSON.value['msg']);
-                                            } else alert(xhr.responseJSON.value['msg']);
-                                        }
-                                    });
-                                });
-                            }
-                        }
+                        // {
+                        //     className: 'btn btn-primary', //Thêm class cho button
+                        //     text: 'Import Excel',
+                        //     action: function (e, dt, node, config) {//Hành động của button
+                        //         import_excel((json) => {
+                        //             let data = JSON.parse(json);
+                        //             let list;
+                        //             for (const [key, value] of Object.entries(data)) {
+                        //                 list = value;
+                        //             }
+                        //             let _ExcelNoSheet = [];
+                        //             for (let i = 0; i < list.length; ++i) {
+                        //                 let arr = [];
+                        //                 for (const [key, value] of Object.entries(list[i])) {
+                        //                     arr.push(value.toString());
+                        //                 }
+                        //                 _ExcelNoSheet.push(arr);
+                        //             }
+                        //             let _json = JSON.stringify(_ExcelNoSheet, null, 4);
+                        //             console.log(_json);
+                        //             var fd = new FormData();
+                        //             fd.append("jsonExcel", _json);
+                        //             $.ajax({
+                        //                 method: "POST",
+                        //                 url: "/NamApDungChuongTrinh/Receive_Excel",
+                        //                 data: fd,
+                        //                 processData: false,
+                        //                 contentType: false,
+                        //                 complete: (xhr, status) => {
+                        //                     if (status == "success") {
+                        //                         console.log(xhr.responseJSON.value['msg']);
+                        //                     } else alert(xhr.responseJSON.value['msg']);
+                        //                 }
+                        //             });
+                        //         });
+                        //     }
+                        // }
                     ]
                 }
             }
         });
+            table.buttons().container()
+                    .append(`
+                                                                <form asp-action="Index" asp-controller="NamApDungChuongTrinh" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                                             <input type="file" name="file" class="form-control me-2" style="width: auto;" />
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                        </form>
+                            `);
     </script>
 }

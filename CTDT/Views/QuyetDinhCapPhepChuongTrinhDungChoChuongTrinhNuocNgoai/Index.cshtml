@@ -22,6 +22,7 @@
     button#showChart {
         white-space: nowrap; /* Đảm bảo nút không xuống dòng */
     }
+    
 </style>
 @* =======
     >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
@@ -48,12 +49,18 @@
 
                 </h5>
             </div>
-            @* import excel *@
-            @* <form asp-controller="CTDTs" asp-action="ImportExcel" method="post" enctype="multipart/form-data" style="visibility: hidden;" id="ImportExcel">
-                <input type="file" name="file" id="file"/>
-                <hr />
-                <button type="submit">Import Excel</button>
-            </form> *@
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+
+            
+            
+            
 
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover" id="views">
@@ -118,7 +125,7 @@
 </div>
 
 
-@section Scripts {
+ @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="~/lib/datatable/datatables.js"></script>
@@ -171,47 +178,57 @@
                                 },
                             }
                         },
-                        {
-                            className: 'btn btn-primary', //Thêm class cho button
-                            text: 'Import Excel',
-                            action: function (e, dt, node, config) {//Hành động của button
-                                import_excel((json) => {
-                                    let data = JSON.parse(json);
-                                    let list;
-                                    for (const [key, value] of Object.entries(data)) {
-                                        list = value;
-                                    }
-                                    let _ExcelNoSheet = [];
-                                    for (let i = 0; i < list.length; ++i) {
-                                        let arr = [];
-                                        for (const [key, value] of Object.entries(list[i])) {
-                                            arr.push(value.toString());
-                                        }
-                                        _ExcelNoSheet.push(arr);
-                                    }
-                                    let _json = JSON.stringify(_ExcelNoSheet, null, 4);
-                                    console.log(_json);
-                                    var fd = new FormData();
-                                    fd.append("jsonExcel", _json);
-                                    $.ajax({
-                                        method: "POST",
-                                        url: "/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai/Receive_Excel",
-                                        data: fd,
-                                        processData: false,
-                                        contentType: false,
-                                        complete: (xhr, status) => {
-                                            if (status == "success") {
-                                                console.log(xhr.responseJSON.value['msg']);
-                                            } else alert(xhr.responseJSON.value['msg']);
-                                        }
-                                    });
-                                });
-                            }
-                        }
+                        // {
+                        //     className: 'btn btn-primary', //Thêm class cho button
+                        //     text: 'Import Excel',
+                        //     action: function (e, dt, node, config) {//Hành động của button
+                        //         import_excel((json) => {
+                        //             let data = JSON.parse(json);
+                        //             let list;
+                        //             for (const [key, value] of Object.entries(data)) {
+                        //                 list = value;
+                        //             }
+                        //             let _ExcelNoSheet = [];
+                        //             for (let i = 0; i < list.length; ++i) {
+                        //                 let arr = [];
+                        //                 for (const [key, value] of Object.entries(list[i])) {
+                        //                     arr.push(value.toString());
+                        //                 }
+                        //                 _ExcelNoSheet.push(arr);
+                        //             }
+                        //             let _json = JSON.stringify(_ExcelNoSheet, null, 4);
+                        //             console.log(_json);
+                        //             var fd = new FormData();
+                        //             fd.append("jsonExcel", _json);
+                        //             $.ajax({
+                        //                 method: "POST",
+                        //                 url: "/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai/Receive_Excel",
+                        //                 data: fd,
+                        //                 processData: false,
+                        //                 contentType: false,
+                        //                 complete: (xhr, status) => {
+                        //                     if (status == "success") {
+                        //                         console.log(xhr.responseJSON.value['msg']);
+                        //                     } else alert(xhr.responseJSON.value['msg']);
+                        //                 }
+                        //             });
+                        //         });
+                        //     }
+                        // }
                     ]
                 }
             }
+            
         });
+
+
+                table.buttons().container()
+            .append(`
+                        <form asp-action="Index" asp-controller="QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                             <input type="file" name="file" class="form-control me-2" style="width: auto;" />
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+            `);
     </script>
 }
 

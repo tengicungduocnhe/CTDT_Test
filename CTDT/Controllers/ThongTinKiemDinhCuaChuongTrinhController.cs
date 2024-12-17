@@ -10,6 +10,8 @@ using CTDT.API;
 //using C500Hemis.Models.DM;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using ExcelDataReader;
+using System.Text;
 
 
 namespace C500Hemis.Controllers.CTDT
@@ -18,10 +20,11 @@ namespace C500Hemis.Controllers.CTDT
     public class ThongTinKiemDinhCuaChuongTrinhController : Controller
     {
         private readonly ApiServices ApiServices_;
-
-        public ThongTinKiemDinhCuaChuongTrinhController(ApiServices services)
+        private readonly DbHemisC500Context _dbcontext;
+        public ThongTinKiemDinhCuaChuongTrinhController(ApiServices services, DbHemisC500Context dbcontext)
         {
             ApiServices_ = services;
+            _dbcontext = dbcontext;
         }
 
         public IActionResult chartjs()
@@ -365,9 +368,107 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
+        public IActionResult UploadExcel()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadExcel(IFormFile file)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            if (file != null && file.Length > 0)
+            {
+                // Đảm bảo thư mục Uploads tồn tại
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Tạo đường dẫn file và đảm bảo tên file hợp lệ
+                var filePath = Path.Combine(uploadsFolder, Path.GetFileName(file.FileName));
+
+                // Lưu file vào thư mục Uploads
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Đọc file Excel sau khi đã lưu
+                try
+                {
+                    using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            bool isHeaderSkipped = false;
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    // Bỏ qua header
+                                    if (!isHeaderSkipped)
+                                    {
+                                        isHeaderSkipped = true;
+                                        continue;
+                                    }
+
+                                    // Đọc từng dòng dữ liệu
+                                    TbThongTinKiemDinhCuaChuongTrinh tb = new TbThongTinKiemDinhCuaChuongTrinh
+                                    {
+                                        IdThongTinKiemDinhCuaChuongTrinh = reader.GetValue(1) != null ? Convert.ToInt32(reader.GetValue(1).ToString()) : 0,
+                                        IdChuongTrinhDaoTao = reader.GetValue(2) != null ? Convert.ToInt32(reader.GetValue(2).ToString()) : 0,
+                                        IdToChucKiemDinh = reader.GetValue(3) != null ? Convert.ToInt32(reader.GetValue(3).ToString()) : 0,
+                                        IdKetQuaKiemDinh = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0,
+                                        //SoQuyetDinh = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0,
+                                        //NgayCapChungNhanKiemDinh = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0,
+                                        //ThoiHanKiemDinh = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0
+
+
+                                        SoQuyetDinh = reader.GetValue(5) != null ? reader.GetValue(5).ToString() : null,
+                                        NgayCapChungNhanKiemDinh = reader.GetValue(6) != null ? DateOnly.Parse(reader.GetValue(6).ToString()) : (DateOnly?)null,
+                                        ThoiHanKiemDinh = reader.GetValue(7) != null ? DateOnly.Parse(reader.GetValue(7).ToString()) : (DateOnly?)null
+                                    };
+
+
+                                    _dbcontext.TbThongTinKiemDinhCuaChuongTrinhs.Add(tb);
+                                    await ApiServices_.Create<TbThongTinKiemDinhCuaChuongTrinh>("/api/ttkdcct/ThongTinKiemDinhCuaChuongTrinh", tb);
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Nếu gặp lỗi khi đọc và xử lý dòng dữ liệu, ghi log và tiếp tục với dòng tiếp theo
+                                    Console.WriteLine($"Lỗi khi đọc dòng dữ liệu: {ex.Message}");
+                                    continue;
+                                }
+                                await _dbcontext.SaveChangesAsync();
+                            }
+                        }
+                        TempData["Success"] = "File đã được import thành công!";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Lỗi khi đọc file: {ex.Message}";
+                }
+                    
+                }
+            else
+            {
+                TempData["Error"] = "Vui lòng chọn file để upload.";
+            }
+            return RedirectToAction("UploadExcel");
+            }
+
+            
+        }
+
     }
 
-}
+
+
+
 
 
 #region CMT

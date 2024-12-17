@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Reflection;
 using OfficeOpenXml;
+using ExcelDataReader;
+using System.Text;
 //using CTDT.Models.DM;
 
 namespace CTDT.Controllers
@@ -14,20 +16,14 @@ namespace CTDT.Controllers
     [Authorize]
     public class ChuongTrinhDaoTaoController : Controller
     {
-        
-        private readonly ApiServices ApiServices_;
-        // Lấy từ HemisContext 
-      
 
-        public ChuongTrinhDaoTaoController(ApiServices services)
+        private readonly ApiServices ApiServices_;
+        private readonly DbHemisC500Context _dbcontext;
+        public ChuongTrinhDaoTaoController(ApiServices services, DbHemisC500Context dbcontext)
         {
             ApiServices_ = services;
+            _dbcontext = dbcontext;
         }
-        //public ChuongTrinhDaoTaoController()
-        //{
-        //    // Thiết lập LicenseContext cho EPPlus
-        //    ExcelPackage.LicenseContext = LicenseContext.Commercial; // Hoặc LicenseContext.NonCommercial nếu bạn dùng bản miễn phí
-        //}
         public IActionResult chartjs()
         {
             return View(); // Nó sẽ trả về view chartjs.cshtml
@@ -503,88 +499,103 @@ namespace CTDT.Controllers
         }
 
 
-        //[HttpPost]
-        //public IActionResult Receive_Excel(string jsonExcel) {
-        //    try {
-        //        List<List<string>> dataList = JsonConvert.DeserializeObject<List<List<string>>>(jsonExcel);
-        //        dataList.ForEach(s => {
-        //            TbChuongTrinhDaoTao new_ = new TbChuongTrinhDaoTao();
-        //            // new_.IdChuongTrinhDaoTao = Int32.Parse(s[0]);
-        //            // new_.MaChuongTrinhDaoTao = s[1];
-        //            // new_.IdNganhDaoTao = s[1];
-        //        });
-        //        string message = "Thành công";
-        //        return Accepted(Json(new {msg = message}));
-        //    } catch (Exception ex) {
-        //        return BadRequest(Json(new { msg = ex.Message,}));
-        //    }
-        //}
 
         [HttpPost]
-        public async Task<IActionResult> ImportExcel(IFormFile fileUpload)
+        public async Task<IActionResult> Index(IFormFile file)
         {
-            if (fileUpload != null && fileUpload.Length > 0)
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            if (file != null && file.Length > 0)
             {
+                // Đảm bảo thư mục Uploads tồn tại
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Tạo đường dẫn file và đảm bảo tên file hợp lệ
+                var filePath = Path.Combine(uploadsFolder, Path.GetFileName(file.FileName));
+
+                // Lưu file vào thư mục Uploads
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Đọc file Excel sau khi đã lưu
                 try
                 {
-                    using (var stream = new MemoryStream())
+                    using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
                     {
-                        await fileUpload.CopyToAsync(stream);
-                        using (var package = new ExcelPackage(stream))
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
                         {
-                            var worksheet = package.Workbook.Worksheets[0];
-                            var rowCount = worksheet.Dimension.Rows;
-
-                            var danhSachChuongTrinh = new List<TbChuongTrinhDaoTao>();
-
-                            for (int row = 2; row <= rowCount; row++) // Bỏ qua dòng header
+                            bool isHeaderSkipped = false;
+                            while (reader.Read())
                             {
-                                var chuongTrinh = new TbChuongTrinhDaoTao
+                                // Bỏ qua header
+                                if (!isHeaderSkipped)
                                 {
-                                    MaChuongTrinhDaoTao = worksheet.Cells[row, 1].Text,
-                                    TenChuongTrinh = worksheet.Cells[row, 2].Text,
-                                    TenChuongTrinhBangTiengAnh = worksheet.Cells[row, 3].Text,
-                                    NamBatDauTuyenSinh = DateOnly.TryParse(worksheet.Cells[row, 4].Text, out var nam) ? (DateOnly?)nam : null,
-                                    TenCoSoDaoTaoNuocNgoai = worksheet.Cells[row, 5].Text,
-                                    DiaDiemDaoTao = worksheet.Cells[row, 6].Text,
-                                    NgayBanHanhChuanDauRa = DateOnly.TryParse(worksheet.Cells[row, 7].Text, out var ngay) ? (DateOnly?)ngay : null,
-                                    ThoiGianDaoTaoChuan = int.TryParse(worksheet.Cells[row, 8].Text, out var thoiGian) ? (int?)thoiGian : null,
+                                    isHeaderSkipped = true;
+                                    continue;
+                                }
 
-                                    ChuanDauRa = worksheet.Cells[row, 9].Text,
-                                    LoaiChungChiDuocChapThuan = worksheet.Cells[row, 10].Text,
-                                    DonViThucHienChuongTrinh = worksheet.Cells[row, 11].Text,
-                                    ChuanDauRaVeNgoaiNgu = worksheet.Cells[row, 12].Text,
-                                    ChuanDauRaVeTinHoc = worksheet.Cells[row, 13].Text,
-                                    HocPhiTaiVietNam = int.TryParse(worksheet.Cells[row, 14].Text, out var hocPhiVN) ? (int?)hocPhiVN : null,
-                                    HocPhiTaiNuocNgoai = int.TryParse(worksheet.Cells[row, 15].Text, out var hocPhiNN) ? (int?)hocPhiNN : null
+                                // Đọc từng dòng dữ liệu
+                                TbChuongTrinhDaoTao tb = new TbChuongTrinhDaoTao
+                                {
+                                    IdChuongTrinhDaoTao = reader.GetValue(1) != null ? Convert.ToInt32(reader.GetValue(1).ToString()) : 0,
+                                    MaChuongTrinhDaoTao = reader.GetValue(2) != null ? reader.GetValue(2).ToString() : null,
+                                    IdNganhDaoTao = reader.GetValue(3) != null ? Convert.ToInt32(reader.GetValue(3).ToString()) : 0,
+                                    TenChuongTrinh = reader.GetValue(4) != null ? reader.GetValue(4).ToString() : null,
+                                    TenChuongTrinhBangTiengAnh = reader.GetValue(5) != null ? reader.GetValue(5).ToString() : null,
+                                    NamBatDauTuyenSinh = reader.GetValue(6) != null ? DateOnly.FromDateTime(DateTime.Parse(reader.GetValue(6).ToString())) : (DateOnly?)null,
+                                    TenCoSoDaoTaoNuocNgoai = reader.GetValue(7) != null ? reader.GetValue(7).ToString() : null,
+                                    IdLoaiChuongTrinhDaoTao = reader.GetValue(8) != null ? Convert.ToInt32(reader.GetValue(8).ToString()) : 0,
+                                    IdLoaiChuongTrinhLienKetDaoTao = reader.GetValue(9) != null ? Convert.ToInt32(reader.GetValue(9).ToString()) : 0,
+                                    DiaDiemDaoTao = reader.GetValue(10) != null ? reader.GetValue(10).ToString() : null,
+                                    IdHocCheDaoTao = reader.GetValue(11) != null ? Convert.ToInt32(reader.GetValue(11).ToString()) : 0,
+                                    IdQuocGiaCuaTruSoChinh = reader.GetValue(12) != null ? Convert.ToInt32(reader.GetValue(12).ToString()) : 0,
+                                    NgayBanHanhChuanDauRa = reader.GetValue(13) != null ? DateOnly.FromDateTime(DateTime.Parse(reader.GetValue(13).ToString())) : (DateOnly?)null,
+                                    IdTrinhDoDaoTao = reader.GetValue(14) != null ? Convert.ToInt32(reader.GetValue(14).ToString()) : 0,
+                                    ThoiGianDaoTaoChuan = reader.GetValue(15) != null ? Convert.ToInt32(reader.GetValue(15).ToString()) : 0,
+                                    ChuanDauRa = reader.GetValue(16) != null ? reader.GetValue(16).ToString() : null,
+                                    IdDonViCapBang = reader.GetValue(17) != null ? Convert.ToInt32(reader.GetValue(17).ToString()) : 0,
+                                    LoaiChungChiDuocChapThuan = reader.GetValue(18) != null ? reader.GetValue(18).ToString() : null,
+                                    DonViThucHienChuongTrinh = reader.GetValue(19) != null ? reader.GetValue(19).ToString() : null,
+                                    IdTrangThaiCuaChuongTrinh = reader.GetValue(20) != null ? Convert.ToInt32(reader.GetValue(20).ToString()) : 0,
+                                    ChuanDauRaVeNgoaiNgu = reader.GetValue(21) != null ? reader.GetValue(21).ToString() : null,
+                                    ChuanDauRaVeTinHoc = reader.GetValue(22) != null ? reader.GetValue(22).ToString() : null,
+                                    HocPhiTaiVietNam = reader.GetValue(23) != null ? Convert.ToInt32(reader.GetValue(23).ToString()) : 0,
+                                    HocPhiTaiNuocNgoai = reader.GetValue(24) != null ? Convert.ToInt32(reader.GetValue(24).ToString()) : 0
                                 };
 
-                                danhSachChuongTrinh.Add(chuongTrinh);
-                            }
 
-                            // Gọi API để lưu danh sách vào database
-                            await ApiServices_.Create<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao", danhSachChuongTrinh);
+                                _dbcontext.TbChuongTrinhDaoTaos.Add(tb);
+                                await ApiServices_.Create<TbChuongTrinhDaoTao>("/api/ctdt/ChuongTrinhDaoTao", tb);
+
+                            }
+                            await _dbcontext.SaveChangesAsync();
+
                         }
                     }
-
-                    TempData["Success"] = "Import dữ liệu thành công!";
-                    return RedirectToAction("Index");
+                    TempData["Success"] = "File đã được import thành công!";
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = $"Có lỗi xảy ra: {ex.Message}";
-                    return RedirectToAction("Index");
+                    var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                    Console.WriteLine(errorMessage);
+                    TempData["Error"] = "Lỗi khi lưu dữ liệu: " + errorMessage;
                 }
             }
+            else
+            {
+                TempData["Error"] = "Vui lòng chọn file để upload.";
+            }
 
-            TempData["Error"] = "Vui lòng chọn file để import.";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
-
-
-
-
     }
 }
+
 
 

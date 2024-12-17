@@ -302,12 +302,8 @@ namespace C500Hemis.Controllers.CTDT
             }
         }
 
-        public IActionResult UploadExcel()
-        {
-            return View();
-        }
         [HttpPost]
-        public async Task<IActionResult> UploadExcel(IFormFile file)
+        public async Task<IActionResult> Index(IFormFile file)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -353,33 +349,33 @@ namespace C500Hemis.Controllers.CTDT
                                     IdChuongTrinhDaoTao = reader.GetValue(2) != null ? Convert.ToInt32(reader.GetValue(2).ToString()) : 0,
                                     IdNgonNgu = reader.GetValue(3) != null ? Convert.ToInt32(reader.GetValue(3).ToString()) : 0,
                                     IdTrinhDoNgonNguDauVao = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0
+
                                 };
 
 
                                 _dbcontext.TbNgonNguGiangDays.Add(tb);
-                                await ApiServices_.Create<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay", tb);
+                                await ApiServices_.Create<TbNgonNguGiangDay>("/api/nngd/NgonNguGiangDay", tb);
 
                             }
                             await _dbcontext.SaveChangesAsync();
 
                         }
                     }
-                    ViewBag.Message = "File đã được import thành công!";
+                    TempData["Success"] = "File đã được import thành công!";
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = $"Lỗi khi đọc file: {ex.Message}";
+                    var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                    Console.WriteLine(errorMessage);
+                    TempData["Error"] = "Lỗi khi lưu dữ liệu: " + errorMessage;
                 }
             }
             else
             {
-                ViewBag.Message = "Vui lòng chọn file để upload.";
+                TempData["Error"] = "Vui lòng chọn file để upload.";
             }
 
-            return View();
+            return RedirectToAction(nameof(Index));
         }
-
     }
 }
-
-

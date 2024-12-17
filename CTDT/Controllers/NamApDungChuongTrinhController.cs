@@ -10,6 +10,8 @@ using CTDT.Models;
 using CTDT.API;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using ExcelDataReader;
+using System.Text;
 //using CTDT.Models.DM;
 namespace CTDT.Controllers
 {
@@ -17,10 +19,11 @@ namespace CTDT.Controllers
     public class NamApDungChuongTrinhController : Controller
     {
         private readonly ApiServices ApiServices_;
-        // Lấy từ HemisContext 
-        public NamApDungChuongTrinhController(ApiServices services)
+        private readonly DbHemisC500Context _dbcontext;
+        public NamApDungChuongTrinhController(ApiServices services, DbHemisC500Context dbcontext)
         {
             ApiServices_ = services;
+            _dbcontext = dbcontext;
         }
         public IActionResult chartjs()
         {
@@ -343,9 +346,87 @@ namespace CTDT.Controllers
                 return Json(new { error = ex.Message });
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Index(IFormFile file)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            if (file != null && file.Length > 0)
+            {
+                // Đảm bảo thư mục Uploads tồn tại
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Tạo đường dẫn file và đảm bảo tên file hợp lệ
+                var filePath = Path.Combine(uploadsFolder, Path.GetFileName(file.FileName));
+
+                // Lưu file vào thư mục Uploads
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Đọc file Excel sau khi đã lưu
+                try
+                {
+                    using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            bool isHeaderSkipped = false;
+                            while (reader.Read())
+                            {
+                                // Bỏ qua header
+                                if (!isHeaderSkipped)
+                                {
+                                    isHeaderSkipped = true;
+                                    continue;
+                                }
+
+                                // Đọc từng dòng dữ liệu
+                                TbNamApDungChuongTrinh tb = new TbNamApDungChuongTrinh
+                                {
+                                    IdNamApDungChuongTrinh = reader.GetValue(1) != null ? Convert.ToInt32(reader.GetValue(1).ToString()) : 0,
+                                    IdChuongTrinhDaoTao = reader.GetValue(2) != null ? Convert.ToInt32(reader.GetValue(2).ToString()) : 0,
+                                    
+                                    
+                                    SoTinChiToiThieuDeTotNghiep = reader.GetValue(3) != null ? Convert.ToInt32(reader.GetValue(3).ToString()) : 0,
+                                    TongHocPhiToanKhoa = reader.GetValue(4) != null ? Convert.ToInt32(reader.GetValue(4).ToString()) : 0,
+                                    NamApDung = reader.GetValue(5) != null ? DateOnly.FromDateTime(DateTime.Parse(reader.GetValue(5).ToString())) : (DateOnly?)null,
+                                    ChiTieuTuyenSinhHangNam = reader.GetValue(6) != null ? Convert.ToInt32(reader.GetValue(6).ToString()) : 0
+
+                                };
+
+
+                                _dbcontext.TbNamApDungChuongTrinhs.Add(tb);
+                                await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/nadct/NamApDungChuongTrinh", tb);
+
+                            }
+                            await _dbcontext.SaveChangesAsync();
+
+                        }
+                    }
+                    TempData["Success"] = "File đã được import thành công!";
+                }
+                catch (Exception ex)
+                {
+                    var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                    Console.WriteLine(errorMessage);
+                    TempData["Error"] = "Lỗi khi lưu dữ liệu: " + errorMessage;
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Vui lòng chọn file để upload.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
-
 }
+
 
 

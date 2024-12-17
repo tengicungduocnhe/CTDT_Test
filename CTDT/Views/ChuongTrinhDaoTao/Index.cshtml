@@ -23,11 +23,7 @@
     }
 
 </style>
-@* =======
 
-
-E:\BÀI CỦA NHUNG\CTDT\Views\ChuongTrinhDaoTao\chartjs.cshtml
-    >>>>>>> 16f88d5ef303afc3d25c283cb4c60b1614b05347 *@
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -61,12 +57,7 @@ E:\BÀI CỦA NHUNG\CTDT\Views\ChuongTrinhDaoTao\chartjs.cshtml
                 <div class="alert alert-danger">@TempData["Error"]</div>
             }
 
-            <form asp-action="ImportExcel" asp-controller="ChuongTrinhDaoTao" method="post" enctype="multipart/form-data">
-                <div class="d-flex mb-3">
-                    <input type="file" name="fileUpload" class="form-control" accept=".xlsx, .xls" required>
-                    <button type="submit" class="btn btn-success">Import Excel</button>
-                </div>
-            </form>
+            
 
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover " id="views" style="table-layout: auto; width: 100%;">
@@ -344,5 +335,12 @@ E:\BÀI CỦA NHUNG\CTDT\Views\ChuongTrinhDaoTao\chartjs.cshtml
                 }
             }
         });
+             table.buttons().container()
+                    .append(`
+                                <form asp-action="Index" asp-controller="ChuongTrinhDaoTao" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                                     <input type="file" name="file" class="form-control me-2" style="width: auto;" />
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </form>
+                    `);
     </script>
 }

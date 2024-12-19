@@ -418,7 +418,7 @@ namespace CTDT.Controllers
 
 
                                 _dbcontext.TbGiaHanChuongTrinhDaoTaos.Add(tb);
-                                await ApiServices_.Create<TbGiaHanChuongTrinhDaoTao>("/api/ghctdt/GiaHanChuongTrinhDaoTao", tb);
+                                await ApiServices_.Create<TbGiaHanChuongTrinhDaoTao>("/api/ctdt/GiaHanChuongTrinhDaoTao", tb);
 
                             }
                             await _dbcontext.SaveChangesAsync();

@@ -433,7 +433,7 @@ namespace C500Hemis.Controllers.CTDT
 
 
                                     _dbcontext.TbThongTinKiemDinhCuaChuongTrinhs.Add(tb);
-                                    await ApiServices_.Create<TbThongTinKiemDinhCuaChuongTrinh>("/api/ttkdcct/ThongTinKiemDinhCuaChuongTrinh", tb);
+                                    await ApiServices_.Create<TbThongTinKiemDinhCuaChuongTrinh>("/api/ctdt/ThongTinKiemDinhCuaChuongTrinh", tb);
 
                                 }
                                 catch (Exception ex)

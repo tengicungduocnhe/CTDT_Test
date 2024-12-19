@@ -348,7 +348,7 @@ namespace C500Hemis.Controllers.CTDT
 
 
                                 _dbcontext.TbNgonNguGiangDays.Add(tb);
-                                await ApiServices_.Create<TbNgonNguGiangDay>("/api/nngd/NgonNguGiangDay", tb);
+                                await ApiServices_.Create<TbNgonNguGiangDay>("/api/ctdt/NgonNguGiangDay", tb);
 
                             }
                             await _dbcontext.SaveChangesAsync();

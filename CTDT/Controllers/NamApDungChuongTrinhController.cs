@@ -402,7 +402,7 @@ namespace CTDT.Controllers
 
 
                                 _dbcontext.TbNamApDungChuongTrinhs.Add(tb);
-                                await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/nadct/NamApDungChuongTrinh", tb);
+                                await ApiServices_.Create<TbNamApDungChuongTrinh>("/api/ctdt/NamApDungChuongTrinh", tb);
 
                             }
                             await _dbcontext.SaveChangesAsync();

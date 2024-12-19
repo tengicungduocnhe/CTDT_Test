@@ -469,7 +469,7 @@ namespace CTDT.Controllers
 
 
                                 _dbcontext.TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoais.Add(tb);
-                                await ApiServices_.Create<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>("/api/qdcpctdcctnc/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai", tb);
+                                await ApiServices_.Create<TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai>("/api/ctdt/QuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai", tb);
 
                             }
                             await _dbcontext.SaveChangesAsync();

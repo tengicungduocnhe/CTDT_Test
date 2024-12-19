@@ -14,8 +14,8 @@ namespace CTDT.API
         public ApiServices(HttpClient httpClient)
         {
             _httpClient = httpClient;
-          // _httpClient.BaseAddress = new Uri(configuration.GetConnectionString("API") ?? "http://14.0.22.12:8080");
-             _httpClient.BaseAddress = new Uri(configuration.GetConnectionString("API") ?? "http://localhost:5224");
+           _httpClient.BaseAddress = new Uri(configuration.GetConnectionString("API") ?? "http://14.0.22.12:8080");
+          //   _httpClient.BaseAddress = new Uri(configuration.GetConnectionString("API") ?? "http://localhost:5224");
 
         }
         public async Task<List<T>> GetAll<T>(string apiPath, string lamda = null)

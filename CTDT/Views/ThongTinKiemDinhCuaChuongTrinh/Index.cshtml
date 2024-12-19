@@ -1,15 +1,9 @@
-@model IEnumerable<CTDT.Models.Tbtable.buttons().container()
-                            .append(`
-                                                                                <form asp-action="Index" asp-controller="GiaHanChuongTrinhDaoTao" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
-                                                     <input type="file" name="file" class="form-control me-2" style="width: auto;" />
-                                                    <button type="submit" class="btn btn-primary">Upload</button>
-                                                </form>
-                                    `);>
-
+@model IEnumerable<CTDT.Models.TbThongTinKiemDinhCuaChuongTrinh>
 @{
     ViewData["Title"] = "Index";
     int dem = 0;
 }
+
 
 @section Heads {
     <link href="~/lib/datatable/datatables.css" rel="stylesheet">
@@ -216,19 +210,14 @@
                 }
             }
         });
-            table.buttons().container()
-                                    .append(`
-                                                                                            <form asp-action="Index" asp-controller="table.buttons().container()
-                                .append(`
-                                                                                    <form asp-action="Index" asp-controller="GiaHanChuongTrinhDaoTao" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
-                                                         <input type="file" name="file" class="form-control me-2" style="width: auto;" />
-                                                        <button type="submit" class="btn btn-primary">Upload</button>
-                                                    </form>
-                                        `);" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
-                                                             <input type="file" name="file" class="form-control me-2" style="width: auto;" />
-                                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                                        </form>
-                                            `);
+
+    table.buttons().container()
+        .append(`
+                                    <form asp-action="Index" asp-controller="ThongTinKiemDinhCuaChuongTrinh" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                                         <input type="file" name="file" class="form-control me-2" style="width: auto;" />
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                        `);
     </script>
 }
 

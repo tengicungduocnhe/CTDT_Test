@@ -14,7 +14,7 @@ public partial class TbGiaHanChuongTrinhDaoTao
     public string? TenChuongTrinh { get; set; }
 
     [DisplayName(displayName: "Số Quyết Định Gia Hạn")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+ //   [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
     public string? SoQuyetDinhGiaHan { get; set; }
 
     [DisplayName(displayName: "Ngày Ban Hành Văn Bản Gia Hạn")]

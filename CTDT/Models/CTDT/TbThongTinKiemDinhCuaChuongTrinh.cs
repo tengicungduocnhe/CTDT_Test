@@ -20,7 +20,7 @@ public partial class TbThongTinKiemDinhCuaChuongTrinh
     public int? IdKetQuaKiemDinh { get; set; }
 
     [Display(Name = "Số Quyết Định")]
-    [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "chỉ được chứa ký tự chữ và số.")]
+  //  [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "chỉ được chứa ký tự chữ và số.")]
     public string? SoQuyetDinh { get; set; }
 
     [Display(Name = "Ngày Cấp Chứng Nhận")]

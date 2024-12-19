@@ -19,7 +19,7 @@ public partial class TbQuyetDinhCapPhepChuongTrinhDungChoChuongTrinhNuocNgoai
     public int? IdLoaiQuyetDinh { get; set; }
 
     [Display(Name = "Số Quyết Định")]
-    [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Chỉ được chứa ký tự chữ và số.")]
+  //  [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Chỉ được chứa ký tự chữ và số.")]
     public string? SoQuyetDinh { get; set; }
 
     [Display(Name = "Ngày Ban Hành Quyết Định")]

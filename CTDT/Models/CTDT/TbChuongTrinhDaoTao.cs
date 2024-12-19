@@ -37,7 +37,7 @@ public partial class TbChuongTrinhDaoTao
 
 
     [DisplayName("Tên cơ sở đào tạo nước ngoài")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? TenCoSoDaoTaoNuocNgoai { get; set; }
 
@@ -52,7 +52,7 @@ public partial class TbChuongTrinhDaoTao
 
 
     [DisplayName("Địa điểm đào tạo")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? DiaDiemDaoTao { get; set; }
 
@@ -83,7 +83,7 @@ public partial class TbChuongTrinhDaoTao
 
 
     [DisplayName("Chuẩn đầu ra")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? ChuanDauRa { get; set; }
 
@@ -93,13 +93,13 @@ public partial class TbChuongTrinhDaoTao
 
 
     [DisplayName("Loại chứng chỉ được chấp thuận")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? LoaiChungChiDuocChapThuan { get; set; }
 
 
     [DisplayName("Đơn vị thực hiện chương trình")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? DonViThucHienChuongTrinh { get; set; }
 
@@ -109,13 +109,13 @@ public partial class TbChuongTrinhDaoTao
 
 
     [DisplayName("Chuẩn đầu ra về ngoại ngữ")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? ChuanDauRaVeNgoaiNgu { get; set; }
 
 
     [DisplayName("Chuẩn đầu ra về tin học")]
-    [RegularExpression(@"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸỳỵýỷỹ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
+    [RegularExpression(@"^[a-zA-aăâbcdđeêghiklmnoôơpqrstuưvxyAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵÀÁẢÃẠẰẮẲẴẶẦẤẨẪẬÈÉẺẼẸỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌỒỐỔỖỘỜỚỞỠỢÙÚỦŨỤỪỨỬỮỰỲÝỶỸỴ\s]+$", ErrorMessage = "Chỉ được chứa ký tự chữ cái tiếng Việt và dấu cách.")]
 
     public string? ChuanDauRaVeTinHoc { get; set; }
 

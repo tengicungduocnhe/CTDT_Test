@@ -140,8 +140,8 @@ namespace C500Hemis.Controllers.CTDT
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdThongTinKiemDinhCuaChuongTrinh,IdChuongTrinhDaoTao,IdToChucKiemDinh,IdKetQuaKiemDinh,SoQuyetDinh,NgayCapChungNhanKiemDinh,ThoiHanKiemDinh")] TbThongTinKiemDinhCuaChuongTrinh tbThongTinKiemDinhCuaChuongTrinh)
         {
-            try
-            {
+            // try
+            // {
                 check_null(tbThongTinKiemDinhCuaChuongTrinh);
                 // Nếu trùng IdGiaHanChuongTrinhDaoTao sẽ báo lỗi
                 if (await TbThongTinKiemDinhCuaChuongTrinhExists(tbThongTinKiemDinhCuaChuongTrinh.IdThongTinKiemDinhCuaChuongTrinh)) ModelState.AddModelError("IdThongTinKiemDinhCuaChuongTrinh", "ID này đã tồn tại!");
@@ -155,11 +155,11 @@ namespace C500Hemis.Controllers.CTDT
                 ViewData["IdKetQuaKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmKetQuaKiemDinh>("/api/dm/KetQuaKiemDinh"), "IdKetQuaKiemDinh", "KetQuaKiemDinh");
                 ViewData["IdToChucKiemDinh"] = new SelectList(await ApiServices_.GetAll<DmToChucKiemDinh>("/api/dm/ToChucKiemDinh"), "IdToChucKiemDinh", "ToChucKiemDinh");
                 return View(tbThongTinKiemDinhCuaChuongTrinh);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
+            // }
+            // catch (Exception ex)
+            // {
+            //     return BadRequest();
+            // }
         }
 
 

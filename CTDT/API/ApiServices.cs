@@ -54,15 +54,12 @@ namespace CTDT.API
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<T>();
-                if (data == null)
-                {
-                    throw new NullReferenceException("The API response or Data is null.");
-                }
+                if (data == null) return default(T);
                 return data;
             }
             else
             {
-                throw new HttpRequestException($"Request failed with status code {response.StatusCode}: {response.ReasonPhrase}");
+                return default(T);
             }
         }
 

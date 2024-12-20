@@ -27,7 +27,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form asp-action="Create" id="form">
+                            <form asp-action="Edit" id="form">
                                 <div class="row">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     <input type="hidden" asp-for="IdThongTinKiemDinhCuaChuongTrinh" />
@@ -91,7 +91,6 @@
     <script src="https://cdn.jsdelivr.net/gh/kirito99152/search_select@latest/search_select.js"></script>
     <script>
         let select = new search_select("form");
-        select.IsNULL = true;
         select.run();
     </script>
 }

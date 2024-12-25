@@ -62,7 +62,7 @@
                                 <button class="btn btn-outline-primary" onclick="window.location.href = '@Url.Action("Index")'">
                                     <i class="fa-sharp fa-solid fa-circle-info"></i> Quay lại
                                 </button>
-                                <button type="button" class="btn btn-outline-danger block" data-bs-toggle="modal" data-bs-target="#deletemodal">
+                                <button type="button" class="btn btn-outline-danger block" onclick="window.location.href = '@Url.Action("Delete", new {id = Model.IdThongTinKiemDinhCuaChuongTrinh})'">
                                     Xoá
                                 </button>
                                 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

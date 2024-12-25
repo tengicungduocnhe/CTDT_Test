@@ -41,12 +41,7 @@
                 <div class="alert alert-danger">@TempData["Error"]</div>
             }
 
-            <form asp-action="UploadExcel" asp-controller="ThongTinKiemDinhCuaChuongTrinh" method="post" enctype="multipart/form-data">
-                <div class="d-flex mb-3">
-                    
-                    <button type="submit" class="btn btn-success">Import Excel</button>
-                </div>
-            </form>
+            
             <div class="card-body">
                 <table class="table table-striped nowrap table-hover" id="views">
                     <thead>
